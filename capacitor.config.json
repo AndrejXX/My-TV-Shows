@@ -1,0 +1,9 @@
+{
+  "appId": "hr.serijetracker.app",
+  "appName": "Serije Tracker",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true
+  }
+}

@@ -9,17 +9,19 @@
   <style>
     :root {
       --bg: #05070a;
-      --shell-bg: linear-gradient(180deg, rgba(12, 22, 27, 0.95) 0%, rgba(6, 10, 14, 0.99) 100%);
-      --shell-border: rgba(52, 211, 153, 0.45);
-      --card-bg: rgba(8, 15, 20, 0.92);
-      --pill-bg: rgba(6, 10, 14, 0.95);
+      --shell-bg: linear-gradient(180deg, rgba(10, 20, 25, 0.96) 0%, rgba(5, 8, 12, 0.99) 100%);
+      --shell-border: rgba(52, 211, 153, 0.55);
+      --shell-glow: rgba(16, 185, 129, 0.14);
+      --card-bg: rgba(11, 20, 26, 0.94);
+      --card-border: rgba(52, 211, 153, 0.28);
+      --pill-bg: rgba(6, 11, 15, 0.96);
       --mint: #10b981;
       --mint-bright: #34d399;
-      --mint-glow: rgba(52, 211, 153, 0.36);
-      --mint-dim: rgba(16, 185, 129, 0.14);
+      --mint-glow: rgba(52, 211, 153, 0.38);
+      --mint-dim: rgba(16, 185, 129, 0.15);
       --cyan: #38bdf8;
       --cyan-bright: #22d3ee;
-      --cyan-glow: rgba(56, 189, 248, 0.34);
+      --cyan-glow: rgba(34, 211, 238, 0.36);
       --cyan-dim: rgba(56, 189, 248, 0.14);
       --amber: #fbbf24;
       --amber-dim: rgba(251, 191, 36, 0.14);
@@ -28,6 +30,7 @@
       --text-soft: #cbd5e1;
       --muted: #94a3b8;
       --line: rgba(148, 163, 184, 0.2);
+      --hud-tick: rgba(148, 163, 184, 0.26);
       --on-mint: #04130d;
       --on-cyan: #04131a;
     }
@@ -35,16 +38,18 @@
     [data-theme="light"] {
       --bg: #eef3f7;
       --shell-bg: linear-gradient(180deg, #ffffff 0%, #f5f8fb 100%);
-      --shell-border: rgba(5, 150, 105, 0.38);
+      --shell-border: rgba(5, 150, 105, 0.42);
+      --shell-glow: rgba(5, 150, 105, 0.08);
       --card-bg: #f8fafc;
+      --card-border: rgba(5, 150, 105, 0.25);
       --pill-bg: #e2e8f0;
       --mint: #059669;
       --mint-bright: #10b981;
-      --mint-glow: rgba(16, 185, 129, 0.25);
+      --mint-glow: rgba(16, 185, 129, 0.24);
       --mint-dim: rgba(16, 185, 129, 0.12);
       --cyan: #0284c7;
       --cyan-bright: #0369a1;
-      --cyan-glow: rgba(2, 132, 199, 0.24);
+      --cyan-glow: rgba(2, 132, 199, 0.22);
       --cyan-dim: rgba(2, 132, 199, 0.11);
       --amber: #d97706;
       --amber-dim: rgba(217, 119, 6, 0.12);
@@ -53,6 +58,7 @@
       --text-soft: #334155;
       --muted: #64748b;
       --line: rgba(100, 116, 139, 0.24);
+      --hud-tick: rgba(100, 116, 139, 0.28);
       --on-mint: #ffffff;
       --on-cyan: #ffffff;
     }
@@ -93,7 +99,7 @@
       gap: 12px;
     }
 
-    /* Zaglavlje u stilu Rice Cookera */
+    /* Zaglavlje: Bijela TV ikona + My TV Tracker + Backup / Sync / Tema */
     header {
       flex-shrink: 0;
       display: flex;
@@ -106,25 +112,15 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       min-width: 0;
     }
 
     .title-wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       min-width: 0;
-    }
-
-    h1 {
-      font-size: 23px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .tv-icon {
@@ -135,6 +131,16 @@
       flex-shrink: 0;
     }
 
+    h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .header-actions {
       display: flex;
       align-items: center;
@@ -142,34 +148,40 @@
       flex-shrink: 0;
     }
 
-    .hud-icon-btn {
-      height: 34px;
-      min-width: 34px;
-      padding: 0 9px;
+    .hud-pill-btn {
+      height: 32px;
+      min-width: 32px;
+      padding: 0 11px;
       border-radius: 999px;
       background: var(--pill-bg);
       border: 1.5px solid var(--mint-bright);
       box-shadow: 0 0 12px var(--mint-dim), inset 0 0 6px var(--mint-dim);
       color: var(--text);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 5px;
       cursor: pointer;
       transition: transform 0.1s ease;
     }
 
-    .hud-icon-btn.cyan-btn {
+    .hud-pill-btn.cyan {
       border-color: var(--cyan);
       box-shadow: 0 0 12px var(--cyan-dim), inset 0 0 6px var(--cyan-dim);
     }
 
-    .hud-icon-btn:active {
+    .hud-pill-btn.icon-only {
+      padding: 0;
+      width: 32px;
+    }
+
+    .hud-pill-btn:active {
       transform: scale(0.93);
     }
 
-    .hud-icon-btn.spinning svg {
+    .hud-pill-btn.spinning svg {
       animation: spin 1s linear infinite;
     }
 
@@ -177,20 +189,43 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Glavni zaobljeni HUD okvir preko cijele visine */
+    /* Glavni zaobljeni HUD okvir s telemetrijskim linijama */
     .hud-shell {
+      position: relative;
       flex: 1;
       background: var(--shell-bg);
       border: 1.5px solid var(--shell-border);
-      border-radius: 22px;
+      border-radius: 24px;
       padding: 15px 14px;
-      box-shadow: 0 0 28px rgba(16, 185, 129, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 30px var(--shell-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 13px;
     }
 
-    /* Gornji HUD pregled (kao mjerač na Rice Cookeru) */
+    /* Dekorativne HUD bočne crtice kao na Prijedlogu 1 */
+    .hud-shell::before,
+    .hud-shell::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 46px;
+      border-radius: 99px;
+      background: var(--hud-tick);
+      pointer-events: none;
+    }
+
+    .hud-shell::before {
+      left: 5px;
+      top: 140px;
+    }
+
+    .hud-shell::after {
+      right: 5px;
+      top: 84px;
+    }
+
+    /* Gornji HUD panel: Dual-arc gauge (74%) + broj serija + 3-tab navigacija */
     .hud-top-panel {
       display: flex;
       align-items: center;
@@ -201,8 +236,8 @@
 
     .dial-wrap {
       position: relative;
-      width: 92px;
-      height: 92px;
+      width: 96px;
+      height: 96px;
       flex-shrink: 0;
       display: grid;
       place-items: center;
@@ -216,21 +251,24 @@
     .dial-center {
       text-align: center;
       font-variant-numeric: tabular-nums;
-      line-height: 1.1;
+      line-height: 1.05;
     }
 
     .dial-center strong {
       display: block;
-      font-size: 19px;
+      font-size: 21px;
       font-weight: 800;
-      color: var(--text);
+      color: var(--mint-bright);
     }
 
     .dial-center span {
-      font-size: 10.5px;
+      display: block;
+      margin-top: 2px;
+      font-size: 9.5px;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .hud-top-right {
@@ -238,7 +276,7 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
     }
 
     .stats-headline {
@@ -249,20 +287,20 @@
     }
 
     .stats-main {
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--text);
       font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
     }
 
     .stats-sub {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--cyan);
       font-variant-numeric: tabular-nums;
     }
 
-    /* Glavna navigacija u obliku pill trake (kao Čvršća / Standardna / Mekša) */
     .nav-pill-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -289,7 +327,7 @@
     .nav-pill-btn.active {
       background: var(--mint-bright);
       color: var(--on-mint);
-      box-shadow: 0 0 12px var(--mint-glow);
+      box-shadow: 0 0 14px var(--mint-glow);
     }
 
     /* Sekcije prikaza */
@@ -303,6 +341,297 @@
       display: flex;
     }
 
+    /* Istaknuta kartica "Sljedeće" (kao na Prijedlogu 1) */
+    .spotlight-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 13px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24);
+      cursor: pointer;
+    }
+
+    .spotlight-card img {
+      width: 82px;
+      height: 116px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: var(--pill-bg);
+      flex-shrink: 0;
+      border: 1px solid var(--line);
+    }
+
+    .spotlight-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .spotlight-kicker {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .spotlight-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spotlight-ep {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spotlight-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .spotlight-copy-btn {
+      flex: 1;
+      min-width: 0;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: none;
+      background: var(--cyan-bright);
+      color: var(--on-cyan);
+      font-size: 12.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .spotlight-check-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: var(--mint-bright);
+      color: var(--on-mint);
+      font-size: 16px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px var(--mint-glow);
+    }
+
+    .spotlight-copy-btn:active,
+    .spotlight-check-btn:active,
+    .card-copy-btn:active,
+    .card-watch-btn:active,
+    .copy-pill-btn:active,
+    .quick-check:active,
+    .ep-copy-btn:active {
+      transform: scale(0.93);
+    }
+
+    /* Filtri u Mojim serijama */
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 11px;
+      scrollbar-width: none;
+    }
+
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-btn {
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: var(--on-cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* 2-stupčana mreža kartica serija */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .show-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .show-card.has-new {
+      border-color: rgba(52, 211, 153, 0.42);
+    }
+
+    .show-card img {
+      width: 100%;
+      aspect-ratio: 2 / 2.55;
+      object-fit: cover;
+      background: var(--pill-bg);
+    }
+
+    .show-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--mint-bright);
+      color: #04130d;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .show-info {
+      padding: 9px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 7px;
+    }
+
+    .progress-bar-bg {
+      background: var(--pill-bg);
+      height: 5px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fg {
+      background: linear-gradient(90deg, var(--cyan), var(--mint-bright));
+      height: 100%;
+      transition: width 0.25s ease;
+    }
+
+    .show-name-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .show-name {
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .show-ep-count {
+      font-size: 10.5px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    .card-next-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-copy-btn {
+      flex: 1;
+      min-width: 0;
+      height: 30px;
+      padding: 0 8px;
+      border-radius: 999px;
+      border: 1.5px solid var(--cyan);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-watch-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: var(--mint-bright);
+      color: var(--on-mint);
+      font-size: 13.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--mint-glow);
+    }
+
+    .card-done-tag {
+      height: 30px;
+      border-radius: 999px;
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mint-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Raspored sekcija */
     .hud-section-title {
       font-size: 11.5px;
       font-weight: 800;
@@ -310,16 +639,12 @@
       letter-spacing: 0.07em;
       color: var(--mint-bright);
       margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
 
     .schedule-group {
       margin-bottom: 16px;
     }
 
-    /* Hero kartica u Rasporedu */
     .hero-card {
       background-size: cover;
       background-position: center;
@@ -398,7 +723,6 @@
       cursor: pointer;
     }
 
-    /* Redak epizode u Rasporedu */
     .ep-row {
       display: flex;
       align-items: center;
@@ -467,7 +791,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -476,191 +799,18 @@
       width: 31px;
       height: 31px;
       border-radius: 50%;
-      border: 1.5px solid var(--mint-bright);
-      background: var(--mint-dim);
-      color: var(--mint-bright);
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .copy-pill-btn:active, .quick-check:active, .card-copy-btn:active, .card-watch-btn:active {
-      transform: scale(0.92);
-    }
-
-    /* Filtri u Mojim serijama */
-    .filter-tabs {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      scrollbar-width: none;
-    }
-
-    .filter-tabs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-btn {
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
-      color: var(--text-soft);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .filter-btn.active {
-      background: var(--cyan);
-      border-color: var(--cyan);
-      color: var(--on-cyan);
-      box-shadow: 0 0 10px var(--cyan-glow);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .show-card {
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .show-card.has-new {
-      border-color: rgba(52, 211, 153, 0.45);
-    }
-
-    .show-card img {
-      width: 100%;
-      aspect-ratio: 2 / 2.75;
-      object-fit: cover;
-      background: var(--pill-bg);
-    }
-
-    .show-badge {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: var(--mint-bright);
-      color: #04130d;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
-    }
-
-    .show-info {
-      padding: 9px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .show-name {
-      font-weight: 700;
-      font-size: 13.5px;
-      line-height: 1.25;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .progress-label {
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .progress-bar-bg {
-      background: var(--pill-bg);
-      height: 5px;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-
-    .progress-bar-fg {
-      background: linear-gradient(90deg, var(--cyan), var(--mint-bright));
-      height: 100%;
-      transition: width 0.25s ease;
-    }
-
-    .card-next-box {
-      padding-top: 6px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .card-copy-btn {
-      flex: 1;
-      min-width: 0;
-      height: 29px;
-      padding: 0 7px;
-      border-radius: 999px;
-      border: 1.5px solid var(--cyan);
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      font-size: 11.5px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .card-watch-btn {
-      width: 29px;
-      height: 29px;
-      border-radius: 50%;
-      border: 1.5px solid var(--mint-bright);
+      border: none;
       background: var(--mint-bright);
       color: var(--on-mint);
-      font-size: 13px;
       font-weight: 800;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 0 10px var(--mint-glow);
     }
 
-    .card-done-tag {
-      padding-top: 6px;
-      border-top: 1px solid var(--line);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--mint-bright);
-      text-align: center;
-    }
-
-    /* Pretraga */
+    /* Pretraga (Istraži) */
     .search-box {
       display: flex;
       gap: 8px;
@@ -698,7 +848,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.82);
       z-index: 50;
       display: none;
       align-items: flex-end;
@@ -924,13 +1074,8 @@
       font-weight: 800;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
       cursor: pointer;
       white-space: nowrap;
-    }
-
-    .ep-copy-btn:active {
-      transform: scale(0.93);
     }
 
     .watch-checkbox {
@@ -961,7 +1106,7 @@
     .center-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.82);
       z-index: 65;
       display: none;
       align-items: center;
@@ -982,7 +1127,7 @@
       max-height: 85vh;
       overflow-y: auto;
       padding: 18px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.72);
     }
 
     .modal-header {
@@ -1085,52 +1230,52 @@
 </head>
 <body>
   <main class="app">
-    <!-- Zaglavlje u stilu Rice Cookera -->
+    <!-- Zaglavlje s bijelom TV ikonom bez okvira -->
     <header>
       <div class="header-left">
-        <button class="hud-icon-btn" id="headerBackBtn" onclick="goBack()" title="Natrag" aria-label="Natrag" style="display:none;">←</button>
+        <button class="hud-pill-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Natrag" aria-label="Natrag" style="display:none;">←</button>
         <div class="title-wrap">
-          <h1>My TV Tracker</h1>
-          <!-- Bijela linijska TV ikona bez okvira -->
           <div class="tv-icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 5l5 4.5L19 5" />
-              <rect x="4.5" y="9.5" width="19" height="13.5" rx="3" />
-              <polygon points="12,13.5 12,19 17,16.25" fill="currentColor" stroke="none" />
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.5 4.5L14 9l4.5-4.5" />
+              <rect x="4" y="9" width="20" height="14" rx="3.2" />
+              <path d="M10 25h8" />
             </svg>
           </div>
+          <h1>My TV Tracker</h1>
         </div>
       </div>
 
       <div class="header-actions">
-        <button class="hud-icon-btn" onclick="openBackupModal()" title="Sigurnosna kopija">Backup</button>
-        <button class="hud-icon-btn cyan-btn" id="syncBtn" onclick="syncAllShows()" title="Osvježi epizode" aria-label="Osvježi">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <button class="hud-pill-btn" onclick="openBackupModal()" title="Sigurnosna kopija">Backup</button>
+        <button class="hud-pill-btn cyan" id="syncBtn" onclick="syncAllShows()" title="Osvježi epizode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
             <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
             <path d="M16 16h5v5" />
           </svg>
+          <span>Sync</span>
         </button>
-        <button class="hud-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu" aria-label="Promijeni temu">☀️</button>
+        <button class="hud-pill-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu" aria-label="Promijeni temu">☀️</button>
       </div>
     </header>
 
-    <!-- Glavni zaobljeni HUD okvir preko cijele visine -->
+    <!-- Glavni zaobljeni HUD okvir (Emerald HUD Command) -->
     <section class="hud-shell">
-      <!-- Gornji HUD mjerač napretka + navigacija u obliku pill trake -->
+      <!-- Gornji HUD kružni mjerač + broj serija + navigacija -->
       <div class="hud-top-panel">
         <div class="dial-wrap">
-          <svg width="92" height="92" viewBox="0 0 92 92">
-            <circle cx="46" cy="46" r="41" fill="none" stroke="rgba(148,163,184,0.16)" stroke-width="1.5" />
-            <circle cx="46" cy="46" r="31" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="3.5" stroke-dasharray="1.4 3.4" />
-            <circle cx="46" cy="46" r="36" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="4" />
-            <circle id="hudWatchedArc" cx="46" cy="46" r="36" fill="none" stroke="#34d399" stroke-width="4"
-                    stroke-linecap="round" stroke-dasharray="180 226.19" stroke-dashoffset="0"
-                    transform="rotate(-90 46 46)" />
-            <circle id="hudPendingArc" cx="46" cy="46" r="36" fill="none" stroke="#38bdf8" stroke-width="4"
-                    stroke-linecap="round" stroke-dasharray="36 226.19" stroke-dashoffset="-185"
-                    transform="rotate(-90 46 46)" />
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="43" fill="none" stroke="rgba(148,163,184,0.16)" stroke-width="1.5" />
+            <circle cx="48" cy="48" r="32" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="3.5" stroke-dasharray="1.4 3.4" />
+            <circle cx="48" cy="48" r="38" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="4.5" />
+            <circle id="hudWatchedArc" cx="48" cy="48" r="38" fill="none" stroke="#34d399" stroke-width="4.5"
+                    stroke-linecap="round" stroke-dasharray="180 238.76" stroke-dashoffset="0"
+                    transform="rotate(-90 48 48)" />
+            <circle id="hudPendingArc" cx="48" cy="48" r="38" fill="none" stroke="#22d3ee" stroke-width="4.5"
+                    stroke-linecap="round" stroke-dasharray="36 238.76" stroke-dashoffset="-186"
+                    transform="rotate(-90 48 48)" />
           </svg>
           <div class="dial-center">
             <strong id="hudPercentText">0%</strong>
@@ -1145,15 +1290,30 @@
           </div>
 
           <div class="nav-pill-bar">
-            <button type="button" class="nav-pill-btn active" id="nav-schedules" onclick="switchTab('schedules')">Raspored</button>
-            <button type="button" class="nav-pill-btn" id="nav-my" onclick="switchTab('my')">Moje serije</button>
+            <button type="button" class="nav-pill-btn" id="nav-schedules" onclick="switchTab('schedules')">Raspored</button>
+            <button type="button" class="nav-pill-btn active" id="nav-my" onclick="switchTab('my')">Moje serije</button>
             <button type="button" class="nav-pill-btn" id="nav-explore" onclick="switchTab('explore')">Istraži</button>
           </div>
         </div>
       </div>
 
-      <!-- EKRAN 1: RASPORED -->
-      <div class="view-section active" id="view-schedules">
+      <!-- EKRAN 1: MOJE SERIJE (s karticom "Sljedeće" + 2-stupčanom mrežom) -->
+      <div class="view-section active" id="view-my">
+        <div id="spotlightContainer"></div>
+
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="filterMyShows('sve', this)">Sve (<span id="count-sve">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('nepregledane', this)">Nove (<span id="count-nove">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('aktivne', this)">U tijeku (<span id="count-aktivne">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('cekam', this)">Čekam nove (<span id="count-cekam">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('zavrsene', this)">Završene (<span id="count-zavrsene">0</span>)</button>
+        </div>
+
+        <div class="grid" id="myGrid"></div>
+      </div>
+
+      <!-- EKRAN 2: RASPORED -->
+      <div class="view-section" id="view-schedules">
         <div id="heroContainer"></div>
 
         <div class="hud-section-title">Danas</div>
@@ -1167,18 +1327,6 @@
 
         <div class="hud-section-title">Buduće najave</div>
         <div id="sched-future" class="schedule-group"></div>
-      </div>
-
-      <!-- EKRAN 2: MOJE SERIJE -->
-      <div class="view-section" id="view-my">
-        <div class="filter-tabs">
-          <button class="filter-btn active" onclick="filterMyShows('sve', this)">Sve (<span id="count-sve">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('nepregledane', this)">Nove (<span id="count-nove">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('aktivne', this)">U tijeku (<span id="count-aktivne">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('cekam', this)">Čekam nove (<span id="count-cekam">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('zavrsene', this)">Završene (<span id="count-zavrsene">0</span>)</button>
-        </div>
-        <div class="grid" id="myGrid"></div>
       </div>
 
       <!-- EKRAN 3: ISTRAŽI -->
@@ -1197,7 +1345,7 @@
   <div class="overlay" id="overlay" onclick="closeDrawer()">
     <div class="drawer" id="drawer" onclick="event.stopPropagation()">
       <div class="drawer-top">
-        <button class="hud-icon-btn" onclick="closeDrawer()" title="Natrag" aria-label="Natrag">←</button>
+        <button class="hud-pill-btn icon-only" onclick="closeDrawer()" title="Natrag" aria-label="Natrag">←</button>
         <h2 id="drawerTitle">Naziv serije</h2>
       </div>
       <div class="drawer-meta">
@@ -1227,7 +1375,7 @@
           <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--muted); text-transform:uppercase;"></div>
           <h3 id="epModalTitle">Naziv epizode</h3>
         </div>
-        <button class="hud-icon-btn" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
+        <button class="hud-pill-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
       </div>
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;">
         <div style="font-size:12.5px; color:var(--mint-bright); font-weight:700;" id="epModalDate"></div>
@@ -1242,7 +1390,7 @@
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3>Sigurnosna kopija baze</h3>
-        <button class="hud-icon-btn" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
+        <button class="hud-pill-btn icon-only" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
       </div>
       <div class="modal-body">
         <p id="backupStatsText" style="font-size:12.5px; color:var(--muted);"></p>
@@ -1273,7 +1421,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230c161b'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3EBez postera%3C/text%3E%3C/svg%3E";
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230b141a'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3EBez postera%3C/text%3E%3C/svg%3E";
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
     let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
@@ -1281,7 +1429,7 @@
     let currentDrawerShow = null;
     let activeMyFilter = 'sve';
     let exploreLoaded = false;
-    let navHistory = ['schedules'];
+    let navHistory = ['my'];
 
     function toHttps(url) {
       if (!url) return PLACEHOLDER_IMG;
@@ -1427,10 +1575,11 @@
 
       const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
       document.getElementById('hudPercentText').textContent = `${pct}%`;
-      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${myShows.length === 1 ? 'serija' : (myShows.length >= 2 && myShows.length <= 4 ? 'serije' : 'serija')}`;
+      const showWord = myShows.length === 1 ? 'serija' : (myShows.length >= 2 && myShows.length <= 4 ? 'serije' : 'serija');
+      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${showWord}`;
       document.getElementById('hudNewStat').textContent = `+${totalNewUnwatched} novih`;
 
-      const C = 2 * Math.PI * 36; // 226.19
+      const C = 2 * Math.PI * 38; // 238.76
       const gap = 6;
       const usable = C - gap * 2;
       const watchedRatio = totalAired > 0 ? totalWatched / totalAired : 0;
@@ -1450,7 +1599,7 @@
     function updateBackButtonVisibility() {
       const currentTab = navHistory[navHistory.length - 1];
       const backBtn = document.getElementById('headerBackBtn');
-      backBtn.style.display = (navHistory.length > 1 || currentTab !== 'schedules') ? 'inline-flex' : 'none';
+      backBtn.style.display = (navHistory.length > 1 || currentTab !== 'my') ? 'inline-flex' : 'none';
     }
 
     function switchTab(tab, recordHistory = true) {
@@ -1499,9 +1648,9 @@
       }
 
       const currentTab = navHistory[0];
-      if (currentTab !== 'schedules') {
-        navHistory = ['schedules'];
-        switchTab('schedules', false);
+      if (currentTab !== 'my') {
+        navHistory = ['my'];
+        switchTab('my', false);
         return;
       }
 
@@ -1771,7 +1920,7 @@
           ${isTracked ? '<div class="show-badge">Praćeno</div>' : ''}
           <div class="show-info">
             <div class="show-name">${show.name}</div>
-            <div class="progress-label"><span>${show.premiered ? show.premiered.slice(0, 4) : ''}</span><span>${show.status || ''}</span></div>
+            <div class="show-ep-count">${show.premiered ? show.premiered.slice(0, 4) + ' • ' : ''}${show.status || ''}</div>
           </div>
         `;
         grid.appendChild(card);
@@ -2104,6 +2253,68 @@
       return sorted.find(ep => !watchedEpisodes[ep.id]) || null;
     }
 
+    /* Kartica "Sljedeće" na vrhu ekrana Moje serije (kao na Prijedlogu 1) */
+    function renderSpotlightCard(sortedShows, todayStr) {
+      const container = document.getElementById('spotlightContainer');
+      if (!sortedShows || sortedShows.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      // Traži prvu seriju s nepogledanom epizodom (prednost imaju već emitirane)
+      let targetShow = null;
+      let targetEp = null;
+
+      for (const s of sortedShows) {
+        const ep = getNextEpisode(s);
+        if (ep && ep.airdate && ep.airdate <= todayStr) {
+          targetShow = s;
+          targetEp = ep;
+          break;
+        }
+      }
+
+      if (!targetShow) {
+        for (const s of sortedShows) {
+          const ep = getNextEpisode(s);
+          if (ep) {
+            targetShow = s;
+            targetEp = ep;
+            break;
+          }
+        }
+      }
+
+      if (!targetShow || !targetEp) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const epCode = formatEpCode(targetEp.season, targetEp.number);
+      const copyPayload = escapeAttr(buildEpisodeCopyText(targetShow.name, targetEp.season, targetEp.number));
+      const isAired = Boolean(targetEp.airdate && targetEp.airdate <= todayStr);
+      const checkBtnHtml = isAired
+        ? `<button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Označi ${epCode} pogledano">✓</button>`
+        : '';
+
+      container.innerHTML = `
+        <div class="spotlight-card" onclick="openShowDetails(${targetShow.id})">
+          <img src="${targetShow.image}" alt="${escapeAttr(targetShow.name)}" />
+          <div class="spotlight-body">
+            <div>
+              <div class="spotlight-kicker">Sljedeće</div>
+              <div class="spotlight-title">${targetShow.name}</div>
+              <div class="spotlight-ep">${epCode} • ${targetEp.name}</div>
+            </div>
+            <div class="spotlight-actions">
+              <button type="button" class="spotlight-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)">Copy ${copyPayload}</button>
+              ${checkBtnHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     // MOJE SERIJE
     function renderMyShows() {
       const grid = document.getElementById('myGrid');
@@ -2148,6 +2359,8 @@
         return (showActivity[b.id] || 0) - (showActivity[a.id] || 0);
       });
 
+      renderSpotlightCard(showsToShow, todayStr);
+
       if (showsToShow.length === 0) {
         grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">Nema serija u ovoj kategoriji. Dodajte serije putem kartice Istraži.</p>';
         return;
@@ -2188,12 +2401,12 @@
           <img src="${show.image}" alt="${escapeAttr(show.name)}" loading="lazy" />
           ${badgeHtml}
           <div class="show-info">
-            <div class="show-name">${show.name}</div>
-            <div>
-              <div class="progress-label"><span>${watched}/${total} ep</span><span>${percent}%</span></div>
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fg" style="width: ${percent}%"></div>
-              </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fg" style="width: ${percent}%"></div>
+            </div>
+            <div class="show-name-row">
+              <div class="show-name">${show.name}</div>
+              <span class="show-ep-count">${watched}/${total}</span>
             </div>
             ${bottomActionHtml}
           </div>
@@ -2313,7 +2526,7 @@
     }
 
     updateHudTopDial();
-    renderSchedule();
+    renderMyShows();
   </script>
 </body>
 </html>

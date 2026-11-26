@@ -1,0 +1,82 @@
+name: Izrada Android APK-a
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android-apk:
+    name: Build APK (Capacitor)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Preuzimanje koda iz repozitorija
+        uses: actions/checkout@v4
+
+      - name: Postavljanje Node.js okruženja
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Postavljanje Java 17 JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalacija NPM paketa
+        run: npm install
+
+      - name: Generiranje Android projekta i sinkronizacija web aplikacije
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Integracija ikone u Android APK resurse
+        run: |
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin
+
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#131c33"/><stop offset="100%" stop-color="#090d16"/></linearGradient><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><rect width="512" height="512" fill="url(#bg)"/><rect x="112" y="194" width="244" height="178" rx="22" fill="#1e293b" stroke="#f59e0b" stroke-width="12"/><rect x="112" y="140" width="244" height="44" rx="12" fill="url(#gold)"/><path d="M144 140 L170 140 L150 184 L124 184 Z" fill="#0b1120"/><path d="M204 140 L230 140 L210 184 L184 184 Z" fill="#0b1120"/><path d="M264 140 L290 140 L270 184 L244 184 Z" fill="#0b1120"/><polygon points="212,242 212,324 278,283" fill="#f8fafc"/><circle cx="346" cy="336" r="76" fill="#0b1120" stroke="url(#gold)" stroke-width="14"/><polyline points="346,294 346,336 376,352" fill="none" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>' > /tmp/icon_full.svg
+
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs><g transform="translate(256,256) scale(0.70) translate(-256,-256)"><rect x="112" y="194" width="244" height="178" rx="22" fill="#1e293b" stroke="#f59e0b" stroke-width="12"/><rect x="112" y="140" width="244" height="44" rx="12" fill="url(#gold)"/><path d="M144 140 L170 140 L150 184 L124 184 Z" fill="#0b1120"/><path d="M204 140 L230 140 L210 184 L184 184 Z" fill="#0b1120"/><path d="M264 140 L290 140 L270 184 L244 184 Z" fill="#0b1120"/><polygon points="212,242 212,324 278,283" fill="#f8fafc"/><circle cx="346" cy="336" r="76" fill="#0b1120" stroke="url(#gold)" stroke-width="14"/><polyline points="346,294 346,336 376,352" fill="none" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g></svg>' > /tmp/icon_fg.svg
+
+          RES_DIR="android/app/src/main/res"
+
+          rsvg-convert -w 48 -h 48 /tmp/icon_full.svg -o "$RES_DIR/mipmap-mdpi/ic_launcher.png"
+          rsvg-convert -w 72 -h 72 /tmp/icon_full.svg -o "$RES_DIR/mipmap-hdpi/ic_launcher.png"
+          rsvg-convert -w 96 -h 96 /tmp/icon_full.svg -o "$RES_DIR/mipmap-xhdpi/ic_launcher.png"
+          rsvg-convert -w 144 -h 144 /tmp/icon_full.svg -o "$RES_DIR/mipmap-xxhdpi/ic_launcher.png"
+          rsvg-convert -w 192 -h 192 /tmp/icon_full.svg -o "$RES_DIR/mipmap-xxxhdpi/ic_launcher.png"
+
+          for dir in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+            cp "$RES_DIR/$dir/ic_launcher.png" "$RES_DIR/$dir/ic_launcher_round.png"
+          done
+
+          rsvg-convert -w 108 -h 108 /tmp/icon_fg.svg -o "$RES_DIR/mipmap-mdpi/ic_launcher_foreground.png"
+          rsvg-convert -w 162 -h 162 /tmp/icon_fg.svg -o "$RES_DIR/mipmap-hdpi/ic_launcher_foreground.png"
+          rsvg-convert -w 216 -h 216 /tmp/icon_fg.svg -o "$RES_DIR/mipmap-xhdpi/ic_launcher_foreground.png"
+          rsvg-convert -w 324 -h 324 /tmp/icon_fg.svg -o "$RES_DIR/mipmap-xxhdpi/ic_launcher_foreground.png"
+          rsvg-convert -w 432 -h 432 /tmp/icon_fg.svg -o "$RES_DIR/mipmap-xxxhdpi/ic_launcher_foreground.png"
+
+          mkdir -p "$RES_DIR/values" "$RES_DIR/mipmap-anydpi-v26"
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#0B1120</color>\n</resources>\n' > "$RES_DIR/values/ic_launcher_background.xml"
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml"
+          cp "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml" "$RES_DIR/mipmap-anydpi-v26/ic_launcher_round.xml"
+
+      - name: Kompajliranje Android APK datoteke
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Objava gotovog APK-a za preuzimanje
+        uses: actions/upload-artifact@v4
+        with:
+          name: Serije-Tracker-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30

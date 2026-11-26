@@ -1,9 +1,9 @@
 {
   "name": "My TV Tracker",
   "short_name": "My TV Tracker",
-  "description": "Prati omiljene serije i datume izlaska novih epizoda",
+  "description": "Track your favorite TV shows and episode air dates",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#05070a",
-  "theme_color": "#05070a"
+  "background_color": "#0b0b0f",
+  "theme_color": "#0b0b0f"
 }

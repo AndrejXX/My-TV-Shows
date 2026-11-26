@@ -451,28 +451,25 @@
       transform: scale(0.93);
     }
 
+    /* Filter tabs: clean wrap so all 4 tabs are always visible */
     .filter-tabs {
       display: flex;
+      flex-wrap: wrap;
       gap: 6px;
-      overflow-x: auto;
       padding-bottom: 11px;
-      scrollbar-width: none;
-    }
-
-    .filter-tabs::-webkit-scrollbar {
-      display: none;
     }
 
     .filter-btn {
       background: var(--pill-bg);
       border: 1px solid var(--line);
       color: var(--text-soft);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 999px;
       font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
       cursor: pointer;
+      transition: 0.15s ease;
     }
 
     .filter-btn.active {
@@ -1292,11 +1289,10 @@
         <div id="spotlightContainer"></div>
 
         <div class="filter-tabs">
-          <button class="filter-btn active" onclick="filterMyShows('all', this)">All (<span id="count-all">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('new', this)">New (<span id="count-new">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('ongoing', this)">Ongoing (<span id="count-ongoing">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('waiting', this)">Up to Date (<span id="count-waiting">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('ended', this)">Ended (<span id="count-ended">0</span>)</button>
+          <button type="button" class="filter-btn active" data-filter="all" onclick="filterMyShows('all', this)">All (<span id="count-all">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="watch" onclick="filterMyShows('watch', this)">To Watch (<span id="count-watch">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="waiting" onclick="filterMyShows('waiting', this)">Up to Date (<span id="count-waiting">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="ended" onclick="filterMyShows('ended', this)">Completed (<span id="count-ended">0</span>)</button>
         </div>
 
         <div class="grid" id="myGrid"></div>
@@ -2242,9 +2238,17 @@
       return sorted.find(ep => !watchedEpisodes[ep.id]) || null;
     }
 
+    function getShowCategory(show, todayStr) {
+      const eps = show.episodes || [];
+      const hasUnwatchedAired = eps.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
+      if (hasUnwatchedAired) return 'watch';
+      const isEnded = Boolean(show.status && show.status.toLowerCase() === 'ended');
+      return isEnded ? 'ended' : 'waiting';
+    }
+
     function renderSpotlightCard(sortedShows, todayStr) {
       const container = document.getElementById('spotlightContainer');
-      if (!sortedShows || sortedShows.length === 0) {
+      if (!sortedShows || sortedShows.length === 0 || activeMyFilter === 'waiting' || activeMyFilter === 'ended') {
         container.innerHTML = '';
         return;
       }
@@ -2261,17 +2265,6 @@
         }
       }
 
-      if (!targetShow) {
-        for (const s of sortedShows) {
-          const ep = getNextEpisode(s);
-          if (ep) {
-            targetShow = s;
-            targetEp = ep;
-            break;
-          }
-        }
-      }
-
       if (!targetShow || !targetEp) {
         container.innerHTML = '';
         return;
@@ -2279,10 +2272,6 @@
 
       const epCode = formatEpCode(targetEp.season, targetEp.number);
       const copyPayload = escapeAttr(buildEpisodeCopyText(targetShow.name, targetEp.season, targetEp.number));
-      const isAired = Boolean(targetEp.airdate && targetEp.airdate <= todayStr);
-      const checkBtnHtml = isAired
-        ? `<button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Mark ${epCode} watched">✓</button>`
-        : '';
 
       container.innerHTML = `
         <div class="spotlight-card" onclick="openShowDetails(${targetShow.id})">
@@ -2295,7 +2284,7 @@
             </div>
             <div class="spotlight-actions">
               <button type="button" class="spotlight-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)">Copy ${copyPayload}</button>
-              ${checkBtnHtml}
+              <button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Mark ${epCode} watched">✓</button>
             </div>
           </div>
         </div>
@@ -2307,35 +2296,30 @@
       grid.innerHTML = '';
       const todayStr = getLocalDateStr(0);
 
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-filter') === activeMyFilter);
+      });
+
       let countAll = myShows.length;
-      let countOngoing = 0;
-      let countEnded = 0;
-      let countNew = 0;
+      let countWatch = 0;
       let countWaiting = 0;
+      let countEnded = 0;
 
       myShows.forEach(s => {
-        const isEnded = s.status && s.status.toLowerCase() === 'ended';
-        const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
-        if (isEnded) countEnded++;
-        else countOngoing++;
-        if (hasUnwatchedReleased) countNew++;
-        if (!isEnded && !hasUnwatchedReleased) countWaiting++;
+        const cat = getShowCategory(s, todayStr);
+        if (cat === 'watch') countWatch++;
+        else if (cat === 'waiting') countWaiting++;
+        else countEnded++;
       });
 
       document.getElementById('count-all').textContent = countAll;
-      document.getElementById('count-new').textContent = countNew;
-      document.getElementById('count-ongoing').textContent = countOngoing;
+      document.getElementById('count-watch').textContent = countWatch;
       document.getElementById('count-waiting').textContent = countWaiting;
       document.getElementById('count-ended').textContent = countEnded;
 
       const filtered = myShows.filter(s => {
-        const isEnded = s.status && s.status.toLowerCase() === 'ended';
-        const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
-        if (activeMyFilter === 'ongoing') return !isEnded;
-        if (activeMyFilter === 'ended') return isEnded;
-        if (activeMyFilter === 'new') return hasUnwatchedReleased;
-        if (activeMyFilter === 'waiting') return !isEnded && !hasUnwatchedReleased;
-        return true;
+        if (activeMyFilter === 'all') return true;
+        return getShowCategory(s, todayStr) === activeMyFilter;
       });
 
       const showsToShow = [...filtered].sort((a, b) => {
@@ -2348,7 +2332,13 @@
       renderSpotlightCard(showsToShow, todayStr);
 
       if (showsToShow.length === 0) {
-        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">No shows in this category. Add shows via the Explore tab.</p>';
+        const emptyMessages = {
+          all: 'No shows added yet. Search and follow shows in the Explore tab.',
+          watch: 'All caught up! No unwatched aired episodes right now.',
+          waiting: 'No ongoing shows waiting for new episodes.',
+          ended: 'No completed ended series yet.'
+        };
+        grid.innerHTML = `<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">${emptyMessages[activeMyFilter] || emptyMessages.all}</p>`;
         return;
       }
 
@@ -2402,8 +2392,6 @@
     }
 
     function filterMyShows(type, btn) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
       activeMyFilter = type;
       renderMyShows();
     }

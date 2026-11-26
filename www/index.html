@@ -119,7 +119,6 @@
       color: var(--mint-bright);
     }
 
-    /* Today's Episodes Header Badge */
     .today-header-badge {
       display: none;
       align-items: center;
@@ -1730,7 +1729,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230d1419'/%3E%3Ctext x='50%25' y='50%25' fill='%238a99ad' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230d1419'/%3E%3Ctext x='50%25' y='50%25' fill='%238a99ad' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
     const STREAMING_PROVIDERS = ['Digital / VOD', 'Netflix', 'Max', 'Disney+', 'Prime Video', 'Apple TV+', 'SkyShowtime', 'Cinema'];
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
@@ -2038,6 +2037,15 @@
       renderLastBackupInfo();
     }
 
+    window.onAndroidBackupResult = function(success, info) {
+      if (success) {
+        recordManualBackup(info || 'Chosen folder');
+        showToast(`Backup saved: ${info || 'Done'}`);
+      } else if (info && info !== 'cancelled') {
+        showToast(`Backup error: ${info}`);
+      }
+    };
+
     function openBackupModal() {
       const totalWatched = Object.keys(watchedEpisodes).length;
       document.getElementById('backupStatsText').textContent =
@@ -2056,6 +2064,13 @@
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = `my-tv-tracker-backup-${getLocalDateStr(0)}.json`;
 
+      // 1. Native Android SAF Folder & File Picker (MainActivity bridge)
+      if (window.AndroidBackup && typeof window.AndroidBackup.saveJson === 'function') {
+        window.AndroidBackup.saveJson(fileName, jsonStr);
+        return;
+      }
+
+      // 2. Desktop Chrome/Edge File System Access API
       if (typeof window.showSaveFilePicker === 'function') {
         try {
           const handle = await window.showSaveFilePicker({
@@ -2078,29 +2093,33 @@
         }
       }
 
+      // 3. Capacitor Filesystem + Share sheet fallback
       const plugins = window.Capacitor && window.Capacitor.Plugins;
       if (plugins && plugins.Filesystem) {
-        const dirsToTry = [
-          { dir: 'DOCUMENTS', label: `Documents/${fileName}` },
-          { dir: 'EXTERNAL', label: `Android/data/.../${fileName}` },
-          { dir: 'DATA', label: `App Data/${fileName}` }
-        ];
-
-        for (const item of dirsToTry) {
-          try {
-            await plugins.Filesystem.writeFile({
-              path: fileName,
-              data: jsonStr,
-              directory: item.dir,
-              encoding: 'utf8'
+        try {
+          const cacheRes = await plugins.Filesystem.writeFile({
+            path: fileName,
+            data: jsonStr,
+            directory: 'CACHE',
+            encoding: 'utf8'
+          });
+          if (plugins.Share) {
+            await plugins.Share.share({
+              title: 'My TV Tracker Backup',
+              url: cacheRes.uri,
+              dialogTitle: 'Choose folder to save backup'
             });
-            recordManualBackup(item.label);
-            showToast(`Saved to ${item.label}`);
+            recordManualBackup(fileName);
             return;
-          } catch (e) {}
+          }
+        } catch (e) {
+          if (e && String(e.message || e).toLowerCase().includes('cancel')) {
+            return;
+          }
         }
       }
 
+      // 4. Browser download fallback
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -3219,7 +3238,6 @@
         grid.appendChild(card);
       });
 
-      // Always offer quick manual entry at the bottom of search results
       const manualBox = document.createElement('div');
       manualBox.style.cssText = 'grid-column:1/-1; text-align:center; padding-top:8px;';
       manualBox.innerHTML = `

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -99,7 +99,6 @@
       gap: 12px;
     }
 
-    /* Zaglavlje: Bijela TV ikona + My TV Tracker + Backup / Sync / Tema */
     header {
       flex-shrink: 0;
       display: flex;
@@ -189,7 +188,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Glavni zaobljeni HUD okvir s telemetrijskim linijama */
     .hud-shell {
       position: relative;
       flex: 1;
@@ -203,7 +201,6 @@
       gap: 13px;
     }
 
-    /* Dekorativne HUD bočne crtice kao na Prijedlogu 1 */
     .hud-shell::before,
     .hud-shell::after {
       content: "";
@@ -225,7 +222,6 @@
       top: 84px;
     }
 
-    /* Gornji HUD panel: Dual-arc gauge (74%) + broj serija + 3-tab navigacija */
     .hud-top-panel {
       display: flex;
       align-items: center;
@@ -330,7 +326,6 @@
       box-shadow: 0 0 14px var(--mint-glow);
     }
 
-    /* Sekcije prikaza */
     .view-section {
       display: none;
       flex: 1;
@@ -341,7 +336,7 @@
       display: flex;
     }
 
-    /* Istaknuta kartica "Sljedeće" (kao na Prijedlogu 1) */
+    /* Up Next Spotlight Card */
     .spotlight-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
@@ -456,7 +451,6 @@
       transform: scale(0.93);
     }
 
-    /* Filtri u Mojim serijama */
     .filter-tabs {
       display: flex;
       gap: 6px;
@@ -488,7 +482,6 @@
       box-shadow: 0 0 10px var(--cyan-glow);
     }
 
-    /* 2-stupčana mreža kartica serija */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -631,7 +624,7 @@
       justify-content: center;
     }
 
-    /* Raspored sekcija */
+    /* Schedule section */
     .hud-section-title {
       font-size: 11.5px;
       font-weight: 800;
@@ -810,7 +803,7 @@
       flex-shrink: 0;
     }
 
-    /* Pretraga (Istraži) */
+    /* Explore Search */
     .search-box {
       display: flex;
       gap: 8px;
@@ -844,7 +837,7 @@
       box-shadow: 0 0 12px var(--mint-glow);
     }
 
-    /* Drawer detalja serije */
+    /* Show Details Drawer */
     .overlay {
       position: fixed;
       inset: 0;
@@ -1102,7 +1095,7 @@
       box-shadow: 0 0 10px var(--mint-glow);
     }
 
-    /* Centrirani modal (Sadržaj epizode i Backup) */
+    /* Center Modals (Episode Summary & Backup) */
     .center-overlay {
       position: fixed;
       inset: 0;
@@ -1230,10 +1223,9 @@
 </head>
 <body>
   <main class="app">
-    <!-- Zaglavlje s bijelom TV ikonom bez okvira -->
     <header>
       <div class="header-left">
-        <button class="hud-pill-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Natrag" aria-label="Natrag" style="display:none;">←</button>
+        <button class="hud-pill-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Back" aria-label="Back" style="display:none;">←</button>
         <div class="title-wrap">
           <div class="tv-icon" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1247,8 +1239,8 @@
       </div>
 
       <div class="header-actions">
-        <button class="hud-pill-btn" onclick="openBackupModal()" title="Sigurnosna kopija">Backup</button>
-        <button class="hud-pill-btn cyan" id="syncBtn" onclick="syncAllShows()" title="Osvježi epizode">
+        <button class="hud-pill-btn" onclick="openBackupModal()" title="Backup database">Backup</button>
+        <button class="hud-pill-btn cyan" id="syncBtn" onclick="syncAllShows()" title="Sync episodes">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
@@ -1257,13 +1249,11 @@
           </svg>
           <span>Sync</span>
         </button>
-        <button class="hud-pill-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu" aria-label="Promijeni temu">☀️</button>
+        <button class="hud-pill-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">☀️</button>
       </div>
     </header>
 
-    <!-- Glavni zaobljeni HUD okvir (Emerald HUD Command) -->
     <section class="hud-shell">
-      <!-- Gornji HUD kružni mjerač + broj serija + navigacija -->
       <div class="hud-top-panel">
         <div class="dial-wrap">
           <svg width="96" height="96" viewBox="0 0 96 96">
@@ -1279,74 +1269,74 @@
           </svg>
           <div class="dial-center">
             <strong id="hudPercentText">0%</strong>
-            <span>pogledano</span>
+            <span>watched</span>
           </div>
         </div>
 
         <div class="hud-top-right">
           <div class="stats-headline">
-            <div class="stats-main" id="hudShowsStat">0 serija</div>
-            <div class="stats-sub" id="hudNewStat">+0 novih</div>
+            <div class="stats-main" id="hudShowsStat">0 shows</div>
+            <div class="stats-sub" id="hudNewStat">+0 new</div>
           </div>
 
           <div class="nav-pill-bar">
-            <button type="button" class="nav-pill-btn" id="nav-schedules" onclick="switchTab('schedules')">Raspored</button>
-            <button type="button" class="nav-pill-btn active" id="nav-my" onclick="switchTab('my')">Moje serije</button>
-            <button type="button" class="nav-pill-btn" id="nav-explore" onclick="switchTab('explore')">Istraži</button>
+            <button type="button" class="nav-pill-btn" id="nav-schedules" onclick="switchTab('schedules')">Schedule</button>
+            <button type="button" class="nav-pill-btn active" id="nav-my" onclick="switchTab('my')">My Shows</button>
+            <button type="button" class="nav-pill-btn" id="nav-explore" onclick="switchTab('explore')">Explore</button>
           </div>
         </div>
       </div>
 
-      <!-- EKRAN 1: MOJE SERIJE (s karticom "Sljedeće" + 2-stupčanom mrežom) -->
+      <!-- TAB 1: MY SHOWS -->
       <div class="view-section active" id="view-my">
         <div id="spotlightContainer"></div>
 
         <div class="filter-tabs">
-          <button class="filter-btn active" onclick="filterMyShows('sve', this)">Sve (<span id="count-sve">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('nepregledane', this)">Nove (<span id="count-nove">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('aktivne', this)">U tijeku (<span id="count-aktivne">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('cekam', this)">Čekam nove (<span id="count-cekam">0</span>)</button>
-          <button class="filter-btn" onclick="filterMyShows('zavrsene', this)">Završene (<span id="count-zavrsene">0</span>)</button>
+          <button class="filter-btn active" onclick="filterMyShows('all', this)">All (<span id="count-all">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('new', this)">New (<span id="count-new">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('ongoing', this)">Ongoing (<span id="count-ongoing">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('waiting', this)">Up to Date (<span id="count-waiting">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('ended', this)">Ended (<span id="count-ended">0</span>)</button>
         </div>
 
         <div class="grid" id="myGrid"></div>
       </div>
 
-      <!-- EKRAN 2: RASPORED -->
+      <!-- TAB 2: SCHEDULE -->
       <div class="view-section" id="view-schedules">
         <div id="heroContainer"></div>
 
-        <div class="hud-section-title">Danas</div>
+        <div class="hud-section-title">Today</div>
         <div id="sched-today" class="schedule-group"></div>
 
-        <div class="hud-section-title">Sutra</div>
+        <div class="hud-section-title">Tomorrow</div>
         <div id="sched-tomorrow" class="schedule-group"></div>
 
-        <div class="hud-section-title">Ovaj tjedan</div>
+        <div class="hud-section-title">This Week</div>
         <div id="sched-week" class="schedule-group"></div>
 
-        <div class="hud-section-title">Buduće najave</div>
+        <div class="hud-section-title">Upcoming</div>
         <div id="sched-future" class="schedule-group"></div>
       </div>
 
-      <!-- EKRAN 3: ISTRAŽI -->
+      <!-- TAB 3: EXPLORE -->
       <div class="view-section" id="view-explore">
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Upiši naziv serije (npr. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
-          <button class="search-btn" onclick="searchShows()">Traži</button>
+          <input type="text" id="searchInput" placeholder="Search TV shows (e.g. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
+          <button class="search-btn" onclick="searchShows()">Search</button>
         </div>
-        <div class="hud-section-title" id="exploreLabel">Popularno danas</div>
+        <div class="hud-section-title" id="exploreLabel">Trending Today</div>
         <div class="grid" id="searchGrid"></div>
       </div>
     </section>
   </main>
 
-  <!-- DETALJI SERIJE -->
+  <!-- SHOW DETAILS DRAWER -->
   <div class="overlay" id="overlay" onclick="closeDrawer()">
     <div class="drawer" id="drawer" onclick="event.stopPropagation()">
       <div class="drawer-top">
-        <button class="hud-pill-btn icon-only" onclick="closeDrawer()" title="Natrag" aria-label="Natrag">←</button>
-        <h2 id="drawerTitle">Naziv serije</h2>
+        <button class="hud-pill-btn icon-only" onclick="closeDrawer()" title="Back" aria-label="Back">←</button>
+        <h2 id="drawerTitle">Show Title</h2>
       </div>
       <div class="drawer-meta">
         <img id="drawerImage" src="" alt="Poster" />
@@ -1359,7 +1349,7 @@
       <div id="drawerSummary" class="drawer-summary"></div>
 
       <div class="drawer-actions">
-        <button id="addBtn" onclick="toggleFollowCurrent()">+ Prati seriju</button>
+        <button id="addBtn" onclick="toggleFollowCurrent()">+ Follow Show</button>
         <button id="markPrevSeasonsBtn" class="prev-seasons-btn" style="display:none;" onclick="togglePreviousSeasonsWatched()"></button>
       </div>
 
@@ -1367,15 +1357,15 @@
     </div>
   </div>
 
-  <!-- MODAL: KRATAK SADRŽAJ EPIZODE -->
+  <!-- MODAL: EPISODE SUMMARY -->
   <div class="center-overlay" id="epSummaryOverlay" onclick="closeEpSummaryModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div>
           <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--muted); text-transform:uppercase;"></div>
-          <h3 id="epModalTitle">Naziv epizode</h3>
+          <h3 id="epModalTitle">Episode Title</h3>
         </div>
-        <button class="hud-pill-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
+        <button class="hud-pill-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Close">✕</button>
       </div>
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;">
         <div style="font-size:12.5px; color:var(--mint-bright); font-weight:700;" id="epModalDate"></div>
@@ -1385,34 +1375,34 @@
     </div>
   </div>
 
-  <!-- MODAL: IZVOZ I UVOZ BAZE PODATAKA -->
+  <!-- MODAL: DATABASE BACKUP & RESTORE -->
   <div class="center-overlay" id="backupOverlay" onclick="closeBackupModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3>Sigurnosna kopija baze</h3>
-        <button class="hud-pill-btn icon-only" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
+        <h3>Database Backup</h3>
+        <button class="hud-pill-btn icon-only" onclick="closeBackupModal()" aria-label="Close">✕</button>
       </div>
       <div class="modal-body">
         <p id="backupStatsText" style="font-size:12.5px; color:var(--muted);"></p>
 
         <div class="backup-box">
-          <h4>Izvoz baze (prije deinstalacije)</h4>
-          <p>Spremite <code>.json</code> datoteku na uređaj, pošaljite je na Google Drive / e-poštu ili kopirajte tekst baze.</p>
+          <h4>Export Database (before uninstalling)</h4>
+          <p>Save a <code>.json</code> file to your device, share it to Google Drive / email, or copy the backup text.</p>
           <div class="backup-btn-stack">
-            <button class="action-btn" onclick="exportDatabaseFile()">Spremi / podijeli .json datoteku</button>
-            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">Kopiraj tekst baze u međuspremnik</button>
+            <button class="action-btn" onclick="exportDatabaseFile()">Save / Share .json File</button>
+            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">Copy Backup JSON to Clipboard</button>
           </div>
         </div>
 
         <div class="backup-box" style="margin-bottom:0;">
-          <h4>Uvoz baze (vraćanje podataka)</h4>
-          <p>Odaberite spremljenu <code>.json</code> datoteku ili zalijepite kopirani tekst baze.</p>
+          <h4>Import Database (restore data)</h4>
+          <p>Select a saved <code>.json</code> file or paste your copied backup text below.</p>
           <input type="file" id="importFileInput" accept="*/*" hidden onchange="importDatabaseFile(event)" />
           <div class="backup-btn-stack">
-            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">Učitaj .json datoteku s uređaja</button>
+            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">Load .json File from Device</button>
           </div>
-          <textarea id="pasteBackupInput" class="paste-area" placeholder="Ovdje možete zalijepiti kopirani JSON tekst ako ne koristite datoteku..."></textarea>
-          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">Vrati iz zalijepljenog teksta</button>
+          <textarea id="pasteBackupInput" class="paste-area" placeholder="Paste your copied JSON backup text here..."></textarea>
+          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">Restore from Pasted Text</button>
         </div>
       </div>
     </div>
@@ -1421,13 +1411,13 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230b141a'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3EBez postera%3C/text%3E%3C/svg%3E";
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230b141a'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
     let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
     let showActivity = JSON.parse(localStorage.getItem('showActivity') || '{}');
     let currentDrawerShow = null;
-    let activeMyFilter = 'sve';
+    let activeMyFilter = 'all';
     let exploreLoaded = false;
     let navHistory = ['my'];
 
@@ -1474,7 +1464,7 @@
         const plugins = window.Capacitor && window.Capacitor.Plugins;
         if (plugins && plugins.Clipboard && typeof plugins.Clipboard.write === 'function') {
           await plugins.Clipboard.write({ string: text });
-          showToast(`Kopirano: ${text}`);
+          showToast(`Copied: ${text}`);
           return;
         }
       } catch (e) {}
@@ -1493,7 +1483,7 @@
         const copied = document.execCommand('copy');
         document.body.removeChild(ta);
         if (copied) {
-          showToast(`Kopirano: ${text}`);
+          showToast(`Copied: ${text}`);
           return;
         }
       } catch (e) {}
@@ -1501,12 +1491,12 @@
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(text);
-          showToast(`Kopirano: ${text}`);
+          showToast(`Copied: ${text}`);
           return;
         }
       } catch (e) {}
 
-      showToast('Kopiranje nije uspjelo.');
+      showToast('Copy failed.');
     }
 
     function copyFromBtn(btn, event) {
@@ -1524,10 +1514,12 @@
       return `${y}-${m}-${day}`;
     }
 
-    function formatDateHr(isoDate) {
-      if (!isoDate) return 'Nema najave';
-      const [y, m, d] = isoDate.split('-');
-      return `${d}.${m}.${y}.`;
+    function formatDateEn(isoDate) {
+      if (!isoDate) return 'TBA';
+      const [y, m, d] = isoDate.split('-').map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      if (isNaN(dateObj.getTime())) return isoDate;
+      return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
     function initTheme() {
@@ -1556,7 +1548,6 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    /* Ažuriranje gornjeg HUD kružnog mjerača (Mint = pogledano, Cyan = nove emitirane) */
     function updateHudTopDial() {
       const todayStr = getLocalDateStr(0);
       let totalAired = 0;
@@ -1575,11 +1566,10 @@
 
       const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
       document.getElementById('hudPercentText').textContent = `${pct}%`;
-      const showWord = myShows.length === 1 ? 'serija' : (myShows.length >= 2 && myShows.length <= 4 ? 'serije' : 'serija');
-      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${showWord}`;
-      document.getElementById('hudNewStat').textContent = `+${totalNewUnwatched} novih`;
+      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${myShows.length === 1 ? 'show' : 'shows'}`;
+      document.getElementById('hudNewStat').textContent = `+${totalNewUnwatched} new`;
 
-      const C = 2 * Math.PI * 38; // 238.76
+      const C = 2 * Math.PI * 38;
       const gap = 6;
       const usable = C - gap * 2;
       const watchedRatio = totalAired > 0 ? totalWatched / totalAired : 0;
@@ -1657,7 +1647,7 @@
       if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
         window.Capacitor.Plugins.App.exitApp();
       } else {
-        showToast("Nalazite se na početnom zaslonu.");
+        showToast("You are on the home screen.");
       }
     }
 
@@ -1670,7 +1660,6 @@
     }
     registerAndroidBackHandler();
 
-    // Izvoz i uvoz baze podataka
     function buildBackupPayload() {
       return {
         app: 'My TV Tracker',
@@ -1684,7 +1673,7 @@
     function openBackupModal() {
       const totalWatched = Object.keys(watchedEpisodes).length;
       document.getElementById('backupStatsText').textContent =
-        `Trenutno u bazi: ${myShows.length} serija i ${totalWatched} označenih epizoda.`;
+        `Currently in database: ${myShows.length} shows and ${totalWatched} watched episodes.`;
       document.getElementById('pasteBackupInput').value = '';
       document.getElementById('backupOverlay').classList.add('open');
     }
@@ -1696,7 +1685,7 @@
     async function exportDatabaseFile() {
       const payload = buildBackupPayload();
       const jsonStr = JSON.stringify(payload, null, 2);
-      const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
+      const fileName = `my-tv-tracker-backup-${getLocalDateStr(0)}.json`;
       const plugins = window.Capacitor && window.Capacitor.Plugins;
 
       if (plugins && plugins.Filesystem) {
@@ -1710,10 +1699,10 @@
 
           if (plugins.Share) {
             await plugins.Share.share({
-              title: 'My TV Tracker - Sigurnosna kopija',
-              text: 'Sigurnosna kopija baze serija',
+              title: 'My TV Tracker - Database Backup',
+              text: 'TV shows database backup',
               url: cacheRes.uri,
-              dialogTitle: 'Odaberite gdje spremiti sigurnosnu kopiju'
+              dialogTitle: 'Choose where to save backup'
             });
             return;
           }
@@ -1730,7 +1719,7 @@
             directory: 'DOCUMENTS',
             encoding: 'utf8'
           });
-          showToast(`Spremljeno u Dokumenti/${fileName}`);
+          showToast(`Saved to Documents/${fileName}`);
           return;
         } catch (docErr) {
           try {
@@ -1740,10 +1729,10 @@
               directory: 'EXTERNAL',
               encoding: 'utf8'
             });
-            showToast(`Spremljeno u Android/data/.../${fileName}`);
+            showToast(`Saved to Android/data/.../${fileName}`);
             return;
           } catch (extErr) {
-            showToast("Nije moguće spremiti datoteku — koristite kopiranje u međuspremnik.");
+            showToast("Unable to save file — use clipboard copy instead.");
             return;
           }
         }
@@ -1758,7 +1747,7 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast("Datoteka sigurnosne kopije je preuzeta.");
+      showToast("Backup file downloaded.");
     }
 
     function copyDatabaseClipboard() {
@@ -1768,7 +1757,7 @@
     function applyImportedData(rawText) {
       const parsed = JSON.parse(rawText);
       if (!parsed || !Array.isArray(parsed.myShows) || typeof parsed.watchedEpisodes !== 'object') {
-        showToast("Neispravan format sigurnosne kopije.");
+        showToast("Invalid backup file format.");
         return;
       }
 
@@ -1781,7 +1770,7 @@
       renderSchedule();
       renderMyShows();
       closeBackupModal();
-      showToast(`Uspješno vraćeno ${myShows.length} serija!`);
+      showToast(`Successfully restored ${myShows.length} shows!`);
     }
 
     function importDatabaseFile(event) {
@@ -1793,7 +1782,7 @@
         try {
           applyImportedData(e.target.result);
         } catch (err) {
-          showToast("Greška pri čitanju odabrane datoteke.");
+          showToast("Error reading selected file.");
         } finally {
           event.target.value = '';
         }
@@ -1804,19 +1793,19 @@
     function importDatabaseFromText() {
       const rawText = document.getElementById('pasteBackupInput').value.trim();
       if (!rawText) {
-        showToast("Najprije zalijepite tekst baze u polje iznad.");
+        showToast("Please paste the backup JSON text first.");
         return;
       }
       try {
         applyImportedData(rawText);
       } catch (err) {
-        showToast("Zalijepljeni tekst nije ispravan JSON.");
+        showToast("Pasted text is not valid JSON.");
       }
     }
 
     async function syncAllShows() {
       if (myShows.length === 0) {
-        showToast("Dodajte serije u kartici Istraži.");
+        showToast("Add shows from the Explore tab first.");
         return;
       }
       const btn = document.getElementById('syncBtn');
@@ -1832,9 +1821,9 @@
         updateHudTopDial();
         renderSchedule();
         renderMyShows();
-        showToast("Raspored i epizode su osvježeni!");
+        showToast("Schedule and episodes updated!");
       } catch (e) {
-        showToast("Greška pri osvježavanju podataka.");
+        showToast("Error syncing show data.");
       } finally {
         btn.classList.remove('spinning');
       }
@@ -1844,13 +1833,13 @@
       return {
         id: rawShow.id,
         name: rawShow.name,
-        summary: rawShow.summary || '<p>Opis nije dostupan.</p>',
+        summary: rawShow.summary || '<p>No description available.</p>',
         image: rawShow.image ? toHttps(rawShow.image.medium) : PLACEHOLDER_IMG,
-        network: rawShow.network ? rawShow.network.name : (rawShow.webChannel ? rawShow.webChannel.name : 'Nepoznato'),
-        status: rawShow.status || 'Nepoznato',
+        network: rawShow.network ? rawShow.network.name : (rawShow.webChannel ? rawShow.webChannel.name : 'Unknown'),
+        status: rawShow.status || 'Unknown',
         episodes: (rawShow._embedded && rawShow._embedded.episodes ? rawShow._embedded.episodes : []).map(ep => ({
           id: ep.id,
-          name: ep.name || `Epizoda ${ep.number}`,
+          name: ep.name || `Episode ${ep.number}`,
           season: ep.season,
           number: ep.number,
           airdate: ep.airdate,
@@ -1862,7 +1851,7 @@
 
     async function loadTrendingShows() {
       const grid = document.getElementById('searchGrid');
-      grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Učitavanje prijedloga...</p>';
+      grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Loading trending shows...</p>';
       try {
         const res = await fetch('https://api.tvmaze.com/schedule');
         const data = await res.json();
@@ -1875,26 +1864,26 @@
         exploreLoaded = true;
         renderSearchResults(Array.from(uniqueMap.values()).slice(0, 24));
       } catch (e) {
-        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Upišite naziv serije u tražilicu iznad.</p>';
+        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Enter a show name in the search bar above.</p>';
       }
     }
 
     async function searchShows() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) {
-        document.getElementById('exploreLabel').textContent = 'Popularno danas';
+        document.getElementById('exploreLabel').textContent = 'Trending Today';
         loadTrendingShows();
         return;
       }
-      document.getElementById('exploreLabel').textContent = `Rezultati za "${query}"`;
-      document.getElementById('searchGrid').innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:20px;">Pretraživanje...</p>';
+      document.getElementById('exploreLabel').textContent = `Results for "${query}"`;
+      document.getElementById('searchGrid').innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:20px;">Searching...</p>';
 
       try {
         const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
         const data = await res.json();
         renderSearchResults(data);
       } catch (e) {
-        showToast("Greška pri dohvaćanju podataka.");
+        showToast("Error fetching search results.");
         document.getElementById('searchGrid').innerHTML = '';
       }
     }
@@ -1904,7 +1893,7 @@
       grid.innerHTML = '';
 
       if (results.length === 0) {
-        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:20px;">Nema rezultata.</p>';
+        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:20px;">No results found.</p>';
         return;
       }
 
@@ -1917,7 +1906,7 @@
         card.onclick = () => openShowDetails(show.id);
         card.innerHTML = `
           <img src="${img}" alt="${escapeAttr(show.name)}" loading="lazy" />
-          ${isTracked ? '<div class="show-badge">Praćeno</div>' : ''}
+          ${isTracked ? '<div class="show-badge">Following</div>' : ''}
           <div class="show-info">
             <div class="show-name">${show.name}</div>
             <div class="show-ep-count">${show.premiered ? show.premiered.slice(0, 4) + ' • ' : ''}${show.status || ''}</div>
@@ -1929,7 +1918,7 @@
 
     async function openShowDetails(id) {
       currentDrawerShow = null;
-      document.getElementById('drawerEpList').innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">Učitavanje epizoda...</p>';
+      document.getElementById('drawerEpList').innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">Loading episodes...</p>';
       document.getElementById('markPrevSeasonsBtn').style.display = 'none';
       document.getElementById('overlay').classList.add('open');
 
@@ -1954,7 +1943,7 @@
         renderEpList(show.episodes);
         updateProgressLabel();
       } catch (e) {
-        showToast("Greška pri učitavanju detalja.");
+        showToast("Error loading show details.");
         closeDrawer();
       }
     }
@@ -1984,10 +1973,10 @@
 
       btn.style.display = 'block';
       if (allPrevWatched) {
-        btn.textContent = `✓ Sve prethodne sezone (osim S${latestSeason}) su pogledane`;
+        btn.textContent = `✓ All previous seasons (except S${latestSeason}) watched`;
         btn.classList.add('done');
       } else {
-        btn.textContent = `✓ Označi sve prethodne sezone (osim S${latestSeason})`;
+        btn.textContent = `✓ Mark all previous seasons watched (except S${latestSeason})`;
         btn.classList.remove('done');
       }
     }
@@ -2018,22 +2007,22 @@
       renderMyShows();
       renderSchedule();
       showToast(allPrevWatched
-        ? `Uklonjene oznake s prethodnih sezona.`
-        : `Sve prethodne sezone (osim S${latestSeason}) označene kao pogledane!`
+        ? `Unmarked previous seasons.`
+        : `All previous seasons (except S${latestSeason}) marked as watched!`
       );
     }
 
     function getAirBadgeHtml(airdate, todayStr) {
       if (!airdate) {
-        return '<span class="ep-status-pill tba">Nije najavljeno</span>';
+        return '<span class="ep-status-pill tba">TBA</span>';
       }
       if (airdate <= todayStr) {
-        return '<span class="ep-status-pill aired">Emitirano</span>';
+        return '<span class="ep-status-pill aired">Aired</span>';
       }
       const todayMs = new Date(todayStr + 'T00:00:00').getTime();
       const epMs = new Date(airdate + 'T00:00:00').getTime();
       const days = Math.round((epMs - todayMs) / (1000 * 60 * 60 * 24));
-      const label = days === 1 ? 'Sutra' : `Za ${days} dana`;
+      const label = days === 1 ? 'Tomorrow' : `In ${days} days`;
       return `<span class="ep-status-pill soon">${label}</span>`;
     }
 
@@ -2041,7 +2030,7 @@
       const list = document.getElementById('drawerEpList');
       list.innerHTML = '';
       if (!episodes || episodes.length === 0) {
-        list.innerHTML = '<p class="empty-msg">Nema dostupnih epizoda.</p>';
+        list.innerHTML = '<p class="empty-msg">No episodes available.</p>';
         return;
       }
 
@@ -2063,10 +2052,10 @@
         const sRow = document.createElement('div');
         sRow.className = 'season-header-row';
         sRow.innerHTML = `
-          <div class="season-header">Sezona ${seasonNum}</div>
+          <div class="season-header">Season ${seasonNum}</div>
           <div class="season-btn-group">
-            <button class="season-copy-btn" data-copy="${seasonCopy}" onclick="copyFromBtn(this, event)" title="Kopiraj ${seasonCopy}">Copy ${sShort}</button>
-            <button class="season-mark-btn" onclick="toggleSeasonWatched(${seasonNum})">✓ Cijela sezona</button>
+            <button class="season-copy-btn" data-copy="${seasonCopy}" onclick="copyFromBtn(this, event)" title="Copy ${seasonCopy}">Copy ${sShort}</button>
+            <button class="season-mark-btn" onclick="toggleSeasonWatched(${seasonNum})">✓ Full Season</button>
           </div>
         `;
         list.appendChild(sRow);
@@ -2083,7 +2072,7 @@
             if (isAired) {
               openEpisodeSummary(ep);
             } else {
-              showToast("Epizoda još nije emitirana.");
+              showToast("Episode has not aired yet.");
             }
           };
 
@@ -2091,10 +2080,10 @@
           item.innerHTML = `
             <div class="ep-item-meta">
               <div class="ep-item-title">${ep.number}. ${ep.name} ${badgeHtml}</div>
-              <div class="ep-item-date">${codeLabel} • ${formatDateHr(ep.airdate)}</div>
+              <div class="ep-item-date">${codeLabel} • ${formatDateEn(ep.airdate)}</div>
             </div>
             <div class="ep-item-controls">
-              <button type="button" class="ep-copy-btn" data-copy="${copyTextVal}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyTextVal}">Copy</button>
+              <button type="button" class="ep-copy-btn" data-copy="${copyTextVal}" onclick="copyFromBtn(this, event)" title="Copy ${copyTextVal}">Copy</button>
               <div class="watch-checkbox ${isEpWatched ? 'checked' : ''}" onclick="toggleWatch(${ep.id}, this, event)">✓</div>
             </div>
           `;
@@ -2106,11 +2095,11 @@
     async function openEpisodeSummary(ep) {
       const showName = currentDrawerShow ? currentDrawerShow.name : '';
       const fullCopy = buildEpisodeCopyText(showName, ep.season, ep.number);
-      const code = `Sezona ${ep.season} • Epizoda ${ep.number}`;
+      const code = `Season ${ep.season} • Episode ${ep.number}`;
 
       document.getElementById('epModalCode').textContent = code;
       document.getElementById('epModalTitle').textContent = ep.name;
-      document.getElementById('epModalDate').textContent = `Emitirano: ${formatDateHr(ep.airdate)}`;
+      document.getElementById('epModalDate').textContent = `Aired: ${formatDateEn(ep.airdate)}`;
 
       const modalCopyBtn = document.getElementById('epModalCopyBtn');
       modalCopyBtn.setAttribute('data-copy', fullCopy);
@@ -2123,12 +2112,12 @@
         return;
       }
 
-      document.getElementById('epModalSummary').innerHTML = '<p style="color:var(--muted);">Učitavanje kratkog sadržaja...</p>';
+      document.getElementById('epModalSummary').innerHTML = '<p style="color:var(--muted);">Loading episode summary...</p>';
       try {
         const res = await fetch(`https://api.tvmaze.com/episodes/${ep.id}`);
         if (res.ok) {
           const fullEp = await res.json();
-          const summaryHtml = fullEp.summary || '<p>Kratak sadržaj za ovu epizodu nije dostupan.</p>';
+          const summaryHtml = fullEp.summary || '<p>No summary available for this episode.</p>';
           ep.summary = summaryHtml;
 
           if (currentDrawerShow) {
@@ -2141,10 +2130,10 @@
           }
           document.getElementById('epModalSummary').innerHTML = summaryHtml;
         } else {
-          document.getElementById('epModalSummary').innerHTML = '<p>Kratak sadržaj za ovu epizodu nije dostupan.</p>';
+          document.getElementById('epModalSummary').innerHTML = '<p>No summary available for this episode.</p>';
         }
       } catch (e) {
-        document.getElementById('epModalSummary').innerHTML = '<p>Nije moguće dohvatiti kratak sadržaj (provjerite internetsku vezu).</p>';
+        document.getElementById('epModalSummary').innerHTML = '<p>Unable to load summary (check your internet connection).</p>';
       }
     }
 
@@ -2197,7 +2186,7 @@
       watchedEpisodes[epId] = true;
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
       if (showId) touchShowActivity(showId);
-      showToast("Označeno kao pogledano!");
+      showToast("Marked as watched!");
       updateHudTopDial();
       renderSchedule();
       renderMyShows();
@@ -2207,7 +2196,7 @@
       if (!currentDrawerShow) return;
       const total = currentDrawerShow.episodes.length;
       const watched = currentDrawerShow.episodes.filter(ep => watchedEpisodes[ep.id]).length;
-      document.getElementById('drawerProgress').textContent = `Pogledano: ${watched} / ${total} epizoda`;
+      document.getElementById('drawerProgress').textContent = `Watched: ${watched} / ${total} episodes`;
     }
 
     function toggleFollowCurrent() {
@@ -2215,11 +2204,11 @@
       const idx = myShows.findIndex(s => s.id === currentDrawerShow.id);
       if (idx > -1) {
         myShows.splice(idx, 1);
-        showToast("Uklonjeno iz kolekcije.");
+        showToast("Removed from My Shows.");
       } else {
         myShows.push(currentDrawerShow);
         touchShowActivity(currentDrawerShow.id);
-        showToast("Dodano u Moje serije!");
+        showToast("Added to My Shows!");
       }
       localStorage.setItem('myShows', JSON.stringify(myShows));
       updateAddBtnState();
@@ -2232,10 +2221,10 @@
       const btn = document.getElementById('addBtn');
       const isFollowing = myShows.some(s => s.id === currentDrawerShow.id);
       if (isFollowing) {
-        btn.textContent = '✕ Ukloni iz kolekcije';
+        btn.textContent = '✕ Unfollow Show';
         btn.className = 'remove-btn';
       } else {
-        btn.textContent = '+ Prati seriju';
+        btn.textContent = '+ Follow Show';
         btn.className = '';
       }
     }
@@ -2253,7 +2242,6 @@
       return sorted.find(ep => !watchedEpisodes[ep.id]) || null;
     }
 
-    /* Kartica "Sljedeće" na vrhu ekrana Moje serije (kao na Prijedlogu 1) */
     function renderSpotlightCard(sortedShows, todayStr) {
       const container = document.getElementById('spotlightContainer');
       if (!sortedShows || sortedShows.length === 0) {
@@ -2261,7 +2249,6 @@
         return;
       }
 
-      // Traži prvu seriju s nepogledanom epizodom (prednost imaju već emitirane)
       let targetShow = null;
       let targetEp = null;
 
@@ -2294,7 +2281,7 @@
       const copyPayload = escapeAttr(buildEpisodeCopyText(targetShow.name, targetEp.season, targetEp.number));
       const isAired = Boolean(targetEp.airdate && targetEp.airdate <= todayStr);
       const checkBtnHtml = isAired
-        ? `<button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Označi ${epCode} pogledano">✓</button>`
+        ? `<button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Mark ${epCode} watched">✓</button>`
         : '';
 
       container.innerHTML = `
@@ -2302,7 +2289,7 @@
           <img src="${targetShow.image}" alt="${escapeAttr(targetShow.name)}" />
           <div class="spotlight-body">
             <div>
-              <div class="spotlight-kicker">Sljedeće</div>
+              <div class="spotlight-kicker">Up Next</div>
               <div class="spotlight-title">${targetShow.name}</div>
               <div class="spotlight-ep">${epCode} • ${targetEp.name}</div>
             </div>
@@ -2315,40 +2302,39 @@
       `;
     }
 
-    // MOJE SERIJE
     function renderMyShows() {
       const grid = document.getElementById('myGrid');
       grid.innerHTML = '';
       const todayStr = getLocalDateStr(0);
 
-      let countSve = myShows.length;
-      let countAktivne = 0;
-      let countZavrsene = 0;
-      let countNove = 0;
-      let countCekam = 0;
+      let countAll = myShows.length;
+      let countOngoing = 0;
+      let countEnded = 0;
+      let countNew = 0;
+      let countWaiting = 0;
 
       myShows.forEach(s => {
         const isEnded = s.status && s.status.toLowerCase() === 'ended';
         const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
-        if (isEnded) countZavrsene++;
-        else countAktivne++;
-        if (hasUnwatchedReleased) countNove++;
-        if (!isEnded && !hasUnwatchedReleased) countCekam++;
+        if (isEnded) countEnded++;
+        else countOngoing++;
+        if (hasUnwatchedReleased) countNew++;
+        if (!isEnded && !hasUnwatchedReleased) countWaiting++;
       });
 
-      document.getElementById('count-sve').textContent = countSve;
-      document.getElementById('count-nove').textContent = countNove;
-      document.getElementById('count-aktivne').textContent = countAktivne;
-      document.getElementById('count-cekam').textContent = countCekam;
-      document.getElementById('count-zavrsene').textContent = countZavrsene;
+      document.getElementById('count-all').textContent = countAll;
+      document.getElementById('count-new').textContent = countNew;
+      document.getElementById('count-ongoing').textContent = countOngoing;
+      document.getElementById('count-waiting').textContent = countWaiting;
+      document.getElementById('count-ended').textContent = countEnded;
 
       const filtered = myShows.filter(s => {
         const isEnded = s.status && s.status.toLowerCase() === 'ended';
         const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
-        if (activeMyFilter === 'aktivne') return !isEnded;
-        if (activeMyFilter === 'zavrsene') return isEnded;
-        if (activeMyFilter === 'nepregledane') return hasUnwatchedReleased;
-        if (activeMyFilter === 'cekam') return !isEnded && !hasUnwatchedReleased;
+        if (activeMyFilter === 'ongoing') return !isEnded;
+        if (activeMyFilter === 'ended') return isEnded;
+        if (activeMyFilter === 'new') return hasUnwatchedReleased;
+        if (activeMyFilter === 'waiting') return !isEnded && !hasUnwatchedReleased;
         return true;
       });
 
@@ -2362,7 +2348,7 @@
       renderSpotlightCard(showsToShow, todayStr);
 
       if (showsToShow.length === 0) {
-        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">Nema serija u ovoj kategoriji. Dodajte serije putem kartice Istraži.</p>';
+        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">No shows in this category. Add shows via the Explore tab.</p>';
         return;
       }
 
@@ -2385,16 +2371,16 @@
           const copyPayload = escapeAttr(buildEpisodeCopyText(show.name, nextEp.season, nextEp.number));
           const isNextAired = Boolean(nextEp.airdate && nextEp.airdate <= todayStr);
           const checkBtnHtml = isNextAired
-            ? `<button type="button" class="card-watch-btn" onclick="quickMarkWatched(${nextEp.id}, event, ${show.id})" title="Označi ${epCode} pogledano">✓</button>`
+            ? `<button type="button" class="card-watch-btn" onclick="quickMarkWatched(${nextEp.id}, event, ${show.id})" title="Mark ${epCode} watched">✓</button>`
             : '';
           bottomActionHtml = `
             <div class="card-next-box">
-              <button type="button" class="card-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyPayload}">Copy ${epCode}</button>
+              <button type="button" class="card-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Copy ${copyPayload}">Copy ${epCode}</button>
               ${checkBtnHtml}
             </div>
           `;
         } else {
-          bottomActionHtml = `<div class="card-done-tag">✓ Sve pogledano</div>`;
+          bottomActionHtml = `<div class="card-done-tag">✓ All caught up</div>`;
         }
 
         card.innerHTML = `
@@ -2422,7 +2408,6 @@
       renderMyShows();
     }
 
-    // RASPORED
     function renderSchedule() {
       const todayStr = getLocalDateStr(0);
       const tomorrowStr = getLocalDateStr(1);
@@ -2467,18 +2452,18 @@
         const todayMidnight = new Date(todayStr + 'T00:00:00');
         const epMidnight = new Date(hero.airdate + 'T00:00:00');
         const daysLeft = Math.round((epMidnight - todayMidnight) / (1000 * 60 * 60 * 24));
-        const daysStr = daysLeft === 0 ? 'DANAS' : (daysLeft === 1 ? 'SUTRA' : `ZA ${daysLeft} DANA`);
+        const daysStr = daysLeft === 0 ? 'TODAY' : (daysLeft === 1 ? 'TOMORROW' : `IN ${daysLeft} DAYS`);
         const code = formatEpCode(hero.season, hero.number);
         const heroCopy = escapeAttr(buildEpisodeCopyText(hero.showName, hero.season, hero.number));
 
         heroContainer.innerHTML = `
           <div class="hero-card" style="background-image: linear-gradient(180deg, rgba(5, 7, 10, 0.38) 0%, rgba(5, 7, 10, 0.96) 100%), url('${hero.showImage}');" onclick="openShowDetails(${hero.showId})">
-            <div class="hero-tag">Sljedeće emitiranje • ${daysStr}</div>
+            <div class="hero-tag">Next Airing • ${daysStr}</div>
             <div class="hero-title">${hero.showName}</div>
             <div class="hero-subtitle">${code} • ${hero.epName}</div>
-            <div class="hero-ep-info">Datum: ${formatDateHr(hero.airdate)} ${hero.airtime ? 'u ' + hero.airtime : ''}</div>
+            <div class="hero-ep-info">Date: ${formatDateEn(hero.airdate)}${hero.airtime ? ' at ' + hero.airtime : ''}</div>
             <div class="hero-btn-row">
-              <button class="hero-watch-btn" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Pogledano</button>
+              <button class="hero-watch-btn" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Watched</button>
               <button class="hero-copy-btn" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
             </div>
           </div>
@@ -2500,11 +2485,11 @@
           <div class="ep-details">
             <div class="ep-show-name">${ep.showName}</div>
             <div class="ep-spec">${code} • ${ep.epName}</div>
-            <div class="ep-air">${formatDateHr(ep.airdate)} ${ep.airtime ? 'u ' + ep.airtime : ''}</div>
+            <div class="ep-air">${formatDateEn(ep.airdate)}${ep.airtime ? ' at ' + ep.airtime : ''}</div>
           </div>
           <div class="row-actions">
-            <button type="button" class="copy-pill-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyPayload}">Copy</button>
-            <button type="button" class="quick-check" onclick="quickMarkWatched(${ep.epId}, event, ${ep.showId})" title="Označi kao pogledano">✓</button>
+            <button type="button" class="copy-pill-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Copy ${copyPayload}">Copy</button>
+            <button type="button" class="quick-check" onclick="quickMarkWatched(${ep.epId}, event, ${ep.showId})" title="Mark as watched">✓</button>
           </div>
         `;
 
@@ -2519,10 +2504,10 @@
         }
       });
 
-      if (!listToday.children.length) listToday.innerHTML = '<p class="empty-msg">Nema epizoda za danas.</p>';
-      if (!listTom.children.length) listTom.innerHTML = '<p class="empty-msg">Nema epizoda za sutra.</p>';
-      if (!listWeek.children.length) listWeek.innerHTML = '<p class="empty-msg">Nema epizoda u ovom tjednu.</p>';
-      if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">Nema daljnjih najava.</p>';
+      if (!listToday.children.length) listToday.innerHTML = '<p class="empty-msg">No episodes airing today.</p>';
+      if (!listTom.children.length) listTom.innerHTML = '<p class="empty-msg">No episodes airing tomorrow.</p>';
+      if (!listWeek.children.length) listWeek.innerHTML = '<p class="empty-msg">No episodes airing this week.</p>';
+      if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">No further upcoming episodes.</p>';
     }
 
     updateHudTopDial();

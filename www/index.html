@@ -85,7 +85,7 @@
     }
 
     .brand h1 {
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       font-weight: 800;
       letter-spacing: -0.01em;
       color: var(--accent);
@@ -112,13 +112,13 @@
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 10px;
-      width: 36px;
-      height: 36px;
+      width: 35px;
+      height: 35px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -544,7 +544,7 @@
       margin-bottom: 18px;
     }
 
-    .drawer-actions button {
+    .drawer-actions button, .action-btn {
       width: 100%;
       background: var(--accent);
       color: #000000;
@@ -561,11 +561,11 @@
       color: #ffffff;
     }
 
-    .drawer-actions button.prev-seasons-btn {
+    .drawer-actions button.prev-seasons-btn, .secondary-btn {
       background: var(--surface-alt);
       color: var(--text);
       border: 1px solid var(--border);
-      font-size: 0.84rem;
+      font-size: 0.85rem;
     }
 
     .drawer-actions button.prev-seasons-btn.done {
@@ -611,6 +611,14 @@
       font-size: 0.85rem;
     }
 
+    .ep-item.aired {
+      cursor: pointer;
+    }
+
+    .ep-item.aired:active {
+      background: var(--surface-alt);
+    }
+
     .ep-item-meta {
       flex: 1;
       padding-right: 12px;
@@ -618,6 +626,20 @@
 
     .ep-item-title {
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ep-info-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 999px;
     }
 
     .ep-item-date {
@@ -648,6 +670,86 @@
       color: #ffffff;
     }
 
+    /* Centrirani popup modal (Kratak sadržaj epizode i Backup baze) */
+    .center-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      z-index: 65;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .center-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 460px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 18px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .modal-body {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .modal-body p {
+      margin-bottom: 10px;
+    }
+
+    .backup-box {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .backup-box h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .backup-box p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .backup-btn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .empty-msg {
       color: var(--text-muted);
       font-size: 0.84rem;
@@ -666,7 +768,7 @@
       border-radius: 999px;
       font-size: 0.82rem;
       font-weight: 600;
-      z-index: 60;
+      z-index: 80;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
@@ -702,6 +804,7 @@
       </div>
     </div>
     <div class="header-actions">
+      <button class="icon-btn" onclick="openBackupModal()" title="Izvoz i uvoz baze">💾</button>
       <button class="icon-btn" id="syncBtn" onclick="syncAllShows()" title="Osvježi nove epizode">🔄</button>
       <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu">☀️</button>
     </div>
@@ -788,6 +891,50 @@
     </div>
   </div>
 
+  <!-- MODAL: KRATAK SADRŽAJ EPIZODE -->
+  <div class="center-overlay" id="epSummaryOverlay" onclick="closeEpSummaryModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div id="epModalCode" style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;"></div>
+          <h3 id="epModalTitle">Naziv epizode</h3>
+        </div>
+        <button class="icon-btn" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
+      </div>
+      <div style="font-size:0.78rem; color:var(--accent); font-weight:700; margin-bottom:10px;" id="epModalDate"></div>
+      <div class="modal-body" id="epModalSummary"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: IZVOZ I UVOZ BAZE PODATAKA -->
+  <div class="center-overlay" id="backupOverlay" onclick="closeBackupModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>💾 Sigurnosna kopija baze</h3>
+        <button class="icon-btn" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="backupStatsText" style="font-size:0.82rem; color:var(--text-muted);"></p>
+
+        <div class="backup-box">
+          <h4>Izvoz baze (prije deinstalacije)</h4>
+          <p>Spremite datoteku sa svim svojim serijama i označenim epizodama na uređaj ili u oblak.</p>
+          <div class="backup-btn-stack">
+            <button class="action-btn" onclick="exportDatabaseFile()">⬇️ Preuzmi sigurnosnu kopiju (.json)</button>
+            <button class="action-btn secondary-btn" id="shareBackupBtn" onclick="shareDatabaseFile()">📤 Podijeli / spremi na Drive</button>
+          </div>
+        </div>
+
+        <div class="backup-box" style="margin-bottom:0;">
+          <h4>Uvoz baze (vraćanje podataka)</h4>
+          <p>Odaberite prethodno spremljenu <code>.json</code> datoteku za vraćanje svih serija i epizoda.</p>
+          <input type="file" id="importFileInput" accept=".json,application/json" hidden onchange="importDatabaseFile(event)" />
+          <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">📂 Učitaj .json datoteku</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -845,7 +992,7 @@
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2200);
+      setTimeout(() => t.classList.remove('show'), 2400);
     }
 
     // Navigacija karticama i Back tipka
@@ -870,6 +1017,18 @@
     }
 
     function goBack() {
+      const epModal = document.getElementById('epSummaryOverlay');
+      if (epModal.classList.contains('open')) {
+        closeEpSummaryModal();
+        return;
+      }
+
+      const backupModal = document.getElementById('backupOverlay');
+      if (backupModal.classList.contains('open')) {
+        closeBackupModal();
+        return;
+      }
+
       const overlay = document.getElementById('overlay');
       if (overlay.classList.contains('open')) {
         closeDrawer();
@@ -898,6 +1057,16 @@
     }
 
     window.addEventListener('popstate', () => {
+      const epModal = document.getElementById('epSummaryOverlay');
+      if (epModal.classList.contains('open')) {
+        epModal.classList.remove('open');
+        return;
+      }
+      const backupModal = document.getElementById('backupOverlay');
+      if (backupModal.classList.contains('open')) {
+        backupModal.classList.remove('open');
+        return;
+      }
       const overlay = document.getElementById('overlay');
       if (overlay.classList.contains('open')) {
         overlay.classList.remove('open');
@@ -914,6 +1083,96 @@
       e.preventDefault();
       goBack();
     });
+
+    // Izvoz i uvoz baze podataka
+    function buildBackupPayload() {
+      return {
+        app: 'My TV Tracker',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        myShows,
+        watchedEpisodes
+      };
+    }
+
+    function openBackupModal() {
+      const totalWatched = Object.keys(watchedEpisodes).length;
+      document.getElementById('backupStatsText').textContent =
+        `Trenutno u bazi: ${myShows.length} serija i ${totalWatched} označenih epizoda.`;
+      document.getElementById('backupOverlay').classList.add('open');
+      history.pushState({ modal: 'backup' }, '');
+    }
+
+    function closeBackupModal() {
+      document.getElementById('backupOverlay').classList.remove('open');
+    }
+
+    function exportDatabaseFile() {
+      const payload = buildBackupPayload();
+      const jsonStr = JSON.stringify(payload, null, 2);
+      const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr);
+
+      const a = document.createElement('a');
+      a.setAttribute('href', dataUri);
+      a.setAttribute('download', fileName);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Sigurnosna kopija baze je izvezena!");
+    }
+
+    async function shareDatabaseFile() {
+      const payload = buildBackupPayload();
+      const jsonStr = JSON.stringify(payload, null, 2);
+      const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
+
+      try {
+        const file = new File([jsonStr], fileName, { type: 'application/json' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'My TV Tracker - Baza podataka',
+            files: [file]
+          });
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+
+      exportDatabaseFile();
+    }
+
+    function importDatabaseFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!parsed || !Array.isArray(parsed.myShows) || typeof parsed.watchedEpisodes !== 'object') {
+            showToast("Neispravna datoteka sigurnosne kopije.");
+            return;
+          }
+
+          myShows = parsed.myShows;
+          watchedEpisodes = parsed.watchedEpisodes || {};
+          localStorage.setItem('myShows', JSON.stringify(myShows));
+          localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+
+          renderSchedule();
+          renderMyShows();
+          closeBackupModal();
+          showToast(`Uvezeno ${myShows.length} serija!`);
+        } catch (err) {
+          showToast("Greška pri čitanju .json datoteke.");
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
 
     // Sinkronizacija praćenih serija s TVmaze API-jem
     async function syncAllShows() {
@@ -955,7 +1214,8 @@
           season: ep.season,
           number: ep.number,
           airdate: ep.airdate,
-          airtime: ep.airtime
+          airtime: ep.airtime,
+          summary: ep.summary || ''
         }))
       };
     }
@@ -1125,7 +1385,7 @@
       );
     }
 
-    // Listanje sezona od najnovije prema prvoj
+    // Listanje sezona od najnovije prema prvoj + klik na već objavljenu epizodu otvara kratak sadržaj
     function renderEpList(episodes) {
       const list = document.getElementById('drawerEpList');
       list.innerHTML = '';
@@ -1134,6 +1394,7 @@
         return;
       }
 
+      const todayStr = getLocalDateStr(0);
       const seasons = {};
       episodes.forEach(ep => {
         const sNum = Number(ep.season);
@@ -1154,18 +1415,72 @@
 
         seasons[seasonNum].forEach(ep => {
           const isEpWatched = !!watchedEpisodes[ep.id];
+          const isAired = Boolean(ep.airdate && ep.airdate <= todayStr);
+
           const item = document.createElement('div');
-          item.className = 'ep-item';
+          item.className = `ep-item ${isAired ? 'aired' : ''}`;
+          item.onclick = () => {
+            if (isAired) {
+              openEpisodeSummary(ep);
+            } else {
+              showToast("Epizoda još nije emitirana.");
+            }
+          };
+
+          const badgeHtml = isAired ? '<span class="ep-info-pill">Sadržaj</span>' : '';
           item.innerHTML = `
             <div class="ep-item-meta">
-              <div class="ep-item-title">${ep.number}. ${ep.name}</div>
+              <div class="ep-item-title">${ep.number}. ${ep.name} ${badgeHtml}</div>
               <div class="ep-item-date">Emitiranje: ${formatDateHr(ep.airdate)}</div>
             </div>
-            <div class="watch-checkbox ${isEpWatched ? 'checked' : ''}" onclick="toggleWatch(${ep.id}, this)">✓</div>
+            <div class="watch-checkbox ${isEpWatched ? 'checked' : ''}" onclick="toggleWatch(${ep.id}, this, event)">✓</div>
           `;
           list.appendChild(item);
         });
       });
+    }
+
+    async function openEpisodeSummary(ep) {
+      const code = `Sezona ${ep.season} • Epizoda ${ep.number}`;
+      document.getElementById('epModalCode').textContent = code;
+      document.getElementById('epModalTitle').textContent = ep.name;
+      document.getElementById('epModalDate').textContent = `Emitirano: ${formatDateHr(ep.airdate)}`;
+      document.getElementById('epSummaryOverlay').classList.add('open');
+      history.pushState({ modal: 'epSummary' }, '');
+
+      if (ep.summary && ep.summary.trim() !== '') {
+        document.getElementById('epModalSummary').innerHTML = ep.summary;
+        return;
+      }
+
+      document.getElementById('epModalSummary').innerHTML = '<p style="color:var(--text-muted);">Učitavanje kratkog sadržaja...</p>';
+      try {
+        const res = await fetch(`https://api.tvmaze.com/episodes/${ep.id}`);
+        if (res.ok) {
+          const fullEp = await res.json();
+          const summaryHtml = fullEp.summary || '<p>Kratak sadržaj za ovu epizodu nije dostupan.</p>';
+          ep.summary = summaryHtml;
+
+          // Ažuriraj lokalno ako je serija u kolekciji
+          if (currentDrawerShow) {
+            const trackedIdx = myShows.findIndex(s => s.id === currentDrawerShow.id);
+            if (trackedIdx > -1) {
+              const targetEp = myShows[trackedIdx].episodes.find(e => e.id === ep.id);
+              if (targetEp) targetEp.summary = summaryHtml;
+              localStorage.setItem('myShows', JSON.stringify(myShows));
+            }
+          }
+          document.getElementById('epModalSummary').innerHTML = summaryHtml;
+        } else {
+          document.getElementById('epModalSummary').innerHTML = '<p>Kratak sadržaj za ovu epizodu nije dostupan.</p>';
+        }
+      } catch (e) {
+        document.getElementById('epModalSummary').innerHTML = '<p>Nije moguće dohvatiti kratak sadržaj (provjerite internetsku vezu).</p>';
+      }
+    }
+
+    function closeEpSummaryModal() {
+      document.getElementById('epSummaryOverlay').classList.remove('open');
     }
 
     function toggleSeasonWatched(seasonNum) {
@@ -1189,7 +1504,8 @@
       renderSchedule();
     }
 
-    function toggleWatch(epId, checkbox) {
+    function toggleWatch(epId, checkbox, event) {
+      if (event) event.stopPropagation();
       const checked = checkbox.classList.toggle('checked');
       if (checked) {
         watchedEpisodes[epId] = true;

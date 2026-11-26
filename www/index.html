@@ -1743,6 +1743,7 @@
 
     let currentDrawerShow = null;
     let currentModalMovie = null;
+    let movieSearchCache = {};
     let activeMyFilter = 'all';
     let activeMovieFilter = 'all';
     let exploreLoaded = false;
@@ -1888,9 +1889,6 @@
       setTimeout(() => t.classList.remove('show'), 2600);
     }
 
-    /* =========================================================
-       HEADER BADGE FOR TODAY'S EPISODES
-       ========================================================= */
     function updateTodayHeaderBadge() {
       const todayStr = getLocalDateStr(0);
       let todayCount = 0;
@@ -2058,7 +2056,6 @@
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = `my-tv-tracker-backup-${getLocalDateStr(0)}.json`;
 
-      // 1. Native Android/Chromium Directory & File Save Picker (user chooses exact directory on phone)
       if (typeof window.showSaveFilePicker === 'function') {
         try {
           const handle = await window.showSaveFilePicker({
@@ -2081,7 +2078,6 @@
         }
       }
 
-      // 2. Capacitor Filesystem fallback for older Android WebViews
       const plugins = window.Capacitor && window.Capacitor.Plugins;
       if (plugins && plugins.Filesystem) {
         const dirsToTry = [
@@ -2105,7 +2101,6 @@
         }
       }
 
-      // 3. Browser download fallback
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -2949,7 +2944,7 @@
     }
 
     /* =========================================================
-       SCHEDULE VIEW (WITH PROMINENT SxxExx BADGE IN ROWS)
+       SCHEDULE VIEW
        ========================================================= */
     function renderSchedule() {
       const todayStr = getLocalDateStr(0);
@@ -3063,7 +3058,7 @@
     }
 
     /* =========================================================
-       MOVIES MODULE (SEARCH & STREAMING RELEASE TRACKER)
+       MOVIES MODULE (CORS-FREE JSONP + IMDB FALLBACK + MANUAL)
        ========================================================= */
     function getMovieReleaseStatus(movie, todayStr) {
       if (movie.watched) return 'watched';
@@ -3084,6 +3079,83 @@
       return `Available • ${formatDateEn(relDate)}`;
     }
 
+    function fetchItunesMoviesJsonp(query) {
+      return new Promise((resolve, reject) => {
+        const cbName = 'itunes_movie_cb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+        const script = document.createElement('script');
+        let settled = false;
+
+        const cleanup = () => {
+          try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+          if (script.parentNode) script.parentNode.removeChild(script);
+        };
+
+        const timer = setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          reject(new Error('iTunes JSONP timeout'));
+        }, 7500);
+
+        window[cbName] = (data) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          cleanup();
+          const rawList = (data && Array.isArray(data.results)) ? data.results : [];
+          const mapped = rawList
+            .filter(item => item && item.trackName)
+            .map(item => ({
+              id: 'itunes_' + item.trackId,
+              title: item.trackName,
+              releaseDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
+              streamingDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
+              provider: 'Digital / VOD',
+              genre: item.primaryGenreName || 'Movie',
+              description: item.longDescription || item.shortDescription || 'No description available.',
+              poster: item.artworkUrl100 ? toHttps(item.artworkUrl100.replace('100x100bb', '600x600bb')) : PLACEHOLDER_IMG,
+              watched: false
+            }));
+          resolve(mapped);
+        };
+
+        script.onerror = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          cleanup();
+          reject(new Error('iTunes JSONP script error'));
+        };
+
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=movie&entity=movie&limit=20&callback=${cbName}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function fetchImdbFallbackMovies(query) {
+      const res = await fetch(`https://imdb.iamidiotareyoutoo.com/search?q=${encodeURIComponent(query)}`);
+      if (!res.ok) throw new Error('IMDb fallback failed');
+      const data = await res.json();
+      const desc = (data && Array.isArray(data.description)) ? data.description : [];
+      return desc
+        .filter(item => item && item['#TITLE'])
+        .map((item, idx) => {
+          const year = item['#YEAR'] ? String(item['#YEAR']) : '';
+          const releaseIso = year ? `${year}-01-01` : '';
+          return {
+            id: 'imdb_' + (item['#IMDB_ID'] || (Date.now() + '_' + idx)),
+            title: item['#TITLE'],
+            releaseDate: releaseIso,
+            streamingDate: releaseIso,
+            provider: 'Digital / VOD',
+            genre: item['#ACTORS'] ? `Cast: ${item['#ACTORS']}` : 'Movie',
+            description: item['#AKA'] ? `Also known as: ${item['#AKA']}` : 'Set streaming platform and arrival date below.',
+            poster: item['#IMG_POSTER'] ? toHttps(item['#IMG_POSTER']) : PLACEHOLDER_IMG,
+            watched: false
+          };
+        });
+    }
+
     async function searchMovies() {
       const query = document.getElementById('movieSearchInput').value.trim();
       if (!query) {
@@ -3097,65 +3169,82 @@
       wrap.style.display = 'block';
       grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">Searching movies & streaming dates...</p>';
 
+      let results = [];
       try {
-        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=movie&entity=movie&limit=20`);
-        const data = await res.json();
-        const results = (data && Array.isArray(data.results)) ? data.results : [];
+        results = await fetchItunesMoviesJsonp(query);
+      } catch (e) {}
 
-        if (results.length === 0) {
-          grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">No movies found.</p>';
-          return;
-        }
-
-        const todayStr = getLocalDateStr(0);
-        grid.innerHTML = '';
-
-        results.forEach(item => {
-          const movieObj = {
-            id: item.trackId,
-            title: item.trackName || 'Unknown Movie',
-            releaseDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
-            streamingDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
-            provider: 'Digital / VOD',
-            genre: item.primaryGenreName || 'Movie',
-            description: item.longDescription || item.shortDescription || 'No description available.',
-            poster: item.artworkUrl100 ? toHttps(item.artworkUrl100.replace('100x100bb', '600x600bb')) : PLACEHOLDER_IMG,
-            watched: false
-          };
-
-          const existing = myMovies.find(m => m.id === movieObj.id);
-          const displayMovie = existing || movieObj;
-          const isUpcoming = Boolean(displayMovie.streamingDate && displayMovie.streamingDate > todayStr);
-          const yearStr = displayMovie.releaseDate ? displayMovie.releaseDate.slice(0, 4) : '';
-          const copyTitle = escapeAttr(yearStr ? `${displayMovie.title} (${yearStr})` : displayMovie.title);
-
-          const card = document.createElement('div');
-          card.className = 'show-card';
-          card.onclick = () => openMovieModal(displayMovie);
-
-          const statusBadge = existing
-            ? '<div class="show-badge">Tracked</div>'
-            : (isUpcoming ? '<div class="show-status-tag upcoming">Upcoming</div>' : '');
-
-          card.innerHTML = `
-            <div class="poster-box">
-              <img src="${displayMovie.poster}" alt="${escapeAttr(displayMovie.title)}" loading="lazy" />
-              ${statusBadge}
-            </div>
-            <div class="show-info">
-              <div class="show-name">${escapeHtml(displayMovie.title)}</div>
-              <div class="movie-meta-line">${getMovieCountdownLabel(displayMovie, todayStr)}</div>
-              <div class="card-next-box">
-                <button type="button" class="card-copy-btn" data-copy="${copyTitle}" onclick="copyFromBtn(this, event)">Copy</button>
-                <button type="button" class="card-check-btn" onclick="quickTrackMovie(event, ${movieObj.id})" data-movie="${escapeAttr(JSON.stringify(movieObj))}" title="Track movie">${existing ? '✓' : '+'}</button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      } catch (e) {
-        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">Error fetching movie data.</p>';
+      if (results.length === 0) {
+        try {
+          results = await fetchImdbFallbackMovies(query);
+        } catch (e2) {}
       }
+
+      const todayStr = getLocalDateStr(0);
+      grid.innerHTML = '';
+      movieSearchCache = {};
+
+      results.forEach(movieObj => {
+        const existing = myMovies.find(m => String(m.id) === String(movieObj.id));
+        const displayMovie = existing || movieObj;
+        movieSearchCache[String(displayMovie.id)] = displayMovie;
+
+        const isUpcoming = Boolean(displayMovie.streamingDate && displayMovie.streamingDate > todayStr);
+        const yearStr = displayMovie.releaseDate ? displayMovie.releaseDate.slice(0, 4) : '';
+        const copyTitle = escapeAttr(yearStr ? `${displayMovie.title} (${yearStr})` : displayMovie.title);
+        const safeIdAttr = escapeAttr(String(displayMovie.id));
+
+        const card = document.createElement('div');
+        card.className = 'show-card';
+        card.onclick = () => openMovieModal(displayMovie);
+
+        const statusBadge = existing
+          ? '<div class="show-badge">Tracked</div>'
+          : (isUpcoming ? '<div class="show-status-tag upcoming">Upcoming</div>' : '');
+
+        card.innerHTML = `
+          <div class="poster-box">
+            <img src="${displayMovie.poster}" alt="${escapeAttr(displayMovie.title)}" loading="lazy" />
+            ${statusBadge}
+          </div>
+          <div class="show-info">
+            <div class="show-name">${escapeHtml(displayMovie.title)}</div>
+            <div class="movie-meta-line">${getMovieCountdownLabel(displayMovie, todayStr)}</div>
+            <div class="card-next-box">
+              <button type="button" class="card-copy-btn" data-copy="${copyTitle}" onclick="copyFromBtn(this, event)">Copy</button>
+              <button type="button" class="card-check-btn" data-mid="${safeIdAttr}" onclick="quickTrackMovie(event, this)" title="Track movie">${existing ? '✓' : '+'}</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Always offer quick manual entry at the bottom of search results
+      const manualBox = document.createElement('div');
+      manualBox.style.cssText = 'grid-column:1/-1; text-align:center; padding-top:8px;';
+      manualBox.innerHTML = `
+        <button type="button" class="copy-pill-btn" style="height:34px; padding:0 14px;" onclick="addManualMovieFromQuery()">
+          + Add "${escapeHtml(query)}" manually
+        </button>
+      `;
+      grid.appendChild(manualBox);
+    }
+
+    function addManualMovieFromQuery() {
+      const query = document.getElementById('movieSearchInput').value.trim();
+      if (!query) return;
+      const manualMovie = {
+        id: 'manual_' + Date.now(),
+        title: query,
+        releaseDate: '',
+        streamingDate: '',
+        provider: 'Netflix',
+        genre: 'Movie',
+        description: 'Manually added movie. Select streaming platform and arrival date below.',
+        poster: PLACEHOLDER_IMG,
+        watched: false
+      };
+      openMovieModal(manualMovie);
     }
 
     function clearMovieSearch() {
@@ -3164,26 +3253,27 @@
       document.getElementById('movieSearchGrid').innerHTML = '';
     }
 
-    function quickTrackMovie(event, movieId) {
+    function quickTrackMovie(event, btnEl) {
       if (event) event.stopPropagation();
-      const btn = event.currentTarget;
-      const existingIdx = myMovies.findIndex(m => m.id === movieId);
+      const movieId = btnEl ? btnEl.getAttribute('data-mid') : '';
+      const raw = movieSearchCache[movieId];
+      if (!raw) return;
+
+      const existingIdx = myMovies.findIndex(m => String(m.id) === String(movieId));
       if (existingIdx > -1) {
         showToast("Already in My Movies.");
         return;
       }
-      try {
-        const raw = JSON.parse(btn.getAttribute('data-movie'));
-        myMovies.unshift(raw);
-        localStorage.setItem('myMovies', JSON.stringify(myMovies));
-        btn.textContent = '✓';
-        renderMyMovies();
-        showToast(`Added "${raw.title}" to Movies!`);
-      } catch (e) {}
+
+      myMovies.unshift({ ...raw });
+      localStorage.setItem('myMovies', JSON.stringify(myMovies));
+      btnEl.textContent = '✓';
+      renderMyMovies();
+      showToast(`Added "${raw.title}" to Movies!`);
     }
 
     function openMovieModal(movie) {
-      const tracked = myMovies.find(m => m.id === movie.id);
+      const tracked = myMovies.find(m => String(m.id) === String(movie.id));
       currentModalMovie = tracked || { ...movie };
       const todayStr = getLocalDateStr(0);
 
@@ -3224,7 +3314,7 @@
     function selectMovieProvider(providerName) {
       if (!currentModalMovie) return;
       currentModalMovie.provider = providerName;
-      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      const idx = myMovies.findIndex(m => String(m.id) === String(currentModalMovie.id));
       if (idx > -1) {
         myMovies[idx].provider = providerName;
         localStorage.setItem('myMovies', JSON.stringify(myMovies));
@@ -3236,9 +3326,13 @@
     function updateMovieStreamingDate(newDate) {
       if (!currentModalMovie) return;
       currentModalMovie.streamingDate = newDate;
-      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      if (!currentModalMovie.releaseDate) {
+        currentModalMovie.releaseDate = newDate;
+      }
+      const idx = myMovies.findIndex(m => String(m.id) === String(currentModalMovie.id));
       if (idx > -1) {
         myMovies[idx].streamingDate = newDate;
+        if (!myMovies[idx].releaseDate) myMovies[idx].releaseDate = newDate;
         localStorage.setItem('myMovies', JSON.stringify(myMovies));
         renderMyMovies();
       }
@@ -3247,7 +3341,7 @@
 
     function updateMovieModalButtons() {
       if (!currentModalMovie) return;
-      const isTracked = myMovies.some(m => m.id === currentModalMovie.id);
+      const isTracked = myMovies.some(m => String(m.id) === String(currentModalMovie.id));
       const followBtn = document.getElementById('movieFollowBtn');
       const watchedBtn = document.getElementById('movieWatchedBtn');
 
@@ -3265,7 +3359,7 @@
 
     function toggleTrackCurrentMovie() {
       if (!currentModalMovie) return;
-      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      const idx = myMovies.findIndex(m => String(m.id) === String(currentModalMovie.id));
       if (idx > -1) {
         myMovies.splice(idx, 1);
         showToast("Removed from My Movies.");
@@ -3280,7 +3374,7 @@
 
     function toggleCurrentMovieWatched() {
       if (!currentModalMovie) return;
-      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      const idx = myMovies.findIndex(m => String(m.id) === String(currentModalMovie.id));
       if (idx === -1) return;
       myMovies[idx].watched = !myMovies[idx].watched;
       currentModalMovie.watched = myMovies[idx].watched;
@@ -3292,7 +3386,7 @@
 
     function quickToggleMovieWatched(movieId, event) {
       if (event) event.stopPropagation();
-      const idx = myMovies.findIndex(m => m.id === movieId);
+      const idx = myMovies.findIndex(m => String(m.id) === String(movieId));
       if (idx === -1) return;
       myMovies[idx].watched = !myMovies[idx].watched;
       localStorage.setItem('myMovies', JSON.stringify(myMovies));
@@ -3353,6 +3447,7 @@
         const st = getMovieReleaseStatus(movie, todayStr);
         const yearStr = movie.releaseDate ? movie.releaseDate.slice(0, 4) : '';
         const copyPayload = escapeAttr(yearStr ? `${movie.title} (${yearStr})` : movie.title);
+        const safeId = escapeAttr(String(movie.id));
 
         const card = document.createElement('div');
         card.className = 'show-card';
@@ -3373,7 +3468,7 @@
             <div><span class="movie-provider-pill">${escapeHtml(movie.provider || 'Digital / VOD')}</span></div>
             <div class="card-next-box">
               <button type="button" class="card-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)">Copy</button>
-              <button type="button" class="card-check-btn" onclick="quickToggleMovieWatched(${movie.id}, event)" title="Toggle watched">✓</button>
+              <button type="button" class="card-check-btn" onclick="quickToggleMovieWatched('${safeId}', event)" title="Toggle watched">✓</button>
             </div>
           </div>
         `;

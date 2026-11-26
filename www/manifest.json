@@ -1,9 +1,9 @@
 {
   "name": "My TV Tracker",
   "short_name": "My TV Tracker",
-  "description": "Track your favorite TV shows and episode air dates",
+  "description": "Track your favorite TV shows, episode air dates, and streaming movie releases",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b0b0f",
-  "theme_color": "#0b0b0f"
+  "background_color": "#05070a",
+  "theme_color": "#05070a"
 }

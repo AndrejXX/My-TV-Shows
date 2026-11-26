@@ -3,50 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="theme-color" content="#05070a" />
   <title>My TV Tracker</title>
   <link rel="manifest" href="manifest.json" />
   <style>
     :root {
-      --bg: #0b0b0f;
-      --surface: #141419;
-      --surface-alt: #1e1e26;
-      --glass: rgba(20, 20, 26, 0.86);
-      --border: rgba(255, 255, 255, 0.11);
-      --border-strong: rgba(255, 255, 255, 0.22);
-      --red: #e50914;
-      --red-hover: #f40612;
-      --red-dim: rgba(229, 9, 20, 0.16);
-      --red-glow: rgba(229, 9, 20, 0.38);
-      --green: #22c55e;
-      --green-dim: rgba(34, 197, 94, 0.15);
-      --amber: #f59e0b;
-      --amber-dim: rgba(245, 158, 11, 0.15);
+      --bg: #05070a;
+      --surface: #0d1419;
+      --surface-alt: #152028;
+      --glass: rgba(13, 20, 25, 0.88);
+      --border: rgba(52, 211, 153, 0.16);
+      --border-strong: rgba(52, 211, 153, 0.34);
+      --mint: #10b981;
+      --mint-bright: #34d399;
+      --mint-hover: #6ee7b7;
+      --mint-dim: rgba(16, 185, 129, 0.15);
+      --mint-glow: rgba(52, 211, 153, 0.36);
+      --on-mint: #04130d;
+      --cyan: #38bdf8;
+      --cyan-dim: rgba(56, 189, 248, 0.14);
+      --amber: #fbbf24;
+      --amber-dim: rgba(251, 191, 36, 0.14);
+      --danger: #ef4444;
+      --danger-dim: rgba(239, 68, 68, 0.15);
       --text: #ffffff;
-      --text-soft: #d4d4dc;
-      --muted: #8e8e9a;
-      --hero-fade: linear-gradient(180deg, rgba(11, 11, 15, 0.15) 0%, rgba(11, 11, 15, 0.68) 54%, #0b0b0f 100%);
+      --text-soft: #cbd5e1;
+      --muted: #8a99ad;
+      --hero-fade: linear-gradient(180deg, rgba(5, 7, 10, 0.14) 0%, rgba(5, 7, 10, 0.68) 54%, #05070a 100%);
     }
 
     [data-theme="light"] {
-      --bg: #f3f4f6;
+      --bg: #eef3f7;
       --surface: #ffffff;
-      --surface-alt: #e8eaef;
-      --glass: rgba(255, 255, 255, 0.92);
-      --border: rgba(15, 23, 42, 0.11);
-      --border-strong: rgba(15, 23, 42, 0.2);
-      --red: #d80813;
-      --red-hover: #b90710;
-      --red-dim: rgba(216, 8, 19, 0.1);
-      --red-glow: rgba(216, 8, 19, 0.24);
-      --green: #16a34a;
-      --green-dim: rgba(22, 163, 74, 0.12);
+      --surface-alt: #e2e8f0;
+      --glass: rgba(255, 255, 255, 0.94);
+      --border: rgba(5, 150, 105, 0.16);
+      --border-strong: rgba(5, 150, 105, 0.32);
+      --mint: #059669;
+      --mint-bright: #10b981;
+      --mint-hover: #059669;
+      --mint-dim: rgba(16, 185, 129, 0.12);
+      --mint-glow: rgba(16, 185, 129, 0.24);
+      --on-mint: #ffffff;
+      --cyan: #0284c7;
+      --cyan-dim: rgba(2, 132, 199, 0.12);
       --amber: #d97706;
       --amber-dim: rgba(217, 119, 6, 0.12);
-      --text: #111116;
-      --text-soft: #3f3f46;
-      --muted: #71717a;
-      --hero-fade: linear-gradient(180deg, rgba(11, 11, 15, 0.22) 0%, rgba(11, 11, 15, 0.78) 58%, #111116 100%);
+      --danger: #dc2626;
+      --danger-dim: rgba(220, 38, 38, 0.12);
+      --text: #0f172a;
+      --text-soft: #334155;
+      --muted: #64748b;
+      --hero-fade: linear-gradient(180deg, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.78) 58%, #0f172a 100%);
     }
 
     * {
@@ -68,14 +76,14 @@
 
     body {
       padding-top: env(safe-area-inset-top);
-      padding-bottom: calc(78px + env(safe-area-inset-bottom));
+      padding-bottom: calc(80px + env(safe-area-inset-bottom));
     }
 
     header {
       position: sticky;
       top: 0;
       z-index: 35;
-      background: linear-gradient(180deg, var(--bg) 75%, transparent 100%);
+      background: linear-gradient(180deg, var(--bg) 80%, transparent 100%);
       padding: 11px 14px 10px;
       display: flex;
       align-items: center;
@@ -98,7 +106,7 @@
     }
 
     .brand h1 {
-      font-size: 18px;
+      font-size: 17.5px;
       font-weight: 900;
       letter-spacing: -0.02em;
       color: var(--text);
@@ -108,7 +116,38 @@
     }
 
     .brand h1 span {
-      color: var(--red);
+      color: var(--mint-bright);
+    }
+
+    /* Today's Episodes Header Badge */
+    .today-header-badge {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--mint-dim);
+      border: 1px solid var(--mint-bright);
+      color: var(--mint-bright);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px var(--mint-dim);
+    }
+
+    .today-header-badge.visible {
+      display: inline-flex;
+    }
+
+    .today-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint-bright);
+      box-shadow: 0 0 6px var(--mint-bright);
     }
 
     .header-actions {
@@ -122,9 +161,9 @@
       height: 32px;
       min-width: 32px;
       padding: 0 10px;
-      border-radius: 8px;
+      border-radius: 999px;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       color: var(--text);
       font-size: 12px;
       font-weight: 700;
@@ -141,7 +180,8 @@
       width: 32px;
     }
 
-    .top-btn:active {
+    .top-btn:active,
+    .today-header-badge:active {
       transform: scale(0.93);
     }
 
@@ -172,10 +212,10 @@
     .cinematic-hero {
       position: relative;
       width: 100%;
-      min-height: 320px;
+      min-height: 310px;
       border-radius: 18px;
       overflow: hidden;
-      background-color: #141419;
+      background-color: var(--surface);
       background-size: cover;
       background-position: center 20%;
       border: 1px solid var(--border-strong);
@@ -212,28 +252,28 @@
     }
 
     .hero-pill-tag {
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-size: 10.5px;
       font-weight: 800;
       padding: 3px 9px;
-      border-radius: 5px;
+      border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
 
     .hero-pill-meta {
       background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #e4e4e7;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: #e2e8f0;
       font-size: 11px;
       font-weight: 700;
       padding: 2px 8px;
-      border-radius: 5px;
+      border-radius: 999px;
     }
 
     .hero-show-title {
-      font-size: 27px;
+      font-size: 26px;
       font-weight: 900;
       color: #ffffff;
       line-height: 1.1;
@@ -244,7 +284,7 @@
     .hero-ep-line {
       font-size: 14px;
       font-weight: 700;
-      color: #f4f4f5;
+      color: #f1f5f9;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
       white-space: nowrap;
       overflow: hidden;
@@ -252,13 +292,13 @@
     }
 
     .hero-ep-line span {
-      color: #ff4d57;
+      color: var(--mint-bright);
       font-weight: 800;
     }
 
     .hero-air-sub {
       font-size: 12px;
-      color: #a1a1aa;
+      color: #94a3b8;
       margin-bottom: 6px;
     }
 
@@ -268,14 +308,14 @@
       gap: 9px;
     }
 
-    .btn-netflix-primary {
+    .btn-mint-primary {
       flex: 1;
       height: 40px;
       padding: 0 14px;
       border: none;
-      border-radius: 8px;
-      background: var(--red);
-      color: #ffffff;
+      border-radius: 999px;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-size: 13.5px;
       font-weight: 800;
       display: inline-flex;
@@ -283,17 +323,17 @@
       justify-content: center;
       gap: 6px;
       cursor: pointer;
-      box-shadow: 0 4px 16px var(--red-glow);
+      box-shadow: 0 4px 16px var(--mint-glow);
     }
 
-    .btn-netflix-secondary {
+    .btn-mint-secondary {
       flex: 1.35;
       min-width: 0;
       height: 40px;
       padding: 0 12px;
-      border-radius: 8px;
-      background: rgba(28, 28, 36, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(13, 20, 25, 0.9);
+      border: 1px solid rgba(52, 211, 153, 0.45);
       color: #ffffff;
       font-size: 13px;
       font-weight: 800;
@@ -307,8 +347,8 @@
       text-overflow: ellipsis;
     }
 
-    .btn-netflix-primary:active,
-    .btn-netflix-secondary:active,
+    .btn-mint-primary:active,
+    .btn-mint-secondary:active,
     .mini-copy-btn:active,
     .mini-check-btn:active,
     .card-copy-btn:active,
@@ -357,7 +397,7 @@
       flex-shrink: 0;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -377,7 +417,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 35%, rgba(11, 11, 15, 0.88) 100%);
+      background: linear-gradient(180deg, transparent 35%, rgba(5, 7, 10, 0.88) 100%);
     }
 
     .h-ep-code-badge {
@@ -387,10 +427,10 @@
       z-index: 2;
       font-size: 11px;
       font-weight: 800;
-      color: #ffffff;
-      background: rgba(229, 9, 20, 0.92);
-      padding: 2px 7px;
-      border-radius: 4px;
+      color: var(--on-mint);
+      background: var(--mint-bright);
+      padding: 2px 8px;
+      border-radius: 999px;
     }
 
     .h-ep-body {
@@ -430,7 +470,7 @@
       flex: 1;
       height: 28px;
       padding: 0 7px;
-      border-radius: 6px;
+      border-radius: 999px;
       border: 1px solid var(--border-strong);
       background: var(--surface-alt);
       color: var(--text);
@@ -443,10 +483,10 @@
     .mini-check-btn {
       width: 28px;
       height: 28px;
-      border-radius: 6px;
+      border-radius: 50%;
       border: none;
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-size: 12.5px;
       font-weight: 800;
       display: grid;
@@ -476,10 +516,10 @@
     }
 
     .filter-btn.active {
-      background: var(--red);
-      border-color: var(--red);
-      color: #ffffff;
-      box-shadow: 0 2px 10px var(--red-glow);
+      background: var(--mint-bright);
+      border-color: var(--mint-bright);
+      color: var(--on-mint);
+      box-shadow: 0 2px 10px var(--mint-glow);
     }
 
     .grid {
@@ -491,7 +531,7 @@
     .show-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       position: relative;
       cursor: pointer;
@@ -517,13 +557,44 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-size: 11px;
       font-weight: 800;
-      padding: 3px 7px;
-      border-radius: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    }
+
+    .show-status-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    }
+
+    .show-status-tag.on_hold {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+    }
+
+    .show-status-tag.dropped {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .show-status-tag.upcoming {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
     }
 
     .poster-progress-bg {
@@ -537,7 +608,7 @@
 
     .poster-progress-fg {
       height: 100%;
-      background: var(--red);
+      background: var(--mint-bright);
       transition: width 0.25s ease;
     }
 
@@ -573,6 +644,30 @@
       flex-shrink: 0;
     }
 
+    .movie-meta-line {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mint-bright);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .movie-provider-pill {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 2px 7px;
+      border-radius: 999px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .card-next-box {
       display: flex;
       align-items: center;
@@ -584,7 +679,7 @@
       min-width: 0;
       height: 30px;
       padding: 0 8px;
-      border-radius: 7px;
+      border-radius: 999px;
       border: 1px solid var(--border-strong);
       background: var(--surface-alt);
       color: var(--text);
@@ -602,10 +697,10 @@
     .card-check-btn {
       width: 30px;
       height: 30px;
-      border-radius: 7px;
+      border-radius: 50%;
       border: none;
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-size: 13px;
       font-weight: 800;
       display: inline-flex;
@@ -617,12 +712,12 @@
 
     .card-done-tag {
       height: 30px;
-      border-radius: 7px;
-      background: var(--green-dim);
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 999px;
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.32);
       font-size: 11px;
       font-weight: 700;
-      color: var(--green);
+      color: var(--mint-bright);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -634,7 +729,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      color: var(--red);
+      color: var(--mint-bright);
       margin-bottom: 8px;
     }
 
@@ -647,7 +742,7 @@
       align-items: center;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 9px;
       margin-bottom: 8px;
       gap: 10px;
@@ -657,7 +752,7 @@
     .ep-row img {
       width: 44px;
       height: 64px;
-      border-radius: 7px;
+      border-radius: 8px;
       object-fit: cover;
       background: var(--surface-alt);
       flex-shrink: 0;
@@ -677,8 +772,28 @@
     }
 
     .ep-spec {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 12.5px;
       color: var(--text-soft);
+      margin-top: 2px;
+      min-width: 0;
+    }
+
+    .ep-code-chip {
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.42);
+      color: var(--mint-bright);
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ep-name-trunc {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -686,9 +801,9 @@
 
     .ep-air {
       font-size: 11.5px;
-      color: var(--red);
+      color: var(--muted);
       font-weight: 700;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .row-actions {
@@ -701,7 +816,7 @@
     .copy-pill-btn {
       height: 31px;
       padding: 0 10px;
-      border-radius: 7px;
+      border-radius: 999px;
       border: 1px solid var(--border-strong);
       background: var(--surface-alt);
       color: var(--text);
@@ -717,10 +832,10 @@
     .quick-check {
       width: 31px;
       height: 31px;
-      border-radius: 7px;
+      border-radius: 50%;
       border: none;
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -729,7 +844,7 @@
       flex-shrink: 0;
     }
 
-    /* Explore Search */
+    /* Search Box (Explore & Movies) */
     .search-box {
       display: flex;
       gap: 8px;
@@ -742,42 +857,38 @@
       border: 1px solid var(--border-strong);
       color: var(--text);
       padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 999px;
       font-size: 14px;
       outline: none;
     }
 
     .search-box input:focus {
-      border-color: var(--red);
+      border-color: var(--mint-bright);
     }
 
     .search-btn {
-      background: var(--red);
+      background: var(--mint-bright);
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
       font-weight: 800;
       padding: 10px 16px;
-      color: #ffffff;
+      color: var(--on-mint);
       cursor: pointer;
     }
 
-    /* Bottom Navigation Bar */
+    /* Bottom Navigation Bar (4 Tabs: Schedule, My Shows, Movies, Explore) */
     .nav-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(11, 11, 15, 0.96);
+      background: var(--glass);
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
       z-index: 40;
       padding: 7px 0 calc(7px + env(safe-area-inset-bottom));
-    }
-
-    [data-theme="light"] .nav-bar {
-      background: rgba(255, 255, 255, 0.96);
     }
 
     .nav-btn {
@@ -789,7 +900,7 @@
       flex-direction: column;
       align-items: center;
       gap: 3px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
       flex: 1;
@@ -797,19 +908,19 @@
     }
 
     .nav-btn.active {
-      color: var(--text);
+      color: var(--mint-bright);
     }
 
     .nav-btn.active::after {
       content: "";
-      width: 22px;
+      width: 20px;
       height: 3px;
       border-radius: 99px;
-      background: var(--red);
+      background: var(--mint-bright);
       margin-top: 2px;
     }
 
-    /* Show Details Drawer & Modals */
+    /* Show & Movie Details Drawer */
     .overlay {
       position: fixed;
       inset: 0;
@@ -825,15 +936,15 @@
 
     .drawer {
       background: var(--bg);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
       width: 100%;
       max-width: 560px;
       margin: 0 auto;
       max-height: 92vh;
       overflow-y: auto;
       padding: 18px 15px calc(24px + env(safe-area-inset-bottom));
-      border-top: 2px solid var(--red);
+      border-top: 2px solid var(--mint-bright);
       box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.75);
     }
 
@@ -857,7 +968,7 @@
       margin-bottom: 12px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 10px;
     }
 
@@ -880,15 +991,15 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .drawer-actions button, .action-btn {
       width: 100%;
-      background: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
       padding: 11px 14px;
       font-weight: 800;
       font-size: 14px;
@@ -897,8 +1008,8 @@
 
     .drawer-actions button.remove-btn {
       background: var(--surface-alt);
-      border: 1px solid var(--red);
-      color: var(--red);
+      border: 1px solid var(--danger);
+      color: var(--danger);
     }
 
     .drawer-actions button.prev-seasons-btn, .secondary-btn {
@@ -909,8 +1020,104 @@
     }
 
     .drawer-actions button.prev-seasons-btn.done {
-      border-color: var(--green);
-      color: var(--green);
+      border-color: var(--mint-bright);
+      color: var(--mint-bright);
+    }
+
+    /* Show Status Selector (Active / On Hold / Dropped) */
+    .status-selector-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    .status-selector-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .status-pill-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .status-choice-btn {
+      padding: 7px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .status-choice-btn.active[data-status="active"] {
+      background: var(--mint-bright);
+      border-color: var(--mint-bright);
+      color: var(--on-mint);
+    }
+
+    .status-choice-btn.active[data-status="on_hold"] {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #04130d;
+    }
+
+    .status-choice-btn.active[data-status="dropped"] {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #ffffff;
+    }
+
+    /* Hide Future / TBA Toggle Bar */
+    .ep-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+    }
+
+    .ep-filter-info {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .ep-filter-info span {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .toggle-future-btn {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text-soft);
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .toggle-future-btn.active {
+      background: var(--mint-dim);
+      border-color: var(--mint-bright);
+      color: var(--mint-bright);
     }
 
     .season-header-row {
@@ -918,13 +1125,13 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin: 16px 0 8px;
+      margin: 14px 0 8px;
     }
 
     .season-header {
       font-size: 12.5px;
       font-weight: 800;
-      color: var(--red);
+      color: var(--mint-bright);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -936,13 +1143,13 @@
     }
 
     .season-copy-btn {
-      background: var(--red-dim);
-      border: 1px solid rgba(229, 9, 20, 0.45);
-      color: #ff5a63;
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      color: var(--mint-bright);
       font-size: 11.5px;
       font-weight: 800;
       padding: 4px 10px;
-      border-radius: 6px;
+      border-radius: 999px;
       cursor: pointer;
     }
 
@@ -953,7 +1160,7 @@
       font-size: 11.5px;
       font-weight: 700;
       padding: 4px 10px;
-      border-radius: 6px;
+      border-radius: 999px;
       cursor: pointer;
     }
 
@@ -963,7 +1170,7 @@
       justify-content: space-between;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px 10px 10px 12px;
       margin-bottom: 7px;
       font-size: 13.5px;
@@ -991,20 +1198,20 @@
       font-size: 10.5px;
       font-weight: 800;
       padding: 2px 7px;
-      border-radius: 5px;
+      border-radius: 999px;
       white-space: nowrap;
     }
 
     .ep-status-pill.aired {
-      color: var(--green);
-      background: var(--green-dim);
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: var(--mint-bright);
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.35);
     }
 
     .ep-status-pill.soon {
       color: var(--amber);
       background: var(--amber-dim);
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      border: 1px solid rgba(251, 191, 36, 0.35);
     }
 
     .ep-status-pill.tba {
@@ -1029,7 +1236,7 @@
     .ep-copy-btn {
       height: 30px;
       padding: 0 10px;
-      border-radius: 7px;
+      border-radius: 999px;
       border: 1px solid var(--border-strong);
       background: var(--surface-alt);
       color: var(--text);
@@ -1046,7 +1253,7 @@
       height: 30px;
       border: 1.5px solid var(--border-strong);
       background: var(--surface-alt);
-      border-radius: 7px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1059,9 +1266,51 @@
     }
 
     .watch-checkbox.checked {
-      background: var(--red);
-      border-color: var(--red);
-      color: #ffffff;
+      background: var(--mint-bright);
+      border-color: var(--mint-bright);
+      color: var(--on-mint);
+    }
+
+    /* Streaming Service Chips in Movie Modal */
+    .provider-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .provider-chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text-soft);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .provider-chip.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .date-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .date-input-row input[type="date"] {
+      flex: 1;
+      background: var(--surface-alt);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 13px;
     }
 
     /* Center Modals */
@@ -1083,8 +1332,8 @@
     .modal-card {
       background: var(--surface);
       border: 1px solid var(--border-strong);
-      border-top: 3px solid var(--red);
-      border-radius: 16px;
+      border-top: 3px solid var(--mint-bright);
+      border-radius: 18px;
       width: 100%;
       max-width: 440px;
       max-height: 85vh;
@@ -1122,7 +1371,7 @@
     .backup-box {
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px;
       margin-bottom: 12px;
     }
@@ -1139,6 +1388,13 @@
       margin-bottom: 10px;
     }
 
+    .backup-status-line {
+      font-size: 11.5px;
+      color: var(--mint-bright);
+      margin-top: 8px;
+      word-break: break-all;
+    }
+
     .backup-btn-stack {
       display: flex;
       flex-direction: column;
@@ -1151,7 +1407,7 @@
       background: var(--surface);
       border: 1px solid var(--border-strong);
       color: var(--text);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 8px 10px;
       font-size: 12px;
       font-family: monospace;
@@ -1167,11 +1423,11 @@
 
     .toast {
       position: fixed;
-      bottom: 84px;
+      bottom: 86px;
       left: 50%;
       transform: translateX(-50%);
-      background: #18181f;
-      border: 1px solid var(--red);
+      background: #0d1419;
+      border: 1px solid var(--mint-bright);
       color: #ffffff;
       padding: 9px 18px;
       border-radius: 999px;
@@ -1198,18 +1454,21 @@
       <div class="brand">
         <h1>MY TV <span>TRACKER</span></h1>
       </div>
+      <button type="button" class="today-header-badge" id="todayHeaderBadge" onclick="jumpToTodaySchedule()" title="Jump to today's episodes">
+        <span class="today-dot"></span>
+        <span id="todayHeaderBadgeText">Today: 0</span>
+      </button>
     </div>
 
     <div class="header-actions">
-      <button class="top-btn" onclick="openBackupModal()" title="Backup database">Backup</button>
-      <button class="top-btn" id="syncBtn" onclick="syncAllShows()" title="Sync episodes">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <button class="top-btn" onclick="openBackupModal()" title="Backup to phone">Backup</button>
+      <button class="top-btn icon-only" id="syncBtn" onclick="syncAllShows()" title="Sync episodes" aria-label="Sync">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
           <path d="M3 3v5h5" />
           <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
           <path d="M16 16h5v5" />
         </svg>
-        <span>Sync</span>
       </button>
       <button class="top-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">☀️</button>
     </div>
@@ -1220,7 +1479,7 @@
     <section class="view-section active" id="view-schedules">
       <div id="scheduleHeroContainer"></div>
 
-      <div class="sched-group-title">Today</div>
+      <div class="sched-group-title" id="schedTodayHeading">Today</div>
       <div id="sched-today" class="schedule-group"></div>
 
       <div class="sched-group-title">Tomorrow</div>
@@ -1255,12 +1514,43 @@
         <button type="button" class="filter-btn" data-filter="watch" onclick="filterMyShows('watch')">To Watch (<span id="count-watch">0</span>)</button>
         <button type="button" class="filter-btn" data-filter="waiting" onclick="filterMyShows('waiting')">Up to Date (<span id="count-waiting">0</span>)</button>
         <button type="button" class="filter-btn" data-filter="ended" onclick="filterMyShows('ended')">Completed (<span id="count-ended">0</span>)</button>
+        <button type="button" class="filter-btn" data-filter="paused" onclick="filterMyShows('paused')">Hold / Dropped (<span id="count-paused">0</span>)</button>
       </div>
 
       <div class="grid" id="myGrid"></div>
     </section>
 
-    <!-- TAB 3: EXPLORE -->
+    <!-- TAB 3: MOVIES (SEARCH & STREAMING RELEASE TRACKER) -->
+    <section class="view-section" id="view-movies">
+      <div class="search-box">
+        <input type="text" id="movieSearchInput" placeholder="Search movies & streaming release..." onkeydown="if(event.key==='Enter') searchMovies()" />
+        <button type="button" class="search-btn" onclick="searchMovies()">Search</button>
+      </div>
+
+      <div id="movieSearchResultsWrap" style="display:none; margin-bottom:18px;">
+        <div class="section-header">
+          <div class="section-title" id="movieSearchLabel">Search Results</div>
+          <button type="button" class="copy-pill-btn" onclick="clearMovieSearch()">Clear</button>
+        </div>
+        <div class="grid" id="movieSearchGrid"></div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">My Movies</div>
+        <div class="section-count" id="myMoviesCountLabel">0 movies</div>
+      </div>
+
+      <div class="filter-tabs">
+        <button type="button" class="filter-btn movie-filter-btn active" data-mfilter="all" onclick="filterMyMovies('all')">All (<span id="mcount-all">0</span>)</button>
+        <button type="button" class="filter-btn movie-filter-btn" data-mfilter="upcoming" onclick="filterMyMovies('upcoming')">Upcoming (<span id="mcount-upcoming">0</span>)</button>
+        <button type="button" class="filter-btn movie-filter-btn" data-mfilter="available" onclick="filterMyMovies('available')">Available (<span id="mcount-available">0</span>)</button>
+        <button type="button" class="filter-btn movie-filter-btn" data-mfilter="watched" onclick="filterMyMovies('watched')">Watched (<span id="mcount-watched">0</span>)</button>
+      </div>
+
+      <div class="grid" id="myMoviesGrid"></div>
+    </section>
+
+    <!-- TAB 4: EXPLORE TV SHOWS -->
     <section class="view-section" id="view-explore">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search TV shows (e.g. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
@@ -1289,6 +1579,15 @@
       </svg>
       <span>My Shows</span>
     </button>
+    <button type="button" class="nav-btn" id="nav-movies" onclick="switchTab('movies')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+        <line x1="7" y1="2" x2="7" y2="22"></line>
+        <line x1="17" y1="2" x2="17" y2="22"></line>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+      </svg>
+      <span>Movies</span>
+    </button>
     <button type="button" class="nav-btn" id="nav-explore" onclick="switchTab('explore')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
@@ -1308,7 +1607,7 @@
       <div class="drawer-meta">
         <img id="drawerImage" src="" alt="Poster" />
         <div>
-          <p id="drawerNetwork" style="font-weight:800; color:var(--red); margin-bottom:4px; font-size:14px;"></p>
+          <p id="drawerNetwork" style="font-weight:800; color:var(--mint-bright); margin-bottom:4px; font-size:14px;"></p>
           <p id="drawerStatus" style="font-size:12.5px; color:var(--muted); margin-bottom:6px;"></p>
           <p id="drawerProgress" style="font-weight:700; font-size:13.5px;"></p>
         </div>
@@ -1320,7 +1619,59 @@
         <button id="markPrevSeasonsBtn" class="prev-seasons-btn" style="display:none;" onclick="togglePreviousSeasonsWatched()"></button>
       </div>
 
+      <!-- Show Status Selector (Active / On Hold / Dropped) -->
+      <div class="status-selector-box" id="showStatusBox" style="display:none;">
+        <div class="status-selector-label">Tracking Status</div>
+        <div class="status-pill-row">
+          <button type="button" class="status-choice-btn active" data-status="active" onclick="setShowTrackingStatus('active')">Active</button>
+          <button type="button" class="status-choice-btn" data-status="on_hold" onclick="setShowTrackingStatus('on_hold')">On Hold</button>
+          <button type="button" class="status-choice-btn" data-status="dropped" onclick="setShowTrackingStatus('dropped')">Dropped</button>
+        </div>
+      </div>
+
+      <!-- Hide Future / TBA Toggle -->
+      <div class="ep-filter-bar" id="epFilterBar" style="display:none;">
+        <div class="ep-filter-info" id="epFilterInfoText">Showing all episodes</div>
+        <button type="button" class="toggle-future-btn" id="toggleFutureBtn" onclick="toggleHideFutureEpisodes()">Hide Future / TBA</button>
+      </div>
+
       <div id="drawerEpList"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: MOVIE DETAILS & STREAMING TRACKER -->
+  <div class="center-overlay" id="movieModalOverlay" onclick="closeMovieModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div id="movieModalYear" style="font-size:11.5px; font-weight:800; color:var(--mint-bright); text-transform:uppercase;"></div>
+          <h3 id="movieModalTitle">Movie Title</h3>
+        </div>
+        <button class="top-btn icon-only" onclick="closeMovieModal()" aria-label="Close">✕</button>
+      </div>
+      <div style="display:flex; gap:12px; margin-bottom:12px;">
+        <img id="movieModalPoster" src="" alt="Poster" style="width:82px; height:122px; object-fit:cover; border-radius:10px; flex-shrink:0;" />
+        <div style="flex:1; min-width:0;">
+          <div id="movieModalReleaseInfo" style="font-size:13px; font-weight:800; color:var(--mint-bright); margin-bottom:4px;"></div>
+          <div id="movieModalGenre" style="font-size:12px; color:var(--muted); margin-bottom:8px;"></div>
+          <button type="button" class="copy-pill-btn" id="movieModalCopyBtn" onclick="copyFromBtn(this, event)">Copy Title</button>
+        </div>
+      </div>
+      <div id="movieModalDesc" class="modal-body" style="font-size:12.5px; color:var(--text-soft); margin-bottom:12px;"></div>
+
+      <div class="backup-box" style="margin-bottom:12px;">
+        <h4>Streaming Service & Arrival Date</h4>
+        <p>Select target streaming service or adjust expected streaming arrival date:</p>
+        <div class="provider-chips" id="movieProviderChips"></div>
+        <div class="date-input-row">
+          <input type="date" id="movieCustomDateInput" onchange="updateMovieStreamingDate(this.value)" />
+        </div>
+      </div>
+
+      <div class="backup-btn-stack">
+        <button type="button" class="action-btn" id="movieFollowBtn" onclick="toggleTrackCurrentMovie()">+ Track Movie</button>
+        <button type="button" class="action-btn secondary-btn" id="movieWatchedBtn" style="display:none;" onclick="toggleCurrentMovieWatched()">✓ Mark Watched</button>
+      </div>
     </div>
   </div>
 
@@ -1329,7 +1680,7 @@
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div>
-          <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--red); text-transform:uppercase;"></div>
+          <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--mint-bright); text-transform:uppercase;"></div>
           <h3 id="epModalTitle">Episode Title</h3>
         </div>
         <button class="top-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Close">✕</button>
@@ -1342,34 +1693,35 @@
     </div>
   </div>
 
-  <!-- MODAL: DATABASE BACKUP & RESTORE -->
+  <!-- MODAL: MANUAL BACKUP TO PHONE DIRECTORY -->
   <div class="center-overlay" id="backupOverlay" onclick="closeBackupModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3>Database Backup</h3>
+        <h3>Backup to Phone</h3>
         <button class="top-btn icon-only" onclick="closeBackupModal()" aria-label="Close">✕</button>
       </div>
       <div class="modal-body">
         <p id="backupStatsText" style="font-size:12.5px; color:var(--muted);"></p>
 
         <div class="backup-box">
-          <h4>Export Database (before uninstalling)</h4>
-          <p>Save a <code>.json</code> file to your device, share it to Google Drive / email, or copy the backup text.</p>
+          <h4>Save Backup Directly to Chosen Folder</h4>
+          <p>Opens your phone's folder picker so you can save the <code>.json</code> backup directly into any directory on your device.</p>
           <div class="backup-btn-stack">
-            <button class="action-btn" onclick="exportDatabaseFile()">Save / Share .json File</button>
-            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">Copy Backup JSON to Clipboard</button>
+            <button type="button" class="action-btn" onclick="exportBackupChooseFolder()">Choose Folder & Save .json</button>
+            <button type="button" class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">Copy Backup JSON to Clipboard</button>
           </div>
+          <div class="backup-status-line" id="lastManualBackupInfo"></div>
         </div>
 
         <div class="backup-box" style="margin-bottom:0;">
-          <h4>Import Database (restore data)</h4>
-          <p>Select a saved <code>.json</code> file or paste your copied backup text below.</p>
-          <input type="file" id="importFileInput" accept="*/*" hidden onchange="importDatabaseFile(event)" />
+          <h4>Restore from Backup</h4>
+          <p>Select a saved <code>.json</code> file from your phone or paste copied JSON text below.</p>
+          <input type="file" id="importFileInput" accept=".json,application/json,*/*" hidden onchange="importDatabaseFile(event)" />
           <div class="backup-btn-stack">
-            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">Load .json File from Device</button>
+            <button type="button" class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">Load .json File from Phone</button>
           </div>
           <textarea id="pasteBackupInput" class="paste-area" placeholder="Paste your copied JSON backup text here..."></textarea>
-          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">Restore from Pasted Text</button>
+          <button type="button" class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">Restore from Pasted Text</button>
         </div>
       </div>
     </div>
@@ -1378,13 +1730,21 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%23141419'/%3E%3Ctext x='50%25' y='50%25' fill='%238e8e9a' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230d1419'/%3E%3Ctext x='50%25' y='50%25' fill='%238a99ad' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
+    const STREAMING_PROVIDERS = ['Digital / VOD', 'Netflix', 'Max', 'Disney+', 'Prime Video', 'Apple TV+', 'SkyShowtime', 'Cinema'];
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
     let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
+    let showStatuses = JSON.parse(localStorage.getItem('showStatuses') || '{}');
+    let myMovies = JSON.parse(localStorage.getItem('myMovies') || '[]');
     let showActivity = JSON.parse(localStorage.getItem('showActivity') || '{}');
+    let lastManualBackup = JSON.parse(localStorage.getItem('lastManualBackup') || 'null');
+    let hideFutureEpisodes = localStorage.getItem('hideFutureEpisodes') === 'true';
+
     let currentDrawerShow = null;
+    let currentModalMovie = null;
     let activeMyFilter = 'all';
+    let activeMovieFilter = 'all';
     let exploreLoaded = false;
     let navHistory = ['schedules'];
 
@@ -1402,6 +1762,13 @@
         .replace(/>/g, '&gt;');
     }
 
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
     function formatEpCode(season, number) {
       const s = String(Number(season) || 0).padStart(2, '0');
       const e = String(Number(number) || 0).padStart(2, '0');
@@ -1415,6 +1782,12 @@
     function buildSeasonCopyText(showName, season) {
       const s = String(Number(season) || 0).padStart(2, '0');
       return `${String(showName || '').trim()} S${s}`;
+    }
+
+    function getShowTrackingStatus(showId) {
+      const st = showStatuses[showId];
+      if (st === 'on_hold' || st === 'dropped') return st;
+      return 'active';
     }
 
     function touchShowActivity(showId) {
@@ -1494,7 +1867,7 @@
       document.documentElement.setAttribute('data-theme', saved);
       document.getElementById('themeBtn').textContent = saved === 'dark' ? '☀️' : '🌙';
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', saved === 'dark' ? '#0b0b0f' : '#f3f4f6');
+      if (meta) meta.setAttribute('content', saved === 'dark' ? '#05070a' : '#eef3f7');
     }
 
     function toggleTheme() {
@@ -1504,7 +1877,7 @@
       localStorage.setItem('tracker_theme', next);
       document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', next === 'dark' ? '#0b0b0f' : '#f3f4f6');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#05070a' : '#eef3f7');
     }
     initTheme();
 
@@ -1512,7 +1885,41 @@
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2500);
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    /* =========================================================
+       HEADER BADGE FOR TODAY'S EPISODES
+       ========================================================= */
+    function updateTodayHeaderBadge() {
+      const todayStr = getLocalDateStr(0);
+      let todayCount = 0;
+
+      myShows.forEach(show => {
+        if (getShowTrackingStatus(show.id) !== 'active') return;
+        (show.episodes || []).forEach(ep => {
+          if (ep.airdate === todayStr && !watchedEpisodes[ep.id]) {
+            todayCount++;
+          }
+        });
+      });
+
+      const badge = document.getElementById('todayHeaderBadge');
+      const textEl = document.getElementById('todayHeaderBadgeText');
+      if (todayCount > 0) {
+        textEl.textContent = `Today: ${todayCount}`;
+        badge.classList.add('visible');
+      } else {
+        badge.classList.remove('visible');
+      }
+    }
+
+    function jumpToTodaySchedule() {
+      switchTab('schedules');
+      const heading = document.getElementById('schedTodayHeading');
+      if (heading) {
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     function updateBackButtonVisibility() {
@@ -1537,6 +1944,7 @@
 
       if (tab === 'schedules') renderSchedule();
       if (tab === 'my') renderMyShows();
+      if (tab === 'movies') renderMyMovies();
       if (tab === 'explore' && !exploreLoaded) loadTrendingShows();
     }
 
@@ -1544,6 +1952,12 @@
       const epModal = document.getElementById('epSummaryOverlay');
       if (epModal.classList.contains('open')) {
         closeEpSummaryModal();
+        return;
+      }
+
+      const movieModal = document.getElementById('movieModalOverlay');
+      if (movieModal.classList.contains('open')) {
+        closeMovieModal();
         return;
       }
 
@@ -1589,21 +2003,49 @@
     }
     registerAndroidBackHandler();
 
+    /* =========================================================
+       MANUAL BACKUP DIRECTLY TO PHONE IN CHOSEN DIRECTORY
+       ========================================================= */
     function buildBackupPayload() {
       return {
         app: 'My TV Tracker',
-        version: 1,
+        version: 2,
+        mode: 'manual',
         exportedAt: new Date().toISOString(),
         myShows,
-        watchedEpisodes
+        watchedEpisodes,
+        showStatuses,
+        myMovies
       };
+    }
+
+    function renderLastBackupInfo() {
+      const el = document.getElementById('lastManualBackupInfo');
+      if (!el) return;
+      if (!lastManualBackup) {
+        el.textContent = 'No manual backup saved yet.';
+        return;
+      }
+      const dt = new Date(lastManualBackup.savedAt);
+      const formatted = isNaN(dt.getTime()) ? lastManualBackup.savedAt : dt.toLocaleString();
+      el.textContent = `Last saved: ${formatted} (${lastManualBackup.location || 'Phone storage'})`;
+    }
+
+    function recordManualBackup(locationLabel) {
+      lastManualBackup = {
+        savedAt: new Date().toISOString(),
+        location: locationLabel
+      };
+      localStorage.setItem('lastManualBackup', JSON.stringify(lastManualBackup));
+      renderLastBackupInfo();
     }
 
     function openBackupModal() {
       const totalWatched = Object.keys(watchedEpisodes).length;
       document.getElementById('backupStatsText').textContent =
-        `Currently in database: ${myShows.length} shows and ${totalWatched} watched episodes.`;
+        `Database: ${myShows.length} shows, ${totalWatched} watched episodes, ${myMovies.length} movies.`;
       document.getElementById('pasteBackupInput').value = '';
+      renderLastBackupInfo();
       document.getElementById('backupOverlay').classList.add('open');
     }
 
@@ -1611,62 +2053,59 @@
       document.getElementById('backupOverlay').classList.remove('open');
     }
 
-    async function exportDatabaseFile() {
+    async function exportBackupChooseFolder() {
       const payload = buildBackupPayload();
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = `my-tv-tracker-backup-${getLocalDateStr(0)}.json`;
-      const plugins = window.Capacitor && window.Capacitor.Plugins;
 
-      if (plugins && plugins.Filesystem) {
+      // 1. Native Android/Chromium Directory & File Save Picker (user chooses exact directory on phone)
+      if (typeof window.showSaveFilePicker === 'function') {
         try {
-          const cacheRes = await plugins.Filesystem.writeFile({
-            path: fileName,
-            data: jsonStr,
-            directory: 'CACHE',
-            encoding: 'utf8'
+          const handle = await window.showSaveFilePicker({
+            suggestedName: fileName,
+            types: [{
+              description: 'JSON Backup File',
+              accept: { 'application/json': ['.json'] }
+            }]
           });
-
-          if (plugins.Share) {
-            await plugins.Share.share({
-              title: 'My TV Tracker - Database Backup',
-              text: 'TV shows database backup',
-              url: cacheRes.uri,
-              dialogTitle: 'Choose where to save backup'
-            });
-            return;
-          }
-        } catch (err) {
-          if (err && String(err.message || err).toLowerCase().includes('cancel')) {
-            return;
-          }
-        }
-
-        try {
-          await plugins.Filesystem.writeFile({
-            path: fileName,
-            data: jsonStr,
-            directory: 'DOCUMENTS',
-            encoding: 'utf8'
-          });
-          showToast(`Saved to Documents/${fileName}`);
+          const writable = await handle.createWritable();
+          await writable.write(jsonStr);
+          await writable.close();
+          recordManualBackup(handle.name || fileName);
+          showToast(`Backup saved: ${handle.name || fileName}`);
           return;
-        } catch (docErr) {
-          try {
-            await plugins.Filesystem.writeFile({
-              path: fileName,
-              data: jsonStr,
-              directory: 'EXTERNAL',
-              encoding: 'utf8'
-            });
-            showToast(`Saved to Android/data/.../${fileName}`);
-            return;
-          } catch (extErr) {
-            showToast("Unable to save file — use clipboard copy instead.");
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
             return;
           }
         }
       }
 
+      // 2. Capacitor Filesystem fallback for older Android WebViews
+      const plugins = window.Capacitor && window.Capacitor.Plugins;
+      if (plugins && plugins.Filesystem) {
+        const dirsToTry = [
+          { dir: 'DOCUMENTS', label: `Documents/${fileName}` },
+          { dir: 'EXTERNAL', label: `Android/data/.../${fileName}` },
+          { dir: 'DATA', label: `App Data/${fileName}` }
+        ];
+
+        for (const item of dirsToTry) {
+          try {
+            await plugins.Filesystem.writeFile({
+              path: fileName,
+              data: jsonStr,
+              directory: item.dir,
+              encoding: 'utf8'
+            });
+            recordManualBackup(item.label);
+            showToast(`Saved to ${item.label}`);
+            return;
+          } catch (e) {}
+        }
+      }
+
+      // 3. Browser download fallback
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1676,7 +2115,8 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast("Backup file downloaded.");
+      recordManualBackup(fileName);
+      showToast(`Backup downloaded: ${fileName}`);
     }
 
     function copyDatabaseClipboard() {
@@ -1692,13 +2132,20 @@
 
       myShows = parsed.myShows;
       watchedEpisodes = parsed.watchedEpisodes || {};
+      showStatuses = (parsed.showStatuses && typeof parsed.showStatuses === 'object') ? parsed.showStatuses : {};
+      myMovies = Array.isArray(parsed.myMovies) ? parsed.myMovies : [];
+
       localStorage.setItem('myShows', JSON.stringify(myShows));
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+      localStorage.setItem('showStatuses', JSON.stringify(showStatuses));
+      localStorage.setItem('myMovies', JSON.stringify(myMovies));
 
+      updateTodayHeaderBadge();
       renderSchedule();
       renderMyShows();
+      renderMyMovies();
       closeBackupModal();
-      showToast(`Successfully restored ${myShows.length} shows!`);
+      showToast(`Restored ${myShows.length} shows & ${myMovies.length} movies!`);
     }
 
     function importDatabaseFile(event) {
@@ -1731,6 +2178,9 @@
       }
     }
 
+    /* =========================================================
+       SYNC TV SHOWS (TVMAZE API)
+       ========================================================= */
     async function syncAllShows() {
       if (myShows.length === 0) {
         showToast("Add shows from the Explore tab first.");
@@ -1746,6 +2196,7 @@
           myShows[i] = mapRawShow(rawShow);
         }
         localStorage.setItem('myShows', JSON.stringify(myShows));
+        updateTodayHeaderBadge();
         renderSchedule();
         renderMyShows();
         showToast("Schedule and episodes updated!");
@@ -1779,6 +2230,9 @@
       };
     }
 
+    /* =========================================================
+       EXPLORE TV SHOWS
+       ========================================================= */
     async function loadTrendingShows() {
       const grid = document.getElementById('searchGrid');
       grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Loading trending shows...</p>';
@@ -1840,18 +2294,23 @@
             ${isTracked ? '<div class="show-badge">Following</div>' : ''}
           </div>
           <div class="show-info">
-            <div class="show-name">${show.name}</div>
-            <div class="show-ep-count">${show.premiered ? show.premiered.slice(0, 4) + ' • ' : ''}${show.status || ''}</div>
+            <div class="show-name">${escapeHtml(show.name)}</div>
+            <div class="show-ep-count">${show.premiered ? show.premiered.slice(0, 4) + ' • ' : ''}${escapeHtml(show.status || '')}</div>
           </div>
         `;
         grid.appendChild(card);
       });
     }
 
+    /* =========================================================
+       SHOW DETAILS DRAWER, STATUS (ON HOLD/DROPPED), HIDE FUTURE
+       ========================================================= */
     async function openShowDetails(id) {
       currentDrawerShow = null;
       document.getElementById('drawerEpList').innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">Loading episodes...</p>';
       document.getElementById('markPrevSeasonsBtn').style.display = 'none';
+      document.getElementById('showStatusBox').style.display = 'none';
+      document.getElementById('epFilterBar').style.display = 'none';
       document.getElementById('overlay').classList.add('open');
 
       try {
@@ -1871,12 +2330,58 @@
         document.getElementById('drawerSummary').innerHTML = show.summary;
 
         updateAddBtnState();
+        updateShowStatusUI();
         updatePrevSeasonsBtnState();
         renderEpList(show.episodes);
         updateProgressLabel();
       } catch (e) {
         showToast("Error loading show details.");
         closeDrawer();
+      }
+    }
+
+    function updateShowStatusUI() {
+      const box = document.getElementById('showStatusBox');
+      if (!currentDrawerShow) {
+        box.style.display = 'none';
+        return;
+      }
+      const isFollowing = myShows.some(s => s.id === currentDrawerShow.id);
+      if (!isFollowing) {
+        box.style.display = 'none';
+        return;
+      }
+
+      box.style.display = 'block';
+      const currentSt = getShowTrackingStatus(currentDrawerShow.id);
+      box.querySelectorAll('.status-choice-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-status') === currentSt);
+      });
+    }
+
+    function setShowTrackingStatus(newStatus) {
+      if (!currentDrawerShow) return;
+      if (newStatus === 'active') {
+        delete showStatuses[currentDrawerShow.id];
+      } else {
+        showStatuses[currentDrawerShow.id] = newStatus;
+      }
+      localStorage.setItem('showStatuses', JSON.stringify(showStatuses));
+      touchShowActivity(currentDrawerShow.id);
+      updateShowStatusUI();
+      updateTodayHeaderBadge();
+      renderMyShows();
+      renderSchedule();
+
+      const labels = { active: 'Active', on_hold: 'On Hold', dropped: 'Dropped' };
+      showToast(`Status set to ${labels[newStatus] || newStatus}`);
+    }
+
+    function toggleHideFutureEpisodes() {
+      hideFutureEpisodes = !hideFutureEpisodes;
+      localStorage.setItem('hideFutureEpisodes', String(hideFutureEpisodes));
+      if (currentDrawerShow) {
+        renderEpList(currentDrawerShow.episodes);
       }
     }
 
@@ -1935,6 +2440,7 @@
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateTodayHeaderBadge();
       renderMyShows();
       renderSchedule();
       showToast(allPrevWatched
@@ -1959,16 +2465,39 @@
 
     function renderEpList(episodes) {
       const list = document.getElementById('drawerEpList');
+      const filterBar = document.getElementById('epFilterBar');
+      const toggleBtn = document.getElementById('toggleFutureBtn');
+      const infoText = document.getElementById('epFilterInfoText');
+
       list.innerHTML = '';
       if (!episodes || episodes.length === 0) {
+        filterBar.style.display = 'none';
         list.innerHTML = '<p class="empty-msg">No episodes available.</p>';
         return;
       }
 
       const todayStr = getLocalDateStr(0);
+      const futureOrTbaCount = episodes.filter(ep => !ep.airdate || ep.airdate > todayStr).length;
+
+      filterBar.style.display = 'flex';
+      toggleBtn.classList.toggle('active', hideFutureEpisodes);
+      toggleBtn.textContent = hideFutureEpisodes ? 'Show All' : 'Hide Future / TBA';
+      infoText.innerHTML = hideFutureEpisodes
+        ? `Aired only <span>(${futureOrTbaCount} hidden)</span>`
+        : `All episodes <span>(${episodes.length})</span>`;
+
+      const visibleEpisodes = hideFutureEpisodes
+        ? episodes.filter(ep => Boolean(ep.airdate && ep.airdate <= todayStr))
+        : episodes;
+
+      if (visibleEpisodes.length === 0) {
+        list.innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">No aired episodes yet. Tap "Show All" to view upcoming/TBA episodes.</p>';
+        return;
+      }
+
       const showName = currentDrawerShow ? currentDrawerShow.name : '';
       const seasons = {};
-      episodes.forEach(ep => {
+      visibleEpisodes.forEach(ep => {
         const sNum = Number(ep.season);
         if (!seasons[sNum]) seasons[sNum] = [];
         seasons[sNum].push(ep);
@@ -2010,7 +2539,7 @@
           const badgeHtml = getAirBadgeHtml(ep.airdate, todayStr);
           item.innerHTML = `
             <div class="ep-item-meta">
-              <div class="ep-item-title">${ep.number}. ${ep.name} ${badgeHtml}</div>
+              <div class="ep-item-title">${ep.number}. ${escapeHtml(ep.name)} ${badgeHtml}</div>
               <div class="ep-item-date">${codeLabel} • ${formatDateEn(ep.airdate)}</div>
             </div>
             <div class="ep-item-controls">
@@ -2090,6 +2619,7 @@
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateTodayHeaderBadge();
       renderMyShows();
       renderSchedule();
     }
@@ -2106,6 +2636,7 @@
       if (currentDrawerShow) touchShowActivity(currentDrawerShow.id);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateTodayHeaderBadge();
       renderMyShows();
       renderSchedule();
     }
@@ -2116,6 +2647,7 @@
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
       if (showId) touchShowActivity(showId);
       showToast("Marked as watched!");
+      updateTodayHeaderBadge();
       renderSchedule();
       renderMyShows();
     }
@@ -2132,6 +2664,8 @@
       const idx = myShows.findIndex(s => s.id === currentDrawerShow.id);
       if (idx > -1) {
         myShows.splice(idx, 1);
+        delete showStatuses[currentDrawerShow.id];
+        localStorage.setItem('showStatuses', JSON.stringify(showStatuses));
         showToast("Removed from My Shows.");
       } else {
         myShows.push(currentDrawerShow);
@@ -2140,6 +2674,8 @@
       }
       localStorage.setItem('myShows', JSON.stringify(myShows));
       updateAddBtnState();
+      updateShowStatusUI();
+      updateTodayHeaderBadge();
       renderMyShows();
       renderSchedule();
     }
@@ -2170,6 +2706,8 @@
     }
 
     function getShowCategory(show, todayStr) {
+      const st = getShowTrackingStatus(show.id);
+      if (st === 'on_hold' || st === 'dropped') return 'paused';
       const eps = show.episodes || [];
       const hasUnwatchedAired = eps.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
       if (hasUnwatchedAired) return 'watch';
@@ -2177,13 +2715,13 @@
       return isEnded ? 'ended' : 'waiting';
     }
 
-    function renderCinematicHeroAndCarousel(sortedShows, todayStr) {
+    function renderCinematicHeroAndCarousel(activeShows, todayStr) {
       const heroWrap = document.getElementById('cinematicHeroContainer');
       const carouselWrap = document.getElementById('episodesCarouselWrap');
       const carouselEl = document.getElementById('upNextCarousel');
 
       const upNextItems = [];
-      sortedShows.forEach(s => {
+      activeShows.forEach(s => {
         const ep = getNextEpisode(s);
         if (ep) {
           upNextItems.push({
@@ -2211,22 +2749,22 @@
         : (top.isAired ? 'Up Next' : 'Upcoming');
 
       const watchBtnHtml = top.isAired
-        ? `<button type="button" class="btn-netflix-primary" onclick="quickMarkWatched(${top.ep.id}, event, ${top.show.id})">✓ Watched</button>`
-        : `<button type="button" class="btn-netflix-primary" onclick="openShowDetails(${top.show.id})">Details</button>`;
+        ? `<button type="button" class="btn-mint-primary" onclick="quickMarkWatched(${top.ep.id}, event, ${top.show.id})">✓ Watched</button>`
+        : `<button type="button" class="btn-mint-primary" onclick="openShowDetails(${top.show.id})">Details</button>`;
 
       heroWrap.innerHTML = `
         <div class="cinematic-hero" style="background-image: url('${heroBg}');" onclick="openShowDetails(${top.show.id})">
           <div class="hero-content">
             <div class="hero-badges">
               <span class="hero-pill-tag">${tagLabel}</span>
-              <span class="hero-pill-meta">${top.show.network}</span>
+              <span class="hero-pill-meta">${escapeHtml(top.show.network)}</span>
             </div>
-            <div class="hero-show-title">${top.show.name}</div>
-            <div class="hero-ep-line"><span>${topCode}</span> • ${top.ep.name}</div>
+            <div class="hero-show-title">${escapeHtml(top.show.name)}</div>
+            <div class="hero-ep-line"><span>${topCode}</span> • ${escapeHtml(top.ep.name)}</div>
             <div class="hero-air-sub">${formatDateEn(top.ep.airdate)}</div>
             <div class="hero-actions">
               ${watchBtnHtml}
-              <button type="button" class="btn-netflix-secondary" data-copy="${topCopy}" onclick="copyFromBtn(this, event)">Copy ${topCopy}</button>
+              <button type="button" class="btn-mint-secondary" data-copy="${topCopy}" onclick="copyFromBtn(this, event)">Copy ${topCopy}</button>
             </div>
           </div>
         </div>
@@ -2259,8 +2797,8 @@
           </div>
           <div class="h-ep-body">
             <div>
-              <div class="h-ep-show">${item.show.name}</div>
-              <div class="h-ep-name">${item.ep.name}</div>
+              <div class="h-ep-show">${escapeHtml(item.show.name)}</div>
+              <div class="h-ep-name">${escapeHtml(item.ep.name)}</div>
             </div>
             <div class="h-ep-actions">
               <button type="button" class="mini-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Copy ${copyPayload}">Copy</button>
@@ -2277,7 +2815,7 @@
       grid.innerHTML = '';
       const todayStr = getLocalDateStr(0);
 
-      document.querySelectorAll('.filter-btn').forEach(b => {
+      document.querySelectorAll('#view-my .filter-btn').forEach(b => {
         b.classList.toggle('active', b.getAttribute('data-filter') === activeMyFilter);
       });
 
@@ -2285,6 +2823,7 @@
       let countWatch = 0;
       let countWaiting = 0;
       let countEnded = 0;
+      let countPaused = 0;
       let totalAired = 0;
       let totalWatched = 0;
 
@@ -2292,14 +2831,17 @@
         const cat = getShowCategory(s, todayStr);
         if (cat === 'watch') countWatch++;
         else if (cat === 'waiting') countWaiting++;
-        else countEnded++;
+        else if (cat === 'ended') countEnded++;
+        else if (cat === 'paused') countPaused++;
 
-        (s.episodes || []).forEach(ep => {
-          if (ep.airdate && ep.airdate <= todayStr) {
-            totalAired++;
-            if (watchedEpisodes[ep.id]) totalWatched++;
-          }
-        });
+        if (cat !== 'paused') {
+          (s.episodes || []).forEach(ep => {
+            if (ep.airdate && ep.airdate <= todayStr) {
+              totalAired++;
+              if (watchedEpisodes[ep.id]) totalWatched++;
+            }
+          });
+        }
       });
 
       const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
@@ -2309,15 +2851,21 @@
       document.getElementById('count-watch').textContent = countWatch;
       document.getElementById('count-waiting').textContent = countWaiting;
       document.getElementById('count-ended').textContent = countEnded;
+      document.getElementById('count-paused').textContent = countPaused;
 
       const allSorted = [...myShows].sort((a, b) => {
+        const aPaused = getShowCategory(a, todayStr) === 'paused' ? 1 : 0;
+        const bPaused = getShowCategory(b, todayStr) === 'paused' ? 1 : 0;
+        if (aPaused !== bPaused) return aPaused - bPaused;
+
         const aUnwatched = a.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
         const bUnwatched = b.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
         if (aUnwatched !== bUnwatched) return bUnwatched - aUnwatched;
         return (showActivity[b.id] || 0) - (showActivity[a.id] || 0);
       });
 
-      renderCinematicHeroAndCarousel(allSorted, todayStr);
+      const activeSorted = allSorted.filter(s => getShowTrackingStatus(s.id) === 'active');
+      renderCinematicHeroAndCarousel(activeSorted, todayStr);
 
       const showsToShow = allSorted.filter(s => {
         if (activeMyFilter === 'all') return true;
@@ -2329,7 +2877,8 @@
           all: 'No shows added yet. Search and follow shows in the Explore tab.',
           watch: 'All caught up! No unwatched aired episodes right now.',
           waiting: 'No ongoing shows waiting for new episodes.',
-          ended: 'No completed ended series yet.'
+          ended: 'No completed ended series yet.',
+          paused: 'No shows marked as On Hold or Dropped.'
         };
         grid.innerHTML = `<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">${emptyMessages[activeMyFilter] || emptyMessages.all}</p>`;
         return;
@@ -2341,12 +2890,19 @@
         const unwatchedReleased = show.episodes.filter(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]).length;
         const percent = total > 0 ? Math.round((watched / total) * 100) : 0;
         const nextEp = getNextEpisode(show);
+        const st = getShowTrackingStatus(show.id);
 
         const card = document.createElement('div');
         card.className = 'show-card';
         card.onclick = () => openShowDetails(show.id);
 
-        const badgeHtml = unwatchedReleased > 0 ? `<div class="show-badge">+${unwatchedReleased}</div>` : '';
+        const statusTagHtml = st === 'on_hold'
+          ? '<div class="show-status-tag on_hold">On Hold</div>'
+          : (st === 'dropped' ? '<div class="show-status-tag dropped">Dropped</div>' : '');
+
+        const badgeHtml = (st === 'active' && unwatchedReleased > 0)
+          ? `<div class="show-badge">+${unwatchedReleased}</div>`
+          : '';
 
         let bottomActionHtml = '';
         if (nextEp) {
@@ -2369,6 +2925,7 @@
         card.innerHTML = `
           <div class="poster-box">
             <img src="${show.image}" alt="${escapeAttr(show.name)}" loading="lazy" />
+            ${statusTagHtml}
             ${badgeHtml}
             <div class="poster-progress-bg">
               <div class="poster-progress-fg" style="width: ${percent}%"></div>
@@ -2376,7 +2933,7 @@
           </div>
           <div class="show-info">
             <div class="show-name-row">
-              <div class="show-name">${show.name}</div>
+              <div class="show-name">${escapeHtml(show.name)}</div>
               <span class="show-ep-count">${watched}/${total}</span>
             </div>
             ${bottomActionHtml}
@@ -2391,6 +2948,9 @@
       renderMyShows();
     }
 
+    /* =========================================================
+       SCHEDULE VIEW (WITH PROMINENT SxxExx BADGE IN ROWS)
+       ========================================================= */
     function renderSchedule() {
       const todayStr = getLocalDateStr(0);
       const tomorrowStr = getLocalDateStr(1);
@@ -2409,6 +2969,7 @@
       let upcomingEpisodes = [];
 
       myShows.forEach(show => {
+        if (getShowTrackingStatus(show.id) !== 'active') return;
         show.episodes.forEach(ep => {
           if (!ep.airdate || watchedEpisodes[ep.id]) return;
           upcomingEpisodes.push({
@@ -2446,12 +3007,12 @@
               <div class="hero-badges">
                 <span class="hero-pill-tag">Next Airing • ${daysStr}</span>
               </div>
-              <div class="hero-show-title">${hero.showName}</div>
-              <div class="hero-ep-line"><span>${code}</span> • ${hero.epName}</div>
+              <div class="hero-show-title">${escapeHtml(hero.showName)}</div>
+              <div class="hero-ep-line"><span>${code}</span> • ${escapeHtml(hero.epName)}</div>
               <div class="hero-air-sub">${formatDateEn(hero.airdate)}${hero.airtime ? ' at ' + hero.airtime : ''}</div>
               <div class="hero-actions">
-                <button type="button" class="btn-netflix-primary" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Watched</button>
-                <button type="button" class="btn-netflix-secondary" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
+                <button type="button" class="btn-mint-primary" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Watched</button>
+                <button type="button" class="btn-mint-secondary" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
               </div>
             </div>
           </div>
@@ -2471,9 +3032,12 @@
         row.innerHTML = `
           <img src="${ep.showImage}" alt="${escapeAttr(ep.showName)}" loading="lazy" />
           <div class="ep-details">
-            <div class="ep-show-name">${ep.showName}</div>
-            <div class="ep-spec">${code} • ${ep.epName}</div>
-            <div class="ep-air">${formatDateEn(ep.airdate)}${ep.airtime ? ' at ' + ep.airtime : ''}</div>
+            <div class="ep-show-name">${escapeHtml(ep.showName)}</div>
+            <div class="ep-spec">
+              <span class="ep-code-chip">${code}</span>
+              <span class="ep-name-trunc">${escapeHtml(ep.epName)}</span>
+            </div>
+            <div class="ep-air">${formatDateEn(ep.airdate)}${ep.airtime ? ' • ' + ep.airtime : ''}</div>
           </div>
           <div class="row-actions">
             <button type="button" class="copy-pill-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Copy ${copyPayload}">Copy</button>
@@ -2498,6 +3062,326 @@
       if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">No further upcoming episodes.</p>';
     }
 
+    /* =========================================================
+       MOVIES MODULE (SEARCH & STREAMING RELEASE TRACKER)
+       ========================================================= */
+    function getMovieReleaseStatus(movie, todayStr) {
+      if (movie.watched) return 'watched';
+      const relDate = movie.streamingDate || movie.releaseDate || '';
+      if (relDate && relDate > todayStr) return 'upcoming';
+      return 'available';
+    }
+
+    function getMovieCountdownLabel(movie, todayStr) {
+      const relDate = movie.streamingDate || movie.releaseDate || '';
+      if (!relDate) return 'Release TBA';
+      if (relDate > todayStr) {
+        const todayMs = new Date(todayStr + 'T00:00:00').getTime();
+        const relMs = new Date(relDate + 'T00:00:00').getTime();
+        const days = Math.round((relMs - todayMs) / (1000 * 60 * 60 * 24));
+        return days === 1 ? 'Arrives tomorrow' : `In ${days} days • ${formatDateEn(relDate)}`;
+      }
+      return `Available • ${formatDateEn(relDate)}`;
+    }
+
+    async function searchMovies() {
+      const query = document.getElementById('movieSearchInput').value.trim();
+      if (!query) {
+        clearMovieSearch();
+        return;
+      }
+
+      const wrap = document.getElementById('movieSearchResultsWrap');
+      const grid = document.getElementById('movieSearchGrid');
+      document.getElementById('movieSearchLabel').textContent = `Results for "${query}"`;
+      wrap.style.display = 'block';
+      grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">Searching movies & streaming dates...</p>';
+
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=movie&entity=movie&limit=20`);
+        const data = await res.json();
+        const results = (data && Array.isArray(data.results)) ? data.results : [];
+
+        if (results.length === 0) {
+          grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">No movies found.</p>';
+          return;
+        }
+
+        const todayStr = getLocalDateStr(0);
+        grid.innerHTML = '';
+
+        results.forEach(item => {
+          const movieObj = {
+            id: item.trackId,
+            title: item.trackName || 'Unknown Movie',
+            releaseDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
+            streamingDate: item.releaseDate ? item.releaseDate.slice(0, 10) : '',
+            provider: 'Digital / VOD',
+            genre: item.primaryGenreName || 'Movie',
+            description: item.longDescription || item.shortDescription || 'No description available.',
+            poster: item.artworkUrl100 ? toHttps(item.artworkUrl100.replace('100x100bb', '600x600bb')) : PLACEHOLDER_IMG,
+            watched: false
+          };
+
+          const existing = myMovies.find(m => m.id === movieObj.id);
+          const displayMovie = existing || movieObj;
+          const isUpcoming = Boolean(displayMovie.streamingDate && displayMovie.streamingDate > todayStr);
+          const yearStr = displayMovie.releaseDate ? displayMovie.releaseDate.slice(0, 4) : '';
+          const copyTitle = escapeAttr(yearStr ? `${displayMovie.title} (${yearStr})` : displayMovie.title);
+
+          const card = document.createElement('div');
+          card.className = 'show-card';
+          card.onclick = () => openMovieModal(displayMovie);
+
+          const statusBadge = existing
+            ? '<div class="show-badge">Tracked</div>'
+            : (isUpcoming ? '<div class="show-status-tag upcoming">Upcoming</div>' : '');
+
+          card.innerHTML = `
+            <div class="poster-box">
+              <img src="${displayMovie.poster}" alt="${escapeAttr(displayMovie.title)}" loading="lazy" />
+              ${statusBadge}
+            </div>
+            <div class="show-info">
+              <div class="show-name">${escapeHtml(displayMovie.title)}</div>
+              <div class="movie-meta-line">${getMovieCountdownLabel(displayMovie, todayStr)}</div>
+              <div class="card-next-box">
+                <button type="button" class="card-copy-btn" data-copy="${copyTitle}" onclick="copyFromBtn(this, event)">Copy</button>
+                <button type="button" class="card-check-btn" onclick="quickTrackMovie(event, ${movieObj.id})" data-movie="${escapeAttr(JSON.stringify(movieObj))}" title="Track movie">${existing ? '✓' : '+'}</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:16px;">Error fetching movie data.</p>';
+      }
+    }
+
+    function clearMovieSearch() {
+      document.getElementById('movieSearchInput').value = '';
+      document.getElementById('movieSearchResultsWrap').style.display = 'none';
+      document.getElementById('movieSearchGrid').innerHTML = '';
+    }
+
+    function quickTrackMovie(event, movieId) {
+      if (event) event.stopPropagation();
+      const btn = event.currentTarget;
+      const existingIdx = myMovies.findIndex(m => m.id === movieId);
+      if (existingIdx > -1) {
+        showToast("Already in My Movies.");
+        return;
+      }
+      try {
+        const raw = JSON.parse(btn.getAttribute('data-movie'));
+        myMovies.unshift(raw);
+        localStorage.setItem('myMovies', JSON.stringify(myMovies));
+        btn.textContent = '✓';
+        renderMyMovies();
+        showToast(`Added "${raw.title}" to Movies!`);
+      } catch (e) {}
+    }
+
+    function openMovieModal(movie) {
+      const tracked = myMovies.find(m => m.id === movie.id);
+      currentModalMovie = tracked || { ...movie };
+      const todayStr = getLocalDateStr(0);
+
+      const yearStr = currentModalMovie.releaseDate ? currentModalMovie.releaseDate.slice(0, 4) : '';
+      document.getElementById('movieModalYear').textContent = `${yearStr}${yearStr ? ' • ' : ''}${currentModalMovie.provider || 'Digital / VOD'}`;
+      document.getElementById('movieModalTitle').textContent = currentModalMovie.title;
+      document.getElementById('movieModalPoster').src = currentModalMovie.poster || PLACEHOLDER_IMG;
+      document.getElementById('movieModalReleaseInfo').textContent = getMovieCountdownLabel(currentModalMovie, todayStr);
+      document.getElementById('movieModalGenre').textContent = currentModalMovie.genre || 'Movie';
+      document.getElementById('movieModalDesc').textContent = currentModalMovie.description || 'No description available.';
+
+      const copyPayload = yearStr ? `${currentModalMovie.title} (${yearStr})` : currentModalMovie.title;
+      const copyBtn = document.getElementById('movieModalCopyBtn');
+      copyBtn.setAttribute('data-copy', copyPayload);
+      copyBtn.textContent = `Copy "${copyPayload}"`;
+
+      document.getElementById('movieCustomDateInput').value = currentModalMovie.streamingDate || currentModalMovie.releaseDate || '';
+
+      const chipsWrap = document.getElementById('movieProviderChips');
+      chipsWrap.innerHTML = '';
+      STREAMING_PROVIDERS.forEach(prov => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = `provider-chip ${(currentModalMovie.provider || 'Digital / VOD') === prov ? 'active' : ''}`;
+        chip.textContent = prov;
+        chip.onclick = () => selectMovieProvider(prov);
+        chipsWrap.appendChild(chip);
+      });
+
+      updateMovieModalButtons();
+      document.getElementById('movieModalOverlay').classList.add('open');
+    }
+
+    function closeMovieModal() {
+      document.getElementById('movieModalOverlay').classList.remove('open');
+    }
+
+    function selectMovieProvider(providerName) {
+      if (!currentModalMovie) return;
+      currentModalMovie.provider = providerName;
+      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      if (idx > -1) {
+        myMovies[idx].provider = providerName;
+        localStorage.setItem('myMovies', JSON.stringify(myMovies));
+        renderMyMovies();
+      }
+      openMovieModal(currentModalMovie);
+    }
+
+    function updateMovieStreamingDate(newDate) {
+      if (!currentModalMovie) return;
+      currentModalMovie.streamingDate = newDate;
+      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      if (idx > -1) {
+        myMovies[idx].streamingDate = newDate;
+        localStorage.setItem('myMovies', JSON.stringify(myMovies));
+        renderMyMovies();
+      }
+      document.getElementById('movieModalReleaseInfo').textContent = getMovieCountdownLabel(currentModalMovie, getLocalDateStr(0));
+    }
+
+    function updateMovieModalButtons() {
+      if (!currentModalMovie) return;
+      const isTracked = myMovies.some(m => m.id === currentModalMovie.id);
+      const followBtn = document.getElementById('movieFollowBtn');
+      const watchedBtn = document.getElementById('movieWatchedBtn');
+
+      if (isTracked) {
+        followBtn.textContent = '✕ Remove Movie';
+        followBtn.className = 'action-btn remove-btn';
+        watchedBtn.style.display = 'block';
+        watchedBtn.textContent = currentModalMovie.watched ? '✓ Watched (Tap to Undo)' : '✓ Mark Movie Watched';
+      } else {
+        followBtn.textContent = '+ Track Movie';
+        followBtn.className = 'action-btn';
+        watchedBtn.style.display = 'none';
+      }
+    }
+
+    function toggleTrackCurrentMovie() {
+      if (!currentModalMovie) return;
+      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      if (idx > -1) {
+        myMovies.splice(idx, 1);
+        showToast("Removed from My Movies.");
+      } else {
+        myMovies.unshift({ ...currentModalMovie });
+        showToast("Added to My Movies!");
+      }
+      localStorage.setItem('myMovies', JSON.stringify(myMovies));
+      updateMovieModalButtons();
+      renderMyMovies();
+    }
+
+    function toggleCurrentMovieWatched() {
+      if (!currentModalMovie) return;
+      const idx = myMovies.findIndex(m => m.id === currentModalMovie.id);
+      if (idx === -1) return;
+      myMovies[idx].watched = !myMovies[idx].watched;
+      currentModalMovie.watched = myMovies[idx].watched;
+      localStorage.setItem('myMovies', JSON.stringify(myMovies));
+      updateMovieModalButtons();
+      renderMyMovies();
+      showToast(currentModalMovie.watched ? "Movie marked as watched!" : "Movie marked as unwatched.");
+    }
+
+    function quickToggleMovieWatched(movieId, event) {
+      if (event) event.stopPropagation();
+      const idx = myMovies.findIndex(m => m.id === movieId);
+      if (idx === -1) return;
+      myMovies[idx].watched = !myMovies[idx].watched;
+      localStorage.setItem('myMovies', JSON.stringify(myMovies));
+      renderMyMovies();
+      showToast(myMovies[idx].watched ? "Movie marked as watched!" : "Movie unmarked.");
+    }
+
+    function filterMyMovies(filterType) {
+      activeMovieFilter = filterType;
+      renderMyMovies();
+    }
+
+    function renderMyMovies() {
+      const grid = document.getElementById('myMoviesGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const todayStr = getLocalDateStr(0);
+
+      document.querySelectorAll('.movie-filter-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-mfilter') === activeMovieFilter);
+      });
+
+      let cAll = myMovies.length;
+      let cUpcoming = 0;
+      let cAvailable = 0;
+      let cWatched = 0;
+
+      myMovies.forEach(m => {
+        const st = getMovieReleaseStatus(m, todayStr);
+        if (st === 'upcoming') cUpcoming++;
+        else if (st === 'available') cAvailable++;
+        else if (st === 'watched') cWatched++;
+      });
+
+      document.getElementById('mcount-all').textContent = cAll;
+      document.getElementById('mcount-upcoming').textContent = cUpcoming;
+      document.getElementById('mcount-available').textContent = cAvailable;
+      document.getElementById('mcount-watched').textContent = cWatched;
+      document.getElementById('myMoviesCountLabel').textContent = `${cAll} ${cAll === 1 ? 'movie' : 'movies'}`;
+
+      const list = myMovies.filter(m => {
+        if (activeMovieFilter === 'all') return true;
+        return getMovieReleaseStatus(m, todayStr) === activeMovieFilter;
+      });
+
+      if (list.length === 0) {
+        const msgs = {
+          all: 'No movies tracked yet. Search a movie above to check streaming arrival.',
+          upcoming: 'No upcoming movies waiting for streaming release.',
+          available: 'No available unwatched movies right now.',
+          watched: 'No watched movies yet.'
+        };
+        grid.innerHTML = `<p class="empty-msg" style="grid-column:1/-1; text-align:center; padding:24px;">${msgs[activeMovieFilter] || msgs.all}</p>`;
+        return;
+      }
+
+      list.forEach(movie => {
+        const st = getMovieReleaseStatus(movie, todayStr);
+        const yearStr = movie.releaseDate ? movie.releaseDate.slice(0, 4) : '';
+        const copyPayload = escapeAttr(yearStr ? `${movie.title} (${yearStr})` : movie.title);
+
+        const card = document.createElement('div');
+        card.className = 'show-card';
+        card.onclick = () => openMovieModal(movie);
+
+        const topBadge = st === 'upcoming'
+          ? '<div class="show-status-tag upcoming">Upcoming</div>'
+          : (st === 'watched' ? '<div class="show-badge">Watched</div>' : '');
+
+        card.innerHTML = `
+          <div class="poster-box">
+            <img src="${movie.poster || PLACEHOLDER_IMG}" alt="${escapeAttr(movie.title)}" loading="lazy" />
+            ${topBadge}
+          </div>
+          <div class="show-info">
+            <div class="show-name">${escapeHtml(movie.title)}</div>
+            <div class="movie-meta-line">${getMovieCountdownLabel(movie, todayStr)}</div>
+            <div><span class="movie-provider-pill">${escapeHtml(movie.provider || 'Digital / VOD')}</span></div>
+            <div class="card-next-box">
+              <button type="button" class="card-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)">Copy</button>
+              <button type="button" class="card-check-btn" onclick="quickToggleMovieWatched(${movie.id}, event)" title="Toggle watched">✓</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    updateTodayHeaderBadge();
     renderSchedule();
   </script>
 </body>

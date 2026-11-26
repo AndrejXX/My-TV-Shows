@@ -1,6 +1,6 @@
 {
-  "appId": "hr.serijetracker.app",
-  "appName": "Serije Tracker",
+  "appId": "hr.mytvtracker.app",
+  "appName": "My TV Tracker",
   "webDir": "www",
   "bundledWebRuntime": false,
   "android": {

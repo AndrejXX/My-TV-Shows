@@ -1,0 +1,13 @@
+{
+  "name": "serije-tracker",
+  "version": "1.0.0",
+  "description": "Lokalni Android tracker za TV serije i epizode putem TVmaze API-ja",
+  "scripts": {
+    "sync": "npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0"
+  }
+}

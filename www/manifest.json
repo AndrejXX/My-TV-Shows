@@ -1,6 +1,6 @@
 {
-  "name": "Serije Tracker",
-  "short_name": "Serije Tracker",
+  "name": "My TV Tracker",
+  "short_name": "My TV Tracker",
   "description": "Prati omiljene serije i datume izlaska novih epizoda",
   "start_url": "./index.html",
   "display": "standalone",

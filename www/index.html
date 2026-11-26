@@ -3,64 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#05070a" />
+  <meta name="theme-color" content="#0b0b0f" />
   <title>My TV Tracker</title>
   <link rel="manifest" href="manifest.json" />
   <style>
     :root {
-      --bg: #05070a;
-      --shell-bg: linear-gradient(180deg, rgba(10, 20, 25, 0.96) 0%, rgba(5, 8, 12, 0.99) 100%);
-      --shell-border: rgba(52, 211, 153, 0.55);
-      --shell-glow: rgba(16, 185, 129, 0.14);
-      --card-bg: rgba(11, 20, 26, 0.94);
-      --card-border: rgba(52, 211, 153, 0.28);
-      --pill-bg: rgba(6, 11, 15, 0.96);
-      --mint: #10b981;
-      --mint-bright: #34d399;
-      --mint-glow: rgba(52, 211, 153, 0.38);
-      --mint-dim: rgba(16, 185, 129, 0.15);
-      --cyan: #38bdf8;
-      --cyan-bright: #22d3ee;
-      --cyan-glow: rgba(34, 211, 238, 0.36);
-      --cyan-dim: rgba(56, 189, 248, 0.14);
-      --amber: #fbbf24;
-      --amber-dim: rgba(251, 191, 36, 0.14);
-      --danger: #ef4444;
+      --bg: #0b0b0f;
+      --surface: #141419;
+      --surface-alt: #1e1e26;
+      --glass: rgba(20, 20, 26, 0.86);
+      --border: rgba(255, 255, 255, 0.11);
+      --border-strong: rgba(255, 255, 255, 0.22);
+      --red: #e50914;
+      --red-hover: #f40612;
+      --red-dim: rgba(229, 9, 20, 0.16);
+      --red-glow: rgba(229, 9, 20, 0.38);
+      --green: #22c55e;
+      --green-dim: rgba(34, 197, 94, 0.15);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.15);
       --text: #ffffff;
-      --text-soft: #cbd5e1;
-      --muted: #94a3b8;
-      --line: rgba(148, 163, 184, 0.2);
-      --hud-tick: rgba(148, 163, 184, 0.26);
-      --on-mint: #04130d;
-      --on-cyan: #04131a;
+      --text-soft: #d4d4dc;
+      --muted: #8e8e9a;
+      --hero-fade: linear-gradient(180deg, rgba(11, 11, 15, 0.15) 0%, rgba(11, 11, 15, 0.68) 54%, #0b0b0f 100%);
     }
 
     [data-theme="light"] {
-      --bg: #eef3f7;
-      --shell-bg: linear-gradient(180deg, #ffffff 0%, #f5f8fb 100%);
-      --shell-border: rgba(5, 150, 105, 0.42);
-      --shell-glow: rgba(5, 150, 105, 0.08);
-      --card-bg: #f8fafc;
-      --card-border: rgba(5, 150, 105, 0.25);
-      --pill-bg: #e2e8f0;
-      --mint: #059669;
-      --mint-bright: #10b981;
-      --mint-glow: rgba(16, 185, 129, 0.24);
-      --mint-dim: rgba(16, 185, 129, 0.12);
-      --cyan: #0284c7;
-      --cyan-bright: #0369a1;
-      --cyan-glow: rgba(2, 132, 199, 0.22);
-      --cyan-dim: rgba(2, 132, 199, 0.11);
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --surface-alt: #e8eaef;
+      --glass: rgba(255, 255, 255, 0.92);
+      --border: rgba(15, 23, 42, 0.11);
+      --border-strong: rgba(15, 23, 42, 0.2);
+      --red: #d80813;
+      --red-hover: #b90710;
+      --red-dim: rgba(216, 8, 19, 0.1);
+      --red-glow: rgba(216, 8, 19, 0.24);
+      --green: #16a34a;
+      --green-dim: rgba(22, 163, 74, 0.12);
       --amber: #d97706;
       --amber-dim: rgba(217, 119, 6, 0.12);
-      --danger: #dc2626;
-      --text: #0f172a;
-      --text-soft: #334155;
-      --muted: #64748b;
-      --line: rgba(100, 116, 139, 0.24);
-      --hud-tick: rgba(100, 116, 139, 0.28);
-      --on-mint: #ffffff;
-      --on-cyan: #ffffff;
+      --text: #111116;
+      --text-soft: #3f3f46;
+      --muted: #71717a;
+      --hero-fade: linear-gradient(180deg, rgba(11, 11, 15, 0.22) 0%, rgba(11, 11, 15, 0.78) 58%, #111116 100%);
     }
 
     * {
@@ -70,42 +56,32 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html {
-      height: 100%;
-      width: 100%;
-      background: var(--bg);
-    }
-
-    body {
+    html, body {
       min-height: 100%;
       width: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-      padding: calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       overflow-x: hidden;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .app {
-      flex: 1;
-      width: 100%;
-      max-width: 520px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: calc(78px + env(safe-area-inset-bottom));
     }
 
+    /* Top Netflix-style Header */
     header {
-      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 35;
+      background: linear-gradient(180deg, var(--bg) 75%, transparent 100%);
+      padding: 11px 14px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 2px 2px 0;
     }
 
     .header-left {
@@ -115,29 +91,40 @@
       min-width: 0;
     }
 
-    .title-wrap {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       min-width: 0;
     }
 
-    .tv-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--red);
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 15px;
+      display: grid;
+      place-items: center;
+      letter-spacing: -0.04em;
       flex-shrink: 0;
+      box-shadow: 0 2px 10px var(--red-glow);
     }
 
-    h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 900;
       letter-spacing: -0.02em;
+      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .brand h1 span {
+      color: var(--red);
     }
 
     .header-actions {
@@ -147,14 +134,13 @@
       flex-shrink: 0;
     }
 
-    .hud-pill-btn {
+    .top-btn {
       height: 32px;
       min-width: 32px;
-      padding: 0 11px;
-      border-radius: 999px;
-      background: var(--pill-bg);
-      border: 1.5px solid var(--mint-bright);
-      box-shadow: 0 0 12px var(--mint-dim), inset 0 0 6px var(--mint-dim);
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--text);
       font-size: 12px;
       font-weight: 700;
@@ -166,21 +152,16 @@
       transition: transform 0.1s ease;
     }
 
-    .hud-pill-btn.cyan {
-      border-color: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan-dim), inset 0 0 6px var(--cyan-dim);
-    }
-
-    .hud-pill-btn.icon-only {
+    .top-btn.icon-only {
       padding: 0;
       width: 32px;
     }
 
-    .hud-pill-btn:active {
+    .top-btn:active {
       transform: scale(0.93);
     }
 
-    .hud-pill-btn.spinning svg {
+    .top-btn.spinning svg {
       animation: spin 1s linear infinite;
     }
 
@@ -188,307 +169,351 @@
       100% { transform: rotate(360deg); }
     }
 
-    .hud-shell {
-      position: relative;
-      flex: 1;
-      background: var(--shell-bg);
-      border: 1.5px solid var(--shell-border);
-      border-radius: 24px;
-      padding: 15px 14px;
-      box-shadow: 0 0 30px var(--shell-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-
-    .hud-shell::before,
-    .hud-shell::after {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 46px;
-      border-radius: 99px;
-      background: var(--hud-tick);
-      pointer-events: none;
-    }
-
-    .hud-shell::before {
-      left: 5px;
-      top: 140px;
-    }
-
-    .hud-shell::after {
-      right: 5px;
-      top: 84px;
-    }
-
-    .hud-top-panel {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 13px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .dial-wrap {
-      position: relative;
-      width: 96px;
-      height: 96px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-    }
-
-    .dial-wrap svg {
-      position: absolute;
-      inset: 0;
-    }
-
-    .dial-center {
-      text-align: center;
-      font-variant-numeric: tabular-nums;
-      line-height: 1.05;
-    }
-
-    .dial-center strong {
-      display: block;
-      font-size: 21px;
-      font-weight: 800;
-      color: var(--mint-bright);
-    }
-
-    .dial-center span {
-      display: block;
-      margin-top: 2px;
-      font-size: 9.5px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .hud-top-right {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .stats-headline {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .stats-main {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em;
-    }
-
-    .stats-sub {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--cyan);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .nav-pill-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      padding: 3px;
-      border-radius: 999px;
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
-    }
-
-    .nav-pill-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-soft);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 7px 4px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: 0.16s ease;
-      white-space: nowrap;
-    }
-
-    .nav-pill-btn.active {
-      background: var(--mint-bright);
-      color: var(--on-mint);
-      box-shadow: 0 0 14px var(--mint-glow);
+    .container {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 14px;
     }
 
     .view-section {
       display: none;
-      flex: 1;
-      flex-direction: column;
     }
 
     .view-section.active {
-      display: flex;
+      display: block;
     }
 
-    /* Up Next Spotlight Card */
-    .spotlight-card {
-      background: var(--card-bg);
-      border: 1.5px solid var(--card-border);
+    /* =========================================================
+       PROPOSAL 1: CINEMATIC HERO BANNER
+       ========================================================= */
+    .cinematic-hero {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
       border-radius: 18px;
-      padding: 12px;
-      margin-bottom: 13px;
+      overflow: hidden;
+      background-color: #141419;
+      background-size: cover;
+      background-position: center 20%;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
       display: flex;
-      align-items: center;
-      gap: 13px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.24);
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 18px 16px 16px;
+      margin-bottom: 18px;
       cursor: pointer;
     }
 
-    .spotlight-card img {
-      width: 82px;
-      height: 116px;
-      border-radius: 12px;
-      object-fit: cover;
-      background: var(--pill-bg);
-      flex-shrink: 0;
-      border: 1px solid var(--line);
+    .cinematic-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--hero-fade);
+      pointer-events: none;
     }
 
-    .spotlight-body {
-      flex: 1;
-      min-width: 0;
+    .hero-content {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .spotlight-kicker {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-    }
-
-    .spotlight-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .spotlight-ep {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-soft);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .spotlight-actions {
+    .hero-badges {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .hero-pill-tag {
+      background: var(--red);
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-pill-meta {
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e4e4e7;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+
+    .hero-show-title {
+      font-size: 27px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-ep-line {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f4f4f5;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hero-ep-line span {
+      color: #ff4d57;
+      font-weight: 800;
+    }
+
+    .hero-air-sub {
+      font-size: 12px;
+      color: #a1a1aa;
+      margin-bottom: 6px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .btn-netflix-primary {
+      flex: 1;
+      height: 40px;
+      padding: 0 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--red);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px var(--red-glow);
+    }
+
+    .btn-netflix-secondary {
+      flex: 1.35;
+      min-width: 0;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 8px;
+      background: rgba(28, 28, 36, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-netflix-primary:active,
+    .btn-netflix-secondary:active,
+    .mini-copy-btn:active,
+    .mini-check-btn:active,
+    .card-copy-btn:active,
+    .card-check-btn:active,
+    .ep-copy-btn:active,
+    .quick-check:active {
+      transform: scale(0.95);
+    }
+
+    /* =========================================================
+       HORIZONTAL EPISODES CAROUSEL (PROPOSAL 1 LOWER ROW)
+       ========================================================= */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .section-count {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .h-carousel {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 14px;
+      margin-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .h-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .h-ep-card {
+      width: 174px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .h-ep-thumb {
+      position: relative;
+      width: 100%;
+      height: 98px;
+      background-size: cover;
+      background-position: center 22%;
+      background-color: var(--surface-alt);
+    }
+
+    .h-ep-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(11, 11, 15, 0.88) 100%);
+    }
+
+    .h-ep-code-badge {
+      position: absolute;
+      left: 8px;
+      bottom: 6px;
+      z-index: 2;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      background: rgba(229, 9, 20, 0.92);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .h-ep-body {
+      padding: 8px 9px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .h-ep-show {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .h-ep-name {
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .h-ep-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       margin-top: 2px;
     }
 
-    .spotlight-copy-btn {
+    .mini-copy-btn {
       flex: 1;
-      min-width: 0;
-      height: 36px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: none;
-      background: var(--cyan-bright);
-      color: var(--on-cyan);
-      font-size: 12.5px;
+      height: 28px;
+      padding: 0 7px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-size: 11px;
       font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
       cursor: pointer;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 0 16px var(--cyan-glow);
     }
 
-    .spotlight-check-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
+    .mini-check-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       border: none;
-      background: var(--mint-bright);
-      color: var(--on-mint);
-      font-size: 16px;
+      background: var(--red);
+      color: #ffffff;
+      font-size: 12.5px;
       font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 0 16px var(--mint-glow);
     }
 
-    .spotlight-copy-btn:active,
-    .spotlight-check-btn:active,
-    .card-copy-btn:active,
-    .card-watch-btn:active,
-    .copy-pill-btn:active,
-    .quick-check:active,
-    .ep-copy-btn:active {
-      transform: scale(0.93);
-    }
-
-    /* Filter tabs: clean wrap so all 4 tabs are always visible */
+    /* =========================================================
+       FILTER PILLS & POSTER GRID
+       ========================================================= */
     .filter-tabs {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding-bottom: 11px;
+      margin-bottom: 12px;
     }
 
     .filter-btn {
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--text-soft);
       padding: 6px 11px;
       border-radius: 999px;
       font-size: 11.5px;
       font-weight: 700;
-      white-space: nowrap;
       cursor: pointer;
       transition: 0.15s ease;
     }
 
     .filter-btn.active {
-      background: var(--cyan);
-      border-color: var(--cyan);
-      color: var(--on-cyan);
-      box-shadow: 0 0 10px var(--cyan-glow);
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--red-glow);
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 11px;
     }
 
     .show-card {
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       overflow: hidden;
       position: relative;
       cursor: pointer;
@@ -496,28 +521,47 @@
       flex-direction: column;
     }
 
-    .show-card.has-new {
-      border-color: rgba(52, 211, 153, 0.42);
+    .poster-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 2.65;
+      background: var(--surface-alt);
     }
 
-    .show-card img {
+    .poster-box img {
       width: 100%;
-      aspect-ratio: 2 / 2.55;
+      height: 100%;
       object-fit: cover;
-      background: var(--pill-bg);
+      display: block;
     }
 
     .show-badge {
       position: absolute;
       top: 8px;
       right: 8px;
-      background: var(--mint-bright);
-      color: #04130d;
+      background: var(--red);
+      color: #ffffff;
       font-size: 11px;
       font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      padding: 3px 7px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Netflix-style red progress bar along bottom edge of poster */
+    .poster-progress-bg {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    .poster-progress-fg {
+      height: 100%;
+      background: var(--red);
+      transition: width 0.25s ease;
     }
 
     .show-info {
@@ -529,19 +573,6 @@
       gap: 7px;
     }
 
-    .progress-bar-bg {
-      background: var(--pill-bg);
-      height: 5px;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fg {
-      background: linear-gradient(90deg, var(--cyan), var(--mint-bright));
-      height: 100%;
-      transition: width 0.25s ease;
-    }
-
     .show-name-row {
       display: flex;
       align-items: baseline;
@@ -551,15 +582,15 @@
 
     .show-name {
       font-weight: 800;
-      font-size: 14px;
-      line-height: 1.2;
+      font-size: 13.5px;
+      line-height: 1.25;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .show-ep-count {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--muted);
       font-variant-numeric: tabular-nums;
       flex-shrink: 0;
@@ -576,10 +607,10 @@
       min-width: 0;
       height: 30px;
       padding: 0 8px;
-      border-radius: 999px;
-      border: 1.5px solid var(--cyan);
-      background: var(--cyan-dim);
-      color: var(--cyan);
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
       font-size: 11.5px;
       font-weight: 800;
       display: inline-flex;
@@ -591,134 +622,57 @@
       text-overflow: ellipsis;
     }
 
-    .card-watch-btn {
+    .card-check-btn {
       width: 30px;
       height: 30px;
-      border-radius: 50%;
+      border-radius: 7px;
       border: none;
-      background: var(--mint-bright);
-      color: var(--on-mint);
-      font-size: 13.5px;
+      background: var(--red);
+      color: #ffffff;
+      font-size: 13px;
       font-weight: 800;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 0 10px var(--mint-glow);
     }
 
     .card-done-tag {
       height: 30px;
-      border-radius: 999px;
-      background: var(--mint-dim);
-      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-radius: 7px;
+      background: var(--green-dim);
+      border: 1px solid rgba(34, 197, 94, 0.3);
       font-size: 11px;
       font-weight: 700;
-      color: var(--mint-bright);
+      color: var(--green);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Schedule section */
-    .hud-section-title {
-      font-size: 11.5px;
+    /* =========================================================
+       SCHEDULE VIEW
+       ========================================================= */
+    .sched-group-title {
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      color: var(--mint-bright);
+      color: var(--red);
       margin-bottom: 8px;
     }
 
     .schedule-group {
-      margin-bottom: 16px;
-    }
-
-    .hero-card {
-      background-size: cover;
-      background-position: center;
-      border-radius: 18px;
-      border: 1.5px solid var(--mint-bright);
-      box-shadow: 0 0 18px var(--mint-dim);
-      padding: 16px 14px;
       margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .hero-tag {
-      background: var(--mint-bright);
-      color: #04130d;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 999px;
-      display: inline-block;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .hero-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 3px;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-    }
-
-    .hero-subtitle {
-      font-size: 13.5px;
-      color: #38bdf8;
-      font-weight: 700;
-      margin-bottom: 4px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-    }
-
-    .hero-ep-info {
-      font-size: 12px;
-      color: #e2e8f0;
-      margin-bottom: 12px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-    }
-
-    .hero-btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .hero-watch-btn {
-      background: var(--mint-bright);
-      color: #04130d;
-      border: none;
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 12.5px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 0 12px var(--mint-glow);
-    }
-
-    .hero-copy-btn {
-      background: rgba(6, 12, 16, 0.9);
-      color: #38bdf8;
-      border: 1.5px solid #38bdf8;
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 12.5px;
-      font-weight: 800;
-      cursor: pointer;
     }
 
     .ep-row {
       display: flex;
       align-items: center;
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 9px;
       margin-bottom: 8px;
       gap: 10px;
@@ -728,9 +682,9 @@
     .ep-row img {
       width: 44px;
       height: 64px;
-      border-radius: 8px;
+      border-radius: 7px;
       object-fit: cover;
-      background: var(--pill-bg);
+      background: var(--surface-alt);
       flex-shrink: 0;
     }
 
@@ -740,7 +694,7 @@
     }
 
     .ep-show-name {
-      font-weight: 700;
+      font-weight: 800;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
@@ -757,7 +711,7 @@
 
     .ep-air {
       font-size: 11.5px;
-      color: var(--mint-bright);
+      color: var(--red);
       font-weight: 700;
       margin-top: 2px;
     }
@@ -772,10 +726,10 @@
     .copy-pill-btn {
       height: 31px;
       padding: 0 10px;
-      border-radius: 999px;
-      border: 1.5px solid var(--cyan);
-      background: var(--cyan-dim);
-      color: var(--cyan);
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
       font-size: 11.5px;
       font-weight: 800;
       display: inline-flex;
@@ -788,10 +742,10 @@
     .quick-check {
       width: 31px;
       height: 31px;
-      border-radius: 50%;
+      border-radius: 7px;
       border: none;
-      background: var(--mint-bright);
-      color: var(--on-mint);
+      background: var(--red);
+      color: #ffffff;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -800,7 +754,9 @@
       flex-shrink: 0;
     }
 
-    /* Explore Search */
+    /* =========================================================
+       EXPLORE SEARCH
+       ========================================================= */
     .search-box {
       display: flex;
       gap: 8px;
@@ -809,36 +765,86 @@
 
     .search-box input {
       flex: 1;
-      background: var(--pill-bg);
-      border: 1.5px solid var(--shell-border);
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
       color: var(--text);
-      padding: 9px 14px;
-      border-radius: 999px;
+      padding: 10px 14px;
+      border-radius: 8px;
       font-size: 14px;
       outline: none;
     }
 
     .search-box input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan-dim);
+      border-color: var(--red);
     }
 
     .search-btn {
-      background: var(--mint-bright);
+      background: var(--red);
       border: none;
-      border-radius: 999px;
+      border-radius: 8px;
       font-weight: 800;
-      padding: 9px 18px;
-      color: var(--on-mint);
+      padding: 10px 16px;
+      color: #ffffff;
       cursor: pointer;
-      box-shadow: 0 0 12px var(--mint-glow);
     }
 
-    /* Show Details Drawer */
+    /* =========================================================
+       BOTTOM NETFLIX NAVIGATION BAR (MATCHING PROPOSAL 1)
+       ========================================================= */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 11, 15, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      z-index: 40;
+      padding: 7px 0 calc(7px + env(safe-area-inset-bottom));
+    }
+
+    [data-theme="light"] .nav-bar {
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .nav-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      padding: 2px 0;
+    }
+
+    .nav-btn.active {
+      color: var(--text);
+    }
+
+    .nav-btn.active::after {
+      content: "";
+      width: 22px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--red);
+      margin-top: 2px;
+    }
+
+    /* =========================================================
+       SHOW DETAILS DRAWER & MODALS
+       ========================================================= */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.82);
+      background: rgba(0, 0, 0, 0.84);
       z-index: 50;
       display: none;
       align-items: flex-end;
@@ -850,16 +856,16 @@
 
     .drawer {
       background: var(--bg);
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
       width: 100%;
-      max-width: 540px;
+      max-width: 560px;
       margin: 0 auto;
       max-height: 92vh;
       overflow-y: auto;
       padding: 18px 15px calc(24px + env(safe-area-inset-bottom));
-      border-top: 1.5px solid var(--mint-bright);
-      box-shadow: 0 -6px 28px rgba(16, 185, 129, 0.16);
+      border-top: 2px solid var(--red);
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.75);
     }
 
     .drawer-top {
@@ -871,7 +877,7 @@
 
     .drawer-top h2 {
       font-size: 19px;
-      font-weight: 800;
+      font-weight: 900;
       flex: 1;
       min-width: 0;
     }
@@ -880,9 +886,9 @@
       display: flex;
       gap: 12px;
       margin-bottom: 12px;
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 10px;
     }
 
@@ -890,7 +896,7 @@
       width: 78px;
       height: 116px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 8px;
       flex-shrink: 0;
     }
 
@@ -910,34 +916,32 @@
 
     .drawer-actions button, .action-btn {
       width: 100%;
-      background: var(--mint-bright);
-      color: var(--on-mint);
+      background: var(--red);
+      color: #ffffff;
       border: none;
-      border-radius: 999px;
+      border-radius: 8px;
       padding: 11px 14px;
       font-weight: 800;
       font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 0 14px var(--mint-glow);
     }
 
     .drawer-actions button.remove-btn {
-      background: var(--danger);
-      color: #ffffff;
-      box-shadow: none;
+      background: var(--surface-alt);
+      border: 1px solid var(--red);
+      color: var(--red);
     }
 
     .drawer-actions button.prev-seasons-btn, .secondary-btn {
-      background: var(--pill-bg);
+      background: var(--surface);
       color: var(--text);
-      border: 1.5px solid var(--cyan);
+      border: 1px solid var(--border-strong);
       font-size: 13px;
-      box-shadow: none;
     }
 
     .drawer-actions button.prev-seasons-btn.done {
-      border-color: var(--mint-bright);
-      color: var(--mint-bright);
+      border-color: var(--green);
+      color: var(--green);
     }
 
     .season-header-row {
@@ -951,7 +955,7 @@
     .season-header {
       font-size: 12.5px;
       font-weight: 800;
-      color: var(--mint-bright);
+      color: var(--red);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -963,24 +967,24 @@
     }
 
     .season-copy-btn {
-      background: var(--cyan-dim);
-      border: 1.5px solid var(--cyan);
-      color: var(--cyan);
+      background: var(--red-dim);
+      border: 1px solid rgba(229, 9, 20, 0.45);
+      color: #ff5a63;
       font-size: 11.5px;
       font-weight: 800;
       padding: 4px 10px;
-      border-radius: 999px;
+      border-radius: 6px;
       cursor: pointer;
     }
 
     .season-mark-btn {
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--text-soft);
       font-size: 11.5px;
       font-weight: 700;
       padding: 4px 10px;
-      border-radius: 999px;
+      border-radius: 6px;
       cursor: pointer;
     }
 
@@ -988,9 +992,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: 10px 10px 10px 12px;
       margin-bottom: 7px;
       font-size: 13.5px;
@@ -1018,26 +1022,26 @@
       font-size: 10.5px;
       font-weight: 800;
       padding: 2px 7px;
-      border-radius: 999px;
+      border-radius: 5px;
       white-space: nowrap;
     }
 
     .ep-status-pill.aired {
-      color: var(--mint-bright);
-      background: var(--mint-dim);
-      border: 1px solid rgba(52, 211, 153, 0.38);
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
     .ep-status-pill.soon {
       color: var(--amber);
       background: var(--amber-dim);
-      border: 1px solid rgba(251, 191, 36, 0.38);
+      border: 1px solid rgba(245, 158, 11, 0.35);
     }
 
     .ep-status-pill.tba {
       color: var(--muted);
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
     }
 
     .ep-item-date {
@@ -1056,10 +1060,10 @@
     .ep-copy-btn {
       height: 30px;
       padding: 0 10px;
-      border-radius: 999px;
-      border: 1.5px solid var(--cyan);
-      background: var(--cyan-dim);
-      color: var(--cyan);
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
       font-size: 11.5px;
       font-weight: 800;
       display: inline-flex;
@@ -1071,9 +1075,9 @@
     .watch-checkbox {
       width: 30px;
       height: 30px;
-      border: 1.5px solid var(--line);
-      background: var(--pill-bg);
-      border-radius: 50%;
+      border: 1.5px solid var(--border-strong);
+      background: var(--surface-alt);
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1086,17 +1090,16 @@
     }
 
     .watch-checkbox.checked {
-      background: var(--mint-bright);
-      border-color: var(--mint-bright);
-      color: var(--on-mint);
-      box-shadow: 0 0 10px var(--mint-glow);
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
     }
 
-    /* Center Modals (Episode Summary & Backup) */
+    /* Center Modals */
     .center-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.82);
+      background: rgba(0, 0, 0, 0.84);
       z-index: 65;
       display: none;
       align-items: center;
@@ -1109,15 +1112,16 @@
     }
 
     .modal-card {
-      background: var(--bg);
-      border: 1.5px solid var(--mint-bright);
-      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-top: 3px solid var(--red);
+      border-radius: 16px;
       width: 100%;
       max-width: 440px;
       max-height: 85vh;
       overflow-y: auto;
       padding: 18px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.72);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
     }
 
     .modal-header {
@@ -1126,14 +1130,14 @@
       justify-content: space-between;
       gap: 10px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--border);
       margin-bottom: 14px;
     }
 
     .modal-header h3 {
       font-size: 17px;
       font-weight: 800;
-      color: var(--mint-bright);
+      color: var(--text);
     }
 
     .modal-body {
@@ -1147,9 +1151,9 @@
     }
 
     .backup-box {
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 12px;
       margin-bottom: 12px;
     }
@@ -1175,10 +1179,10 @@
     .paste-area {
       width: 100%;
       min-height: 76px;
-      background: var(--pill-bg);
-      border: 1px solid var(--line);
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
       color: var(--text);
-      border-radius: 12px;
+      border-radius: 8px;
       padding: 8px 10px;
       font-size: 12px;
       font-family: monospace;
@@ -1194,11 +1198,11 @@
 
     .toast {
       position: fixed;
-      bottom: 24px;
+      bottom: 84px;
       left: 50%;
       transform: translateX(-50%);
-      background: #081217;
-      border: 1.5px solid var(--cyan);
+      background: #18181f;
+      border: 1px solid var(--red);
       color: #ffffff;
       padding: 9px 18px;
       border-radius: 999px;
@@ -1210,7 +1214,7 @@
       transition: opacity 0.22s ease;
       max-width: 90vw;
       text-align: center;
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7);
     }
 
     .toast.show {
@@ -1219,125 +1223,124 @@
   </style>
 </head>
 <body>
-  <main class="app">
-    <header>
-      <div class="header-left">
-        <button class="hud-pill-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Back" aria-label="Back" style="display:none;">←</button>
-        <div class="title-wrap">
-          <div class="tv-icon" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9.5 4.5L14 9l4.5-4.5" />
-              <rect x="4" y="9" width="20" height="14" rx="3.2" />
-              <path d="M10 25h8" />
-            </svg>
-          </div>
-          <h1>My TV Tracker</h1>
+  <header>
+    <div class="header-left">
+      <button class="top-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Back" aria-label="Back" style="display:none;">←</button>
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <h1>MY TV <span>TRACKER</span></h1>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="top-btn" onclick="openBackupModal()" title="Backup database">Backup</button>
+      <button class="top-btn" id="syncBtn" onclick="syncAllShows()" title="Sync episodes">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+          <path d="M16 16h5v5" />
+        </svg>
+        <span>Sync</span>
+      </button>
+      <button class="top-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">☀️</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- TAB 1: MY SHOWS (PROPOSAL 1: CINEMATIC HERO + EPISODES CAROUSEL + GRID) -->
+    <section class="view-section active" id="view-my">
+      <div id="cinematicHeroContainer"></div>
+
+      <div id="episodesCarouselWrap" style="display:none;">
+        <div class="section-header">
+          <div class="section-title">Up Next Episodes</div>
+          <div class="section-count" id="upNextCountLabel"></div>
         </div>
+        <div class="h-carousel" id="upNextCarousel"></div>
       </div>
 
-      <div class="header-actions">
-        <button class="hud-pill-btn" onclick="openBackupModal()" title="Backup database">Backup</button>
-        <button class="hud-pill-btn cyan" id="syncBtn" onclick="syncAllShows()" title="Sync episodes">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-            <path d="M3 3v5h5" />
-            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-            <path d="M16 16h5v5" />
-          </svg>
-          <span>Sync</span>
-        </button>
-        <button class="hud-pill-btn icon-only" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">☀️</button>
-      </div>
-    </header>
-
-    <section class="hud-shell">
-      <div class="hud-top-panel">
-        <div class="dial-wrap">
-          <svg width="96" height="96" viewBox="0 0 96 96">
-            <circle cx="48" cy="48" r="43" fill="none" stroke="rgba(148,163,184,0.16)" stroke-width="1.5" />
-            <circle cx="48" cy="48" r="32" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="3.5" stroke-dasharray="1.4 3.4" />
-            <circle cx="48" cy="48" r="38" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="4.5" />
-            <circle id="hudWatchedArc" cx="48" cy="48" r="38" fill="none" stroke="#34d399" stroke-width="4.5"
-                    stroke-linecap="round" stroke-dasharray="180 238.76" stroke-dashoffset="0"
-                    transform="rotate(-90 48 48)" />
-            <circle id="hudPendingArc" cx="48" cy="48" r="38" fill="none" stroke="#22d3ee" stroke-width="4.5"
-                    stroke-linecap="round" stroke-dasharray="36 238.76" stroke-dashoffset="-186"
-                    transform="rotate(-90 48 48)" />
-          </svg>
-          <div class="dial-center">
-            <strong id="hudPercentText">0%</strong>
-            <span>watched</span>
-          </div>
-        </div>
-
-        <div class="hud-top-right">
-          <div class="stats-headline">
-            <div class="stats-main" id="hudShowsStat">0 shows</div>
-            <div class="stats-sub" id="hudNewStat">+0 new</div>
-          </div>
-
-          <div class="nav-pill-bar">
-            <button type="button" class="nav-pill-btn" id="nav-schedules" onclick="switchTab('schedules')">Schedule</button>
-            <button type="button" class="nav-pill-btn active" id="nav-my" onclick="switchTab('my')">My Shows</button>
-            <button type="button" class="nav-pill-btn" id="nav-explore" onclick="switchTab('explore')">Explore</button>
-          </div>
-        </div>
+      <div class="section-header" style="margin-top:4px;">
+        <div class="section-title">My Library</div>
+        <div class="section-count" id="libraryProgressLabel"></div>
       </div>
 
-      <!-- TAB 1: MY SHOWS -->
-      <div class="view-section active" id="view-my">
-        <div id="spotlightContainer"></div>
-
-        <div class="filter-tabs">
-          <button type="button" class="filter-btn active" data-filter="all" onclick="filterMyShows('all', this)">All (<span id="count-all">0</span>)</button>
-          <button type="button" class="filter-btn" data-filter="watch" onclick="filterMyShows('watch', this)">To Watch (<span id="count-watch">0</span>)</button>
-          <button type="button" class="filter-btn" data-filter="waiting" onclick="filterMyShows('waiting', this)">Up to Date (<span id="count-waiting">0</span>)</button>
-          <button type="button" class="filter-btn" data-filter="ended" onclick="filterMyShows('ended', this)">Completed (<span id="count-ended">0</span>)</button>
-        </div>
-
-        <div class="grid" id="myGrid"></div>
+      <div class="filter-tabs">
+        <button type="button" class="filter-btn active" data-filter="all" onclick="filterMyShows('all')">All (<span id="count-all">0</span>)</button>
+        <button type="button" class="filter-btn" data-filter="watch" onclick="filterMyShows('watch')">To Watch (<span id="count-watch">0</span>)</button>
+        <button type="button" class="filter-btn" data-filter="waiting" onclick="filterMyShows('waiting')">Up to Date (<span id="count-waiting">0</span>)</button>
+        <button type="button" class="filter-btn" data-filter="ended" onclick="filterMyShows('ended')">Completed (<span id="count-ended">0</span>)</button>
       </div>
 
-      <!-- TAB 2: SCHEDULE -->
-      <div class="view-section" id="view-schedules">
-        <div id="heroContainer"></div>
+      <div class="grid" id="myGrid"></div>
+    </section>
 
-        <div class="hud-section-title">Today</div>
-        <div id="sched-today" class="schedule-group"></div>
+    <!-- TAB 2: SCHEDULE -->
+    <section class="view-section" id="view-schedules">
+      <div id="scheduleHeroContainer"></div>
 
-        <div class="hud-section-title">Tomorrow</div>
-        <div id="sched-tomorrow" class="schedule-group"></div>
+      <div class="sched-group-title">Today</div>
+      <div id="sched-today" class="schedule-group"></div>
 
-        <div class="hud-section-title">This Week</div>
-        <div id="sched-week" class="schedule-group"></div>
+      <div class="sched-group-title">Tomorrow</div>
+      <div id="sched-tomorrow" class="schedule-group"></div>
 
-        <div class="hud-section-title">Upcoming</div>
-        <div id="sched-future" class="schedule-group"></div>
+      <div class="sched-group-title">This Week</div>
+      <div id="sched-week" class="schedule-group"></div>
+
+      <div class="sched-group-title">Upcoming</div>
+      <div id="sched-future" class="schedule-group"></div>
+    </section>
+
+    <!-- TAB 3: EXPLORE -->
+    <section class="view-section" id="view-explore">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search TV shows (e.g. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
+        <button class="search-btn" onclick="searchShows()">Search</button>
       </div>
-
-      <!-- TAB 3: EXPLORE -->
-      <div class="view-section" id="view-explore">
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Search TV shows (e.g. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
-          <button class="search-btn" onclick="searchShows()">Search</button>
-        </div>
-        <div class="hud-section-title" id="exploreLabel">Trending Today</div>
-        <div class="grid" id="searchGrid"></div>
-      </div>
+      <div class="sched-group-title" id="exploreLabel">Trending Today</div>
+      <div class="grid" id="searchGrid"></div>
     </section>
   </main>
+
+  <!-- BOTTOM NETFLIX NAVIGATION BAR -->
+  <nav class="nav-bar">
+    <button type="button" class="nav-btn active" id="nav-my" onclick="switchTab('my')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>My Shows</span>
+    </button>
+    <button type="button" class="nav-btn" id="nav-schedules" onclick="switchTab('schedules')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <span>Schedule</span>
+    </button>
+    <button type="button" class="nav-btn" id="nav-explore" onclick="switchTab('explore')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <span>Explore</span>
+    </button>
+  </nav>
 
   <!-- SHOW DETAILS DRAWER -->
   <div class="overlay" id="overlay" onclick="closeDrawer()">
     <div class="drawer" id="drawer" onclick="event.stopPropagation()">
       <div class="drawer-top">
-        <button class="hud-pill-btn icon-only" onclick="closeDrawer()" title="Back" aria-label="Back">←</button>
+        <button class="top-btn icon-only" onclick="closeDrawer()" title="Back" aria-label="Back">←</button>
         <h2 id="drawerTitle">Show Title</h2>
       </div>
       <div class="drawer-meta">
         <img id="drawerImage" src="" alt="Poster" />
         <div>
-          <p id="drawerNetwork" style="font-weight:800; color:var(--mint-bright); margin-bottom:4px; font-size:14px;"></p>
+          <p id="drawerNetwork" style="font-weight:800; color:var(--red); margin-bottom:4px; font-size:14px;"></p>
           <p id="drawerStatus" style="font-size:12.5px; color:var(--muted); margin-bottom:6px;"></p>
           <p id="drawerProgress" style="font-weight:700; font-size:13.5px;"></p>
         </div>
@@ -1358,13 +1361,13 @@
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div>
-          <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--muted); text-transform:uppercase;"></div>
+          <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--red); text-transform:uppercase;"></div>
           <h3 id="epModalTitle">Episode Title</h3>
         </div>
-        <button class="hud-pill-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Close">✕</button>
+        <button class="top-btn icon-only" onclick="closeEpSummaryModal()" aria-label="Close">✕</button>
       </div>
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;">
-        <div style="font-size:12.5px; color:var(--mint-bright); font-weight:700;" id="epModalDate"></div>
+        <div style="font-size:12.5px; color:var(--muted); font-weight:700;" id="epModalDate"></div>
         <button class="copy-pill-btn" id="epModalCopyBtn" onclick="copyFromBtn(this, event)">Copy</button>
       </div>
       <div class="modal-body" id="epModalSummary"></div>
@@ -1376,7 +1379,7 @@
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3>Database Backup</h3>
-        <button class="hud-pill-btn icon-only" onclick="closeBackupModal()" aria-label="Close">✕</button>
+        <button class="top-btn icon-only" onclick="closeBackupModal()" aria-label="Close">✕</button>
       </div>
       <div class="modal-body">
         <p id="backupStatsText" style="font-size:12.5px; color:var(--muted);"></p>
@@ -1407,7 +1410,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230b141a'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%23141419'/%3E%3Ctext x='50%25' y='50%25' fill='%238e8e9a' font-family='sans-serif' font-size='16' text-anchor='middle'%3ENo Poster%3C/text%3E%3C/svg%3E";
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
     let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
@@ -1523,7 +1526,7 @@
       document.documentElement.setAttribute('data-theme', saved);
       document.getElementById('themeBtn').textContent = saved === 'dark' ? '☀️' : '🌙';
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', saved === 'dark' ? '#05070a' : '#eef3f7');
+      if (meta) meta.setAttribute('content', saved === 'dark' ? '#0b0b0f' : '#f3f4f6');
     }
 
     function toggleTheme() {
@@ -1533,7 +1536,7 @@
       localStorage.setItem('tracker_theme', next);
       document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', next === 'dark' ? '#05070a' : '#eef3f7');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#0b0b0f' : '#f3f4f6');
     }
     initTheme();
 
@@ -1542,44 +1545,6 @@
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    function updateHudTopDial() {
-      const todayStr = getLocalDateStr(0);
-      let totalAired = 0;
-      let totalWatched = 0;
-      let totalNewUnwatched = 0;
-
-      myShows.forEach(show => {
-        (show.episodes || []).forEach(ep => {
-          if (ep.airdate && ep.airdate <= todayStr) {
-            totalAired++;
-            if (watchedEpisodes[ep.id]) totalWatched++;
-            else totalNewUnwatched++;
-          }
-        });
-      });
-
-      const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
-      document.getElementById('hudPercentText').textContent = `${pct}%`;
-      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${myShows.length === 1 ? 'show' : 'shows'}`;
-      document.getElementById('hudNewStat').textContent = `+${totalNewUnwatched} new`;
-
-      const C = 2 * Math.PI * 38;
-      const gap = 6;
-      const usable = C - gap * 2;
-      const watchedRatio = totalAired > 0 ? totalWatched / totalAired : 0;
-      const pendingRatio = totalAired > 0 ? totalNewUnwatched / totalAired : 0;
-
-      const wLen = totalAired > 0 ? Math.max(8, watchedRatio * usable) : usable * 0.5;
-      const pLen = totalAired > 0 ? Math.max(8, pendingRatio * usable) : usable * 0.5;
-
-      const wArc = document.getElementById('hudWatchedArc');
-      const pArc = document.getElementById('hudPendingArc');
-      wArc.setAttribute('stroke-dasharray', `${wLen.toFixed(1)} ${C.toFixed(1)}`);
-      wArc.setAttribute('stroke-dashoffset', '0');
-      pArc.setAttribute('stroke-dasharray', `${pLen.toFixed(1)} ${C.toFixed(1)}`);
-      pArc.setAttribute('stroke-dashoffset', `${-(wLen + gap).toFixed(1)}`);
     }
 
     function updateBackButtonVisibility() {
@@ -1594,7 +1559,7 @@
         navHistory.push(tab);
       }
 
-      document.querySelectorAll('.nav-pill-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById('nav-' + tab);
       if (activeBtn) activeBtn.classList.add('active');
 
@@ -1762,7 +1727,6 @@
       localStorage.setItem('myShows', JSON.stringify(myShows));
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
 
-      updateHudTopDial();
       renderSchedule();
       renderMyShows();
       closeBackupModal();
@@ -1814,7 +1778,6 @@
           myShows[i] = mapRawShow(rawShow);
         }
         localStorage.setItem('myShows', JSON.stringify(myShows));
-        updateHudTopDial();
         renderSchedule();
         renderMyShows();
         showToast("Schedule and episodes updated!");
@@ -1826,11 +1789,14 @@
     }
 
     function mapRawShow(rawShow) {
+      const mediumImg = rawShow.image ? toHttps(rawShow.image.medium) : PLACEHOLDER_IMG;
+      const origImg = rawShow.image && rawShow.image.original ? toHttps(rawShow.image.original) : mediumImg;
       return {
         id: rawShow.id,
         name: rawShow.name,
         summary: rawShow.summary || '<p>No description available.</p>',
-        image: rawShow.image ? toHttps(rawShow.image.medium) : PLACEHOLDER_IMG,
+        image: mediumImg,
+        imageOriginal: origImg,
         network: rawShow.network ? rawShow.network.name : (rawShow.webChannel ? rawShow.webChannel.name : 'Unknown'),
         status: rawShow.status || 'Unknown',
         episodes: (rawShow._embedded && rawShow._embedded.episodes ? rawShow._embedded.episodes : []).map(ep => ({
@@ -1901,8 +1867,10 @@
         card.className = 'show-card';
         card.onclick = () => openShowDetails(show.id);
         card.innerHTML = `
-          <img src="${img}" alt="${escapeAttr(show.name)}" loading="lazy" />
-          ${isTracked ? '<div class="show-badge">Following</div>' : ''}
+          <div class="poster-box">
+            <img src="${img}" alt="${escapeAttr(show.name)}" loading="lazy" />
+            ${isTracked ? '<div class="show-badge">Following</div>' : ''}
+          </div>
           <div class="show-info">
             <div class="show-name">${show.name}</div>
             <div class="show-ep-count">${show.premiered ? show.premiered.slice(0, 4) + ' • ' : ''}${show.status || ''}</div>
@@ -1999,7 +1967,6 @@
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
-      updateHudTopDial();
       renderMyShows();
       renderSchedule();
       showToast(allPrevWatched
@@ -2155,7 +2122,6 @@
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
-      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
@@ -2172,7 +2138,6 @@
       if (currentDrawerShow) touchShowActivity(currentDrawerShow.id);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
-      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
@@ -2183,7 +2148,6 @@
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
       if (showId) touchShowActivity(showId);
       showToast("Marked as watched!");
-      updateHudTopDial();
       renderSchedule();
       renderMyShows();
     }
@@ -2208,7 +2172,6 @@
       }
       localStorage.setItem('myShows', JSON.stringify(myShows));
       updateAddBtnState();
-      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
@@ -2246,49 +2209,102 @@
       return isEnded ? 'ended' : 'waiting';
     }
 
-    function renderSpotlightCard(sortedShows, todayStr) {
-      const container = document.getElementById('spotlightContainer');
-      if (!sortedShows || sortedShows.length === 0 || activeMyFilter === 'waiting' || activeMyFilter === 'ended') {
-        container.innerHTML = '';
-        return;
-      }
+    /* Proposal 1: Cinematic Hero Banner + Horizontal Up Next Carousel */
+    function renderCinematicHeroAndCarousel(sortedShows, todayStr) {
+      const heroWrap = document.getElementById('cinematicHeroContainer');
+      const carouselWrap = document.getElementById('episodesCarouselWrap');
+      const carouselEl = document.getElementById('upNextCarousel');
 
-      let targetShow = null;
-      let targetEp = null;
-
-      for (const s of sortedShows) {
+      const upNextItems = [];
+      sortedShows.forEach(s => {
         const ep = getNextEpisode(s);
-        if (ep && ep.airdate && ep.airdate <= todayStr) {
-          targetShow = s;
-          targetEp = ep;
-          break;
+        if (ep) {
+          upNextItems.push({
+            show: s,
+            ep,
+            isAired: Boolean(ep.airdate && ep.airdate <= todayStr)
+          });
         }
-      }
+      });
 
-      if (!targetShow || !targetEp) {
-        container.innerHTML = '';
+      // Prioritize aired unwatched episodes first
+      upNextItems.sort((a, b) => (b.isAired ? 1 : 0) - (a.isAired ? 1 : 0));
+
+      if (upNextItems.length === 0) {
+        heroWrap.innerHTML = '';
+        carouselWrap.style.display = 'none';
         return;
       }
 
-      const epCode = formatEpCode(targetEp.season, targetEp.number);
-      const copyPayload = escapeAttr(buildEpisodeCopyText(targetShow.name, targetEp.season, targetEp.number));
+      const top = upNextItems[0];
+      const topCode = formatEpCode(top.ep.season, top.ep.number);
+      const topCopy = escapeAttr(buildEpisodeCopyText(top.show.name, top.ep.season, top.ep.number));
+      const heroBg = top.show.imageOriginal || top.show.image || PLACEHOLDER_IMG;
+      const tagLabel = top.ep.airdate === todayStr
+        ? 'Airing Today'
+        : (top.isAired ? 'Up Next' : 'Upcoming');
 
-      container.innerHTML = `
-        <div class="spotlight-card" onclick="openShowDetails(${targetShow.id})">
-          <img src="${targetShow.image}" alt="${escapeAttr(targetShow.name)}" />
-          <div class="spotlight-body">
-            <div>
-              <div class="spotlight-kicker">Up Next</div>
-              <div class="spotlight-title">${targetShow.name}</div>
-              <div class="spotlight-ep">${epCode} • ${targetEp.name}</div>
+      const watchBtnHtml = top.isAired
+        ? `<button type="button" class="btn-netflix-primary" onclick="quickMarkWatched(${top.ep.id}, event, ${top.show.id})">✓ Watched</button>`
+        : `<button type="button" class="btn-netflix-primary" onclick="openShowDetails(${top.show.id})">Details</button>`;
+
+      heroWrap.innerHTML = `
+        <div class="cinematic-hero" style="background-image: url('${heroBg}');" onclick="openShowDetails(${top.show.id})">
+          <div class="hero-content">
+            <div class="hero-badges">
+              <span class="hero-pill-tag">${tagLabel}</span>
+              <span class="hero-pill-meta">${top.show.network}</span>
             </div>
-            <div class="spotlight-actions">
-              <button type="button" class="spotlight-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)">Copy ${copyPayload}</button>
-              <button type="button" class="spotlight-check-btn" onclick="quickMarkWatched(${targetEp.id}, event, ${targetShow.id})" title="Mark ${epCode} watched">✓</button>
+            <div class="hero-show-title">${top.show.name}</div>
+            <div class="hero-ep-line"><span>${topCode}</span> • ${top.ep.name}</div>
+            <div class="hero-air-sub">${formatDateEn(top.ep.airdate)}</div>
+            <div class="hero-actions">
+              ${watchBtnHtml}
+              <button type="button" class="btn-netflix-secondary" data-copy="${topCopy}" onclick="copyFromBtn(this, event)">Copy ${topCopy}</button>
             </div>
           </div>
         </div>
       `;
+
+      // Render horizontal carousel for remaining next episodes (or all if >= 2)
+      const carouselList = upNextItems.length > 1 ? upNextItems.slice(1) : [];
+      if (carouselList.length === 0) {
+        carouselWrap.style.display = 'none';
+        return;
+      }
+
+      carouselWrap.style.display = 'block';
+      document.getElementById('upNextCountLabel').textContent = `${carouselList.length} queued`;
+      carouselEl.innerHTML = '';
+
+      carouselList.forEach(item => {
+        const code = formatEpCode(item.ep.season, item.ep.number);
+        const copyPayload = escapeAttr(buildEpisodeCopyText(item.show.name, item.ep.season, item.ep.number));
+        const thumbImg = item.show.image || PLACEHOLDER_IMG;
+        const checkHtml = item.isAired
+          ? `<button type="button" class="mini-check-btn" onclick="quickMarkWatched(${item.ep.id}, event, ${item.show.id})" title="Mark ${code} watched">✓</button>`
+          : '';
+
+        const card = document.createElement('div');
+        card.className = 'h-ep-card';
+        card.onclick = () => openShowDetails(item.show.id);
+        card.innerHTML = `
+          <div class="h-ep-thumb" style="background-image: url('${thumbImg}');">
+            <span class="h-ep-code-badge">${code}</span>
+          </div>
+          <div class="h-ep-body">
+            <div>
+              <div class="h-ep-show">${item.show.name}</div>
+              <div class="h-ep-name">${item.ep.name}</div>
+            </div>
+            <div class="h-ep-actions">
+              <button type="button" class="mini-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Copy ${copyPayload}">Copy</button>
+              ${checkHtml}
+            </div>
+          </div>
+        `;
+        carouselEl.appendChild(card);
+      });
     }
 
     function renderMyShows() {
@@ -2304,32 +2320,44 @@
       let countWatch = 0;
       let countWaiting = 0;
       let countEnded = 0;
+      let totalAired = 0;
+      let totalWatched = 0;
 
       myShows.forEach(s => {
         const cat = getShowCategory(s, todayStr);
         if (cat === 'watch') countWatch++;
         else if (cat === 'waiting') countWaiting++;
         else countEnded++;
+
+        (s.episodes || []).forEach(ep => {
+          if (ep.airdate && ep.airdate <= todayStr) {
+            totalAired++;
+            if (watchedEpisodes[ep.id]) totalWatched++;
+          }
+        });
       });
+
+      const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
+      document.getElementById('libraryProgressLabel').textContent = `${pct}% watched`;
 
       document.getElementById('count-all').textContent = countAll;
       document.getElementById('count-watch').textContent = countWatch;
       document.getElementById('count-waiting').textContent = countWaiting;
       document.getElementById('count-ended').textContent = countEnded;
 
-      const filtered = myShows.filter(s => {
-        if (activeMyFilter === 'all') return true;
-        return getShowCategory(s, todayStr) === activeMyFilter;
-      });
-
-      const showsToShow = [...filtered].sort((a, b) => {
+      const allSorted = [...myShows].sort((a, b) => {
         const aUnwatched = a.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
         const bUnwatched = b.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
         if (aUnwatched !== bUnwatched) return bUnwatched - aUnwatched;
         return (showActivity[b.id] || 0) - (showActivity[a.id] || 0);
       });
 
-      renderSpotlightCard(showsToShow, todayStr);
+      renderCinematicHeroAndCarousel(allSorted, todayStr);
+
+      const showsToShow = allSorted.filter(s => {
+        if (activeMyFilter === 'all') return true;
+        return getShowCategory(s, todayStr) === activeMyFilter;
+      });
 
       if (showsToShow.length === 0) {
         const emptyMessages = {
@@ -2350,7 +2378,7 @@
         const nextEp = getNextEpisode(show);
 
         const card = document.createElement('div');
-        card.className = `show-card ${unwatchedReleased > 0 ? 'has-new' : ''}`;
+        card.className = 'show-card';
         card.onclick = () => openShowDetails(show.id);
 
         const badgeHtml = unwatchedReleased > 0 ? `<div class="show-badge">+${unwatchedReleased}</div>` : '';
@@ -2361,7 +2389,7 @@
           const copyPayload = escapeAttr(buildEpisodeCopyText(show.name, nextEp.season, nextEp.number));
           const isNextAired = Boolean(nextEp.airdate && nextEp.airdate <= todayStr);
           const checkBtnHtml = isNextAired
-            ? `<button type="button" class="card-watch-btn" onclick="quickMarkWatched(${nextEp.id}, event, ${show.id})" title="Mark ${epCode} watched">✓</button>`
+            ? `<button type="button" class="card-check-btn" onclick="quickMarkWatched(${nextEp.id}, event, ${show.id})" title="Mark ${epCode} watched">✓</button>`
             : '';
           bottomActionHtml = `
             <div class="card-next-box">
@@ -2374,12 +2402,14 @@
         }
 
         card.innerHTML = `
-          <img src="${show.image}" alt="${escapeAttr(show.name)}" loading="lazy" />
-          ${badgeHtml}
-          <div class="show-info">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fg" style="width: ${percent}%"></div>
+          <div class="poster-box">
+            <img src="${show.image}" alt="${escapeAttr(show.name)}" loading="lazy" />
+            ${badgeHtml}
+            <div class="poster-progress-bg">
+              <div class="poster-progress-fg" style="width: ${percent}%"></div>
             </div>
+          </div>
+          <div class="show-info">
             <div class="show-name-row">
               <div class="show-name">${show.name}</div>
               <span class="show-ep-count">${watched}/${total}</span>
@@ -2391,7 +2421,7 @@
       });
     }
 
-    function filterMyShows(type, btn) {
+    function filterMyShows(type) {
       activeMyFilter = type;
       renderMyShows();
     }
@@ -2420,6 +2450,7 @@
             showId: show.id,
             showName: show.name,
             showImage: show.image,
+            showBg: show.imageOriginal || show.image,
             epId: ep.id,
             epName: ep.name,
             season: ep.season,
@@ -2434,7 +2465,7 @@
 
       const futureOrToday = upcomingEpisodes.filter(e => e.airdate >= todayStr);
       const hero = futureOrToday[0];
-      const heroContainer = document.getElementById('heroContainer');
+      const heroContainer = document.getElementById('scheduleHeroContainer');
 
       if (hero) {
         const todayMidnight = new Date(todayStr + 'T00:00:00');
@@ -2445,14 +2476,18 @@
         const heroCopy = escapeAttr(buildEpisodeCopyText(hero.showName, hero.season, hero.number));
 
         heroContainer.innerHTML = `
-          <div class="hero-card" style="background-image: linear-gradient(180deg, rgba(5, 7, 10, 0.38) 0%, rgba(5, 7, 10, 0.96) 100%), url('${hero.showImage}');" onclick="openShowDetails(${hero.showId})">
-            <div class="hero-tag">Next Airing • ${daysStr}</div>
-            <div class="hero-title">${hero.showName}</div>
-            <div class="hero-subtitle">${code} • ${hero.epName}</div>
-            <div class="hero-ep-info">Date: ${formatDateEn(hero.airdate)}${hero.airtime ? ' at ' + hero.airtime : ''}</div>
-            <div class="hero-btn-row">
-              <button class="hero-watch-btn" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Watched</button>
-              <button class="hero-copy-btn" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
+          <div class="cinematic-hero" style="min-height:240px; background-image: url('${hero.showBg}');" onclick="openShowDetails(${hero.showId})">
+            <div class="hero-content">
+              <div class="hero-badges">
+                <span class="hero-pill-tag">Next Airing • ${daysStr}</span>
+              </div>
+              <div class="hero-show-title">${hero.showName}</div>
+              <div class="hero-ep-line"><span>${code}</span> • ${hero.epName}</div>
+              <div class="hero-air-sub">${formatDateEn(hero.airdate)}${hero.airtime ? ' at ' + hero.airtime : ''}</div>
+              <div class="hero-actions">
+                <button type="button" class="btn-netflix-primary" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Watched</button>
+                <button type="button" class="btn-netflix-secondary" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
+              </div>
             </div>
           </div>
         `;
@@ -2498,7 +2533,6 @@
       if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">No further upcoming episodes.</p>';
     }
 
-    updateHudTopDial();
     renderMyShows();
   </script>
 </body>

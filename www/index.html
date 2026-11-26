@@ -2,38 +2,59 @@
 <html lang="hr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f19" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#05070a" />
   <title>My TV Tracker</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%230b1120'/%3E%3Crect x='112' y='194' width='244' height='178' rx='22' fill='%231e293b' stroke='%23f59e0b' stroke-width='14'/%3E%3Crect x='112' y='140' width='244' height='44' rx='12' fill='%23f59e0b'/%3E%3Cpolygon points='212,242 212,324 278,283' fill='%23f8fafc'/%3E%3Ccircle cx='346' cy='336' r='76' fill='%230b1120' stroke='%23f59e0b' stroke-width='16'/%3E%3Cpolyline points='346,294 346,336 376,352' fill='none' stroke='%23fbbf24' stroke-width='14' stroke-linecap='round'/%3E%3C/svg%3E" />
   <style>
     :root {
-      --bg: #0b0f19;
-      --surface: #111827;
-      --surface-alt: #1e293b;
-      --border: #2d3748;
-      --text: #f9fafb;
-      --text-muted: #9ca3af;
-      --accent: #f59e0b;
-      --accent-hover: #d97706;
-      --success: #10b981;
+      --bg: #05070a;
+      --shell-bg: linear-gradient(180deg, rgba(12, 22, 27, 0.95) 0%, rgba(6, 10, 14, 0.99) 100%);
+      --shell-border: rgba(52, 211, 153, 0.45);
+      --card-bg: rgba(8, 15, 20, 0.92);
+      --pill-bg: rgba(6, 10, 14, 0.95);
+      --mint: #10b981;
+      --mint-bright: #34d399;
+      --mint-glow: rgba(52, 211, 153, 0.36);
+      --mint-dim: rgba(16, 185, 129, 0.14);
+      --cyan: #38bdf8;
+      --cyan-bright: #22d3ee;
+      --cyan-glow: rgba(56, 189, 248, 0.34);
+      --cyan-dim: rgba(56, 189, 248, 0.14);
+      --amber: #fbbf24;
+      --amber-dim: rgba(251, 191, 36, 0.14);
       --danger: #ef4444;
-      --shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+      --text: #ffffff;
+      --text-soft: #cbd5e1;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.2);
+      --on-mint: #04130d;
+      --on-cyan: #04131a;
     }
 
     [data-theme="light"] {
-      --bg: #f3f4f6;
-      --surface: #ffffff;
-      --surface-alt: #f1f5f9;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --accent: #d97706;
-      --accent-hover: #b45309;
-      --success: #059669;
+      --bg: #eef3f7;
+      --shell-bg: linear-gradient(180deg, #ffffff 0%, #f5f8fb 100%);
+      --shell-border: rgba(5, 150, 105, 0.38);
+      --card-bg: #f8fafc;
+      --pill-bg: #e2e8f0;
+      --mint: #059669;
+      --mint-bright: #10b981;
+      --mint-glow: rgba(16, 185, 129, 0.25);
+      --mint-dim: rgba(16, 185, 129, 0.12);
+      --cyan: #0284c7;
+      --cyan-bright: #0369a1;
+      --cyan-glow: rgba(2, 132, 199, 0.24);
+      --cyan-dim: rgba(2, 132, 199, 0.11);
+      --amber: #d97706;
+      --amber-dim: rgba(217, 119, 6, 0.12);
       --danger: #dc2626;
-      --shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --text: #0f172a;
+      --text-soft: #334155;
+      --muted: #64748b;
+      --line: rgba(100, 116, 139, 0.24);
+      --on-mint: #ffffff;
+      --on-cyan: #ffffff;
     }
 
     * {
@@ -43,61 +64,75 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      height: 100%;
+      width: 100%;
+      background: var(--bg);
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100%;
+      width: 100%;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.4;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      padding: calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: calc(74px + env(safe-area-inset-bottom));
+      align-items: center;
+      overflow-x: hidden;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
+    .app {
+      flex: 1;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Zaglavlje u stilu Rice Cookera */
     header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 14px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      box-shadow: var(--shadow);
-      gap: 10px;
+      gap: 8px;
+      padding: 2px 2px 0;
     }
 
     .header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .brand {
       display: flex;
       align-items: center;
       gap: 9px;
       min-width: 0;
     }
 
-    .brand h1 {
-      font-size: 1.05rem;
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    h1 {
+      font-size: 23px;
       font-weight: 800;
-      letter-spacing: -0.01em;
-      color: var(--accent);
+      color: var(--text);
+      letter-spacing: -0.02em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .brand span {
-      display: block;
-      font-size: 0.72rem;
-      color: var(--text-muted);
+    .tv-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      flex-shrink: 0;
     }
 
     .header-actions {
@@ -107,27 +142,34 @@
       flex-shrink: 0;
     }
 
-    .icon-btn {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
+    .hud-icon-btn {
+      height: 34px;
+      min-width: 34px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      border: 1.5px solid var(--mint-bright);
+      box-shadow: 0 0 12px var(--mint-dim), inset 0 0 6px var(--mint-dim);
       color: var(--text);
-      border-radius: 10px;
-      width: 35px;
-      height: 35px;
+      font-size: 13px;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 800;
-      flex-shrink: 0;
+      transition: transform 0.1s ease;
     }
 
-    .icon-btn:active {
-      transform: scale(0.95);
+    .hud-icon-btn.cyan-btn {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-dim), inset 0 0 6px var(--cyan-dim);
     }
 
-    .icon-btn.spinning {
+    .hud-icon-btn:active {
+      transform: scale(0.93);
+    }
+
+    .hud-icon-btn.spinning svg {
       animation: spin 1s linear infinite;
     }
 
@@ -135,120 +177,246 @@
       100% { transform: rotate(360deg); }
     }
 
-    .container {
-      width: 100%;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 16px;
+    /* Glavni zaobljeni HUD okvir preko cijele visine */
+    .hud-shell {
       flex: 1;
+      background: var(--shell-bg);
+      border: 1.5px solid var(--shell-border);
+      border-radius: 22px;
+      padding: 15px 14px;
+      box-shadow: 0 0 28px rgba(16, 185, 129, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
+    /* Gornji HUD pregled (kao mjerač na Rice Cookeru) */
+    .hud-top-panel {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dial-wrap {
+      position: relative;
+      width: 92px;
+      height: 92px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .dial-wrap svg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .dial-center {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .dial-center strong {
+      display: block;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .dial-center span {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .hud-top-right {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stats-headline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .stats-main {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stats-sub {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Glavna navigacija u obliku pill trake (kao Čvršća / Standardna / Mekša) */
+    .nav-pill-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      padding: 3px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
+    }
+
+    .nav-pill-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 4px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .nav-pill-btn.active {
+      background: var(--mint-bright);
+      color: var(--on-mint);
+      box-shadow: 0 0 12px var(--mint-glow);
+    }
+
+    /* Sekcije prikaza */
     .view-section {
       display: none;
+      flex: 1;
+      flex-direction: column;
     }
 
     .view-section.active {
-      display: block;
+      display: flex;
     }
 
-    /* Hero kartica na vrhu Rasporeda */
+    .hud-section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--mint-bright);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .schedule-group {
+      margin-bottom: 16px;
+    }
+
+    /* Hero kartica u Rasporedu */
     .hero-card {
       background-size: cover;
       background-position: center;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      padding: 22px 18px;
-      margin-bottom: 22px;
+      border-radius: 18px;
+      border: 1.5px solid var(--mint-bright);
+      box-shadow: 0 0 18px var(--mint-dim);
+      padding: 16px 14px;
+      margin-bottom: 18px;
       position: relative;
       overflow: hidden;
-      box-shadow: var(--shadow);
       cursor: pointer;
     }
 
     .hero-tag {
-      background: var(--accent);
-      color: #000000;
-      font-size: 0.72rem;
+      background: var(--mint-bright);
+      color: #04130d;
+      font-size: 11px;
       font-weight: 800;
-      padding: 4px 10px;
+      padding: 3px 10px;
       border-radius: 999px;
       display: inline-block;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
     }
 
     .hero-title {
-      font-size: 1.45rem;
+      font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 4px;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+      margin-bottom: 3px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
     }
 
     .hero-subtitle {
-      font-size: 0.92rem;
-      color: #fbbf24;
+      font-size: 13.5px;
+      color: #38bdf8;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
 
     .hero-ep-info {
-      font-size: 0.82rem;
-      color: #e5e7eb;
-      margin-bottom: 14px;
+      font-size: 12px;
+      color: #e2e8f0;
+      margin-bottom: 12px;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
 
+    .hero-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .hero-watch-btn {
-      background: var(--accent);
-      color: #000000;
+      background: var(--mint-bright);
+      color: #04130d;
       border: none;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 0.82rem;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12.5px;
       font-weight: 800;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      box-shadow: 0 0 12px var(--mint-glow);
     }
 
-    /* Skupine datuma */
-    .schedule-group {
-      margin-bottom: 20px;
-    }
-
-    .group-title {
-      font-size: 0.78rem;
+    .hero-copy-btn {
+      background: rgba(6, 12, 16, 0.9);
+      color: #38bdf8;
+      border: 1.5px solid #38bdf8;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12.5px;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-      margin-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 5px;
+      cursor: pointer;
     }
 
+    /* Redak epizode u Rasporedu */
     .ep-row {
       display: flex;
       align-items: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 9px;
       margin-bottom: 8px;
-      gap: 12px;
+      gap: 10px;
       cursor: pointer;
     }
 
     .ep-row img {
-      width: 48px;
-      height: 70px;
-      border-radius: 6px;
+      width: 44px;
+      height: 64px;
+      border-radius: 8px;
       object-fit: cover;
-      background: var(--surface-alt);
+      background: var(--pill-bg);
       flex-shrink: 0;
     }
 
@@ -259,34 +427,58 @@
 
     .ep-show-name {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .ep-spec {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 12.5px;
+      color: var(--text-soft);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .ep-air {
-      font-size: 0.78rem;
-      color: var(--accent);
+      font-size: 11.5px;
+      color: var(--mint-bright);
       font-weight: 700;
       margin-top: 2px;
     }
 
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .copy-pill-btn {
+      height: 31px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1.5px solid var(--cyan);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     .quick-check {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      border: 2px solid var(--border);
-      background: var(--surface-alt);
-      color: var(--text-muted);
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      border: 1.5px solid var(--mint-bright);
+      background: var(--mint-dim);
+      color: var(--mint-bright);
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -295,12 +487,11 @@
       flex-shrink: 0;
     }
 
-    .quick-check:hover {
-      border-color: var(--success);
-      color: var(--success);
+    .copy-pill-btn:active, .quick-check:active, .card-copy-btn:active, .card-watch-btn:active {
+      transform: scale(0.92);
     }
 
-    /* Moje serije Grid */
+    /* Filtri u Mojim serijama */
     .filter-tabs {
       display: flex;
       gap: 6px;
@@ -309,40 +500,39 @@
       scrollbar-width: none;
     }
 
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
     .filter-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 7px 14px;
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+      padding: 6px 12px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 12px;
       font-weight: 700;
       white-space: nowrap;
       cursor: pointer;
     }
 
     .filter-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #000000;
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: var(--on-cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    @media (max-width: 480px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
     .show-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
       overflow: hidden;
       position: relative;
       cursor: pointer;
@@ -350,24 +540,28 @@
       flex-direction: column;
     }
 
+    .show-card.has-new {
+      border-color: rgba(52, 211, 153, 0.45);
+    }
+
     .show-card img {
       width: 100%;
-      aspect-ratio: 2 / 3;
+      aspect-ratio: 2 / 2.75;
       object-fit: cover;
-      background: var(--surface-alt);
+      background: var(--pill-bg);
     }
 
     .show-badge {
       position: absolute;
       top: 8px;
       right: 8px;
-      background: var(--success);
-      color: #ffffff;
-      font-size: 0.7rem;
+      background: var(--mint-bright);
+      color: #04130d;
+      font-size: 11px;
       font-weight: 800;
-      padding: 3px 7px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      padding: 3px 8px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
     }
 
     .show-info {
@@ -376,28 +570,29 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 6px;
     }
 
     .show-name {
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 13.5px;
       line-height: 1.25;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-bottom: 6px;
     }
 
     .progress-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--muted);
       display: flex;
       justify-content: space-between;
+      font-variant-numeric: tabular-nums;
     }
 
     .progress-bar-bg {
-      background: var(--surface-alt);
+      background: var(--pill-bg);
       height: 5px;
       border-radius: 999px;
       overflow: hidden;
@@ -405,80 +600,105 @@
     }
 
     .progress-bar-fg {
-      background: var(--accent);
+      background: linear-gradient(90deg, var(--cyan), var(--mint-bright));
       height: 100%;
       transition: width 0.25s ease;
     }
 
-    /* Istraži / Pretraga */
+    .card-next-box {
+      padding-top: 6px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-copy-btn {
+      flex: 1;
+      min-width: 0;
+      height: 29px;
+      padding: 0 7px;
+      border-radius: 999px;
+      border: 1.5px solid var(--cyan);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-watch-btn {
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+      border: 1.5px solid var(--mint-bright);
+      background: var(--mint-bright);
+      color: var(--on-mint);
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--mint-glow);
+    }
+
+    .card-done-tag {
+      padding-top: 6px;
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mint-bright);
+      text-align: center;
+    }
+
+    /* Pretraga */
     .search-box {
       display: flex;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .search-box input {
       flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--pill-bg);
+      border: 1.5px solid var(--shell-border);
       color: var(--text);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 0.95rem;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-dim);
     }
 
     .search-btn {
-      background: var(--accent);
+      background: var(--mint-bright);
       border: none;
-      border-radius: 10px;
+      border-radius: 999px;
       font-weight: 800;
-      padding: 10px 16px;
-      color: #000000;
+      padding: 9px 18px;
+      color: var(--on-mint);
       cursor: pointer;
+      box-shadow: 0 0 12px var(--mint-glow);
     }
 
-    /* Donja navigacija */
-    .nav-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      z-index: 40;
-      padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-      box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.25);
-    }
-
-    .nav-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      cursor: pointer;
-      flex: 1;
-    }
-
-    .nav-btn.active {
-      color: var(--accent);
-    }
-
-    .nav-btn span.icon {
-      font-size: 1.25rem;
-    }
-
-    /* Modal / Drawer detalja serije */
+    /* Drawer detalja serije */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       z-index: 50;
       display: none;
       align-items: flex-end;
@@ -490,27 +710,27 @@
 
     .drawer {
       background: var(--bg);
-      border-top-left-radius: 18px;
-      border-top-right-radius: 18px;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
       width: 100%;
-      max-width: 680px;
+      max-width: 540px;
       margin: 0 auto;
       max-height: 92vh;
       overflow-y: auto;
-      padding: 18px 16px calc(24px + env(safe-area-inset-bottom));
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.6);
+      padding: 18px 15px calc(24px + env(safe-area-inset-bottom));
+      border-top: 1.5px solid var(--mint-bright);
+      box-shadow: 0 -6px 28px rgba(16, 185, 129, 0.16);
     }
 
     .drawer-top {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 14px;
     }
 
     .drawer-top h2 {
-      font-size: 1.2rem;
+      font-size: 19px;
       font-weight: 800;
       flex: 1;
       min-width: 0;
@@ -518,22 +738,26 @@
 
     .drawer-meta {
       display: flex;
-      gap: 14px;
-      margin-bottom: 14px;
+      gap: 12px;
+      margin-bottom: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px;
     }
 
     .drawer-meta img {
-      width: 86px;
-      height: 128px;
+      width: 78px;
+      height: 116px;
       object-fit: cover;
       border-radius: 10px;
       flex-shrink: 0;
     }
 
     .drawer-summary {
-      font-size: 0.84rem;
-      color: var(--text-muted);
-      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
       line-height: 1.5;
     }
 
@@ -541,61 +765,82 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .drawer-actions button, .action-btn {
       width: 100%;
-      background: var(--accent);
-      color: #000000;
+      background: var(--mint-bright);
+      color: var(--on-mint);
       border: none;
-      border-radius: 10px;
-      padding: 11px;
+      border-radius: 999px;
+      padding: 11px 14px;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 14px;
       cursor: pointer;
+      box-shadow: 0 0 14px var(--mint-glow);
     }
 
     .drawer-actions button.remove-btn {
       background: var(--danger);
       color: #ffffff;
+      box-shadow: none;
     }
 
     .drawer-actions button.prev-seasons-btn, .secondary-btn {
-      background: var(--surface-alt);
+      background: var(--pill-bg);
       color: var(--text);
-      border: 1px solid var(--border);
-      font-size: 0.85rem;
+      border: 1.5px solid var(--cyan);
+      font-size: 13px;
+      box-shadow: none;
     }
 
     .drawer-actions button.prev-seasons-btn.done {
-      border-color: var(--success);
-      color: var(--success);
+      border-color: var(--mint-bright);
+      color: var(--mint-bright);
     }
 
     .season-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
       margin: 16px 0 8px;
     }
 
     .season-header {
-      font-size: 0.82rem;
+      font-size: 12.5px;
       font-weight: 800;
-      color: var(--accent);
+      color: var(--mint-bright);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
+    .season-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .season-copy-btn {
+      background: var(--cyan-dim);
+      border: 1.5px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
     .season-mark-btn {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 0.72rem;
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
       cursor: pointer;
     }
 
@@ -603,25 +848,22 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      font-size: 0.85rem;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 10px 10px 12px;
+      margin-bottom: 7px;
+      font-size: 13.5px;
+      gap: 8px;
     }
 
     .ep-item.aired {
       cursor: pointer;
     }
 
-    .ep-item.aired:active {
-      background: var(--surface-alt);
-    }
-
     .ep-item-meta {
       flex: 1;
-      padding-right: 12px;
+      min-width: 0;
     }
 
     .ep-item-title {
@@ -632,32 +874,76 @@
       flex-wrap: wrap;
     }
 
-    .ep-info-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--accent);
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      padding: 1px 6px;
+    .ep-status-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
       border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .ep-status-pill.aired {
+      color: var(--mint-bright);
+      background: var(--mint-dim);
+      border: 1px solid rgba(52, 211, 153, 0.38);
+    }
+
+    .ep-status-pill.soon {
+      color: var(--amber);
+      background: var(--amber-dim);
+      border: 1px solid rgba(251, 191, 36, 0.38);
+    }
+
+    .ep-status-pill.tba {
+      color: var(--muted);
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
     }
 
     .ep-item-date {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      font-size: 11.5px;
+      color: var(--muted);
       margin-top: 2px;
     }
 
+    .ep-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .ep-copy-btn {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1.5px solid var(--cyan);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .ep-copy-btn:active {
+      transform: scale(0.93);
+    }
+
     .watch-checkbox {
-      width: 28px;
-      height: 28px;
-      border: 2px solid var(--border);
-      border-radius: 7px;
+      width: 30px;
+      height: 30px;
+      border: 1.5px solid var(--line);
+      background: var(--pill-bg);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 13px;
       font-weight: 800;
       color: transparent;
       user-select: none;
@@ -665,16 +951,17 @@
     }
 
     .watch-checkbox.checked {
-      background: var(--success);
-      border-color: var(--success);
-      color: #ffffff;
+      background: var(--mint-bright);
+      border-color: var(--mint-bright);
+      color: var(--on-mint);
+      box-shadow: 0 0 10px var(--mint-glow);
     }
 
-    /* Centrirani popup modal (Kratak sadržaj epizode i Backup baze) */
+    /* Centrirani modal (Sadržaj epizode i Backup) */
     .center-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.8);
       z-index: 65;
       display: none;
       align-items: center;
@@ -687,15 +974,15 @@
     }
 
     .modal-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      background: var(--bg);
+      border: 1.5px solid var(--mint-bright);
+      border-radius: 20px;
       width: 100%;
-      max-width: 460px;
+      max-width: 440px;
       max-height: 85vh;
       overflow-y: auto;
       padding: 18px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
     }
 
     .modal-header {
@@ -704,18 +991,18 @@
       justify-content: space-between;
       gap: 10px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line);
       margin-bottom: 14px;
     }
 
     .modal-header h3 {
-      font-size: 1.05rem;
+      font-size: 17px;
       font-weight: 800;
-      color: var(--accent);
+      color: var(--mint-bright);
     }
 
     .modal-body {
-      font-size: 0.88rem;
+      font-size: 13.5px;
       line-height: 1.55;
       color: var(--text);
     }
@@ -725,22 +1012,22 @@
     }
 
     .backup-box {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
       padding: 12px;
       margin-bottom: 12px;
     }
 
     .backup-box h4 {
-      font-size: 0.9rem;
+      font-size: 14px;
       font-weight: 800;
       margin-bottom: 4px;
     }
 
     .backup-box p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--muted);
       margin-bottom: 10px;
     }
 
@@ -753,41 +1040,42 @@
     .paste-area {
       width: 100%;
       min-height: 76px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--pill-bg);
+      border: 1px solid var(--line);
       color: var(--text);
-      border-radius: 8px;
-      padding: 8px;
-      font-size: 0.78rem;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 12px;
       font-family: monospace;
       margin-top: 8px;
       resize: vertical;
     }
 
     .empty-msg {
-      color: var(--text-muted);
-      font-size: 0.84rem;
+      color: var(--muted);
+      font-size: 13px;
       padding: 6px 2px;
     }
 
     .toast {
       position: fixed;
-      bottom: 84px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      background: #111827;
-      border: 1px solid #374151;
+      background: #081217;
+      border: 1.5px solid var(--cyan);
       color: #ffffff;
-      padding: 10px 18px;
+      padding: 9px 18px;
       border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      z-index: 80;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 90;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.22s ease;
       max-width: 90vw;
       text-align: center;
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.65);
     }
 
     .toast.show {
@@ -796,103 +1084,128 @@
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="header-left">
-      <button class="icon-btn" id="headerBackBtn" onclick="goBack()" title="Natrag" aria-label="Natrag">←</button>
-      <div class="brand">
-        <svg width="32" height="32" viewBox="0 0 512 512" style="flex-shrink:0; border-radius:8px;">
-          <rect width="512" height="512" rx="112" fill="#0b1120"/>
-          <rect x="112" y="194" width="244" height="178" rx="22" fill="#1e293b" stroke="#f59e0b" stroke-width="14"/>
-          <rect x="112" y="140" width="244" height="44" rx="12" fill="#f59e0b"/>
-          <path d="M144 140 L170 140 L150 184 L124 184 Z" fill="#0b1120"/>
-          <path d="M204 140 L230 140 L210 184 L184 184 Z" fill="#0b1120"/>
-          <path d="M264 140 L290 140 L270 184 L244 184 Z" fill="#0b1120"/>
-          <polygon points="212,242 212,324 278,283" fill="#f8fafc"/>
-          <circle cx="346" cy="336" r="76" fill="#0b1120" stroke="#f59e0b" stroke-width="16"/>
-          <polyline points="346,294 346,336 376,352" fill="none" stroke="#fbbf24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div>
+  <main class="app">
+    <!-- Zaglavlje u stilu Rice Cookera -->
+    <header>
+      <div class="header-left">
+        <button class="hud-icon-btn" id="headerBackBtn" onclick="goBack()" title="Natrag" aria-label="Natrag" style="display:none;">←</button>
+        <div class="title-wrap">
           <h1>My TV Tracker</h1>
-          <span id="screenSubtitle">Raspored</span>
+          <!-- Bijela linijska TV ikona bez okvira -->
+          <div class="tv-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5l5 4.5L19 5" />
+              <rect x="4.5" y="9.5" width="19" height="13.5" rx="3" />
+              <polygon points="12,13.5 12,19 17,16.25" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="openBackupModal()" title="Izvoz i uvoz baze">💾</button>
-      <button class="icon-btn" id="syncBtn" onclick="syncAllShows()" title="Osvježi nove epizode">🔄</button>
-      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu">☀️</button>
-    </div>
-  </header>
 
-  <main class="container">
-    <!-- EKRAN 1: RASPORED -->
-    <section class="view-section active" id="view-schedules">
-      <div id="heroContainer"></div>
-
-      <div class="group-title">Danas</div>
-      <div id="sched-today" class="schedule-group"></div>
-
-      <div class="group-title">Sutra</div>
-      <div id="sched-tomorrow" class="schedule-group"></div>
-
-      <div class="group-title">Ovaj tjedan</div>
-      <div id="sched-week" class="schedule-group"></div>
-
-      <div class="group-title">Buduće najave</div>
-      <div id="sched-future" class="schedule-group"></div>
-    </section>
-
-    <!-- EKRAN 2: MOJE SERIJE -->
-    <section class="view-section" id="view-my">
-      <div class="filter-tabs">
-        <button class="filter-btn active" onclick="filterMyShows('sve', this)">Sve (<span id="count-sve">0</span>)</button>
-        <button class="filter-btn" onclick="filterMyShows('aktivne', this)">U tijeku (<span id="count-aktivne">0</span>)</button>
-        <button class="filter-btn" onclick="filterMyShows('nepregledane', this)">Nove epizode (<span id="count-nove">0</span>)</button>
-        <button class="filter-btn" onclick="filterMyShows('zavrsene', this)">Završene (<span id="count-zavrsene">0</span>)</button>
+      <div class="header-actions">
+        <button class="hud-icon-btn" onclick="openBackupModal()" title="Sigurnosna kopija">Backup</button>
+        <button class="hud-icon-btn cyan-btn" id="syncBtn" onclick="syncAllShows()" title="Osvježi epizode" aria-label="Osvježi">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+            <path d="M16 16h5v5" />
+          </svg>
+        </button>
+        <button class="hud-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Promijeni temu" aria-label="Promijeni temu">☀️</button>
       </div>
-      <div class="grid" id="myGrid"></div>
-    </section>
+    </header>
 
-    <!-- EKRAN 3: ISTRAŽI -->
-    <section class="view-section" id="view-explore">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Upiši naziv serije (npr. Severance)..." onkeydown="if(event.key==='Enter') searchShows()" />
-        <button class="search-btn" onclick="searchShows()">Traži</button>
+    <!-- Glavni zaobljeni HUD okvir preko cijele visine -->
+    <section class="hud-shell">
+      <!-- Gornji HUD mjerač napretka + navigacija u obliku pill trake -->
+      <div class="hud-top-panel">
+        <div class="dial-wrap">
+          <svg width="92" height="92" viewBox="0 0 92 92">
+            <circle cx="46" cy="46" r="41" fill="none" stroke="rgba(148,163,184,0.16)" stroke-width="1.5" />
+            <circle cx="46" cy="46" r="31" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="3.5" stroke-dasharray="1.4 3.4" />
+            <circle cx="46" cy="46" r="36" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="4" />
+            <circle id="hudWatchedArc" cx="46" cy="46" r="36" fill="none" stroke="#34d399" stroke-width="4"
+                    stroke-linecap="round" stroke-dasharray="180 226.19" stroke-dashoffset="0"
+                    transform="rotate(-90 46 46)" />
+            <circle id="hudPendingArc" cx="46" cy="46" r="36" fill="none" stroke="#38bdf8" stroke-width="4"
+                    stroke-linecap="round" stroke-dasharray="36 226.19" stroke-dashoffset="-185"
+                    transform="rotate(-90 46 46)" />
+          </svg>
+          <div class="dial-center">
+            <strong id="hudPercentText">0%</strong>
+            <span>pogledano</span>
+          </div>
+        </div>
+
+        <div class="hud-top-right">
+          <div class="stats-headline">
+            <div class="stats-main" id="hudShowsStat">0 serija</div>
+            <div class="stats-sub" id="hudNewStat">+0 novih</div>
+          </div>
+
+          <div class="nav-pill-bar">
+            <button type="button" class="nav-pill-btn active" id="nav-schedules" onclick="switchTab('schedules')">Raspored</button>
+            <button type="button" class="nav-pill-btn" id="nav-my" onclick="switchTab('my')">Moje serije</button>
+            <button type="button" class="nav-pill-btn" id="nav-explore" onclick="switchTab('explore')">Istraži</button>
+          </div>
+        </div>
       </div>
-      <div class="group-title" id="exploreLabel">Popularno danas</div>
-      <div class="grid" id="searchGrid"></div>
+
+      <!-- EKRAN 1: RASPORED -->
+      <div class="view-section active" id="view-schedules">
+        <div id="heroContainer"></div>
+
+        <div class="hud-section-title">Danas</div>
+        <div id="sched-today" class="schedule-group"></div>
+
+        <div class="hud-section-title">Sutra</div>
+        <div id="sched-tomorrow" class="schedule-group"></div>
+
+        <div class="hud-section-title">Ovaj tjedan</div>
+        <div id="sched-week" class="schedule-group"></div>
+
+        <div class="hud-section-title">Buduće najave</div>
+        <div id="sched-future" class="schedule-group"></div>
+      </div>
+
+      <!-- EKRAN 2: MOJE SERIJE -->
+      <div class="view-section" id="view-my">
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="filterMyShows('sve', this)">Sve (<span id="count-sve">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('nepregledane', this)">Nove (<span id="count-nove">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('aktivne', this)">U tijeku (<span id="count-aktivne">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('cekam', this)">Čekam nove (<span id="count-cekam">0</span>)</button>
+          <button class="filter-btn" onclick="filterMyShows('zavrsene', this)">Završene (<span id="count-zavrsene">0</span>)</button>
+        </div>
+        <div class="grid" id="myGrid"></div>
+      </div>
+
+      <!-- EKRAN 3: ISTRAŽI -->
+      <div class="view-section" id="view-explore">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Upiši naziv serije (npr. Dexter)..." onkeydown="if(event.key==='Enter') searchShows()" />
+          <button class="search-btn" onclick="searchShows()">Traži</button>
+        </div>
+        <div class="hud-section-title" id="exploreLabel">Popularno danas</div>
+        <div class="grid" id="searchGrid"></div>
+      </div>
     </section>
   </main>
-
-  <nav class="nav-bar">
-    <button class="nav-btn active" id="nav-schedules" onclick="switchTab('schedules')">
-      <span class="icon">📅</span>
-      <span>Raspored</span>
-    </button>
-    <button class="nav-btn" id="nav-my" onclick="switchTab('my')">
-      <span class="icon">🍿</span>
-      <span>Moje serije</span>
-    </button>
-    <button class="nav-btn" id="nav-explore" onclick="switchTab('explore')">
-      <span class="icon">🔍</span>
-      <span>Istraži</span>
-    </button>
-  </nav>
 
   <!-- DETALJI SERIJE -->
   <div class="overlay" id="overlay" onclick="closeDrawer()">
     <div class="drawer" id="drawer" onclick="event.stopPropagation()">
       <div class="drawer-top">
-        <button class="icon-btn" onclick="closeDrawer()" title="Natrag" aria-label="Natrag">←</button>
+        <button class="hud-icon-btn" onclick="closeDrawer()" title="Natrag" aria-label="Natrag">←</button>
         <h2 id="drawerTitle">Naziv serije</h2>
       </div>
       <div class="drawer-meta">
         <img id="drawerImage" src="" alt="Poster" />
         <div>
-          <p id="drawerNetwork" style="font-weight:800; color:var(--accent); margin-bottom:4px;"></p>
-          <p id="drawerStatus" style="font-size:0.82rem; color:var(--text-muted); margin-bottom:6px;"></p>
-          <p id="drawerProgress" style="font-weight:700; font-size:0.88rem;"></p>
+          <p id="drawerNetwork" style="font-weight:800; color:var(--mint-bright); margin-bottom:4px; font-size:14px;"></p>
+          <p id="drawerStatus" style="font-size:12.5px; color:var(--muted); margin-bottom:6px;"></p>
+          <p id="drawerProgress" style="font-weight:700; font-size:13.5px;"></p>
         </div>
       </div>
       <div id="drawerSummary" class="drawer-summary"></div>
@@ -911,12 +1224,15 @@
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div>
-          <div id="epModalCode" style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;"></div>
+          <div id="epModalCode" style="font-size:11.5px; font-weight:800; color:var(--muted); text-transform:uppercase;"></div>
           <h3 id="epModalTitle">Naziv epizode</h3>
         </div>
-        <button class="icon-btn" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
+        <button class="hud-icon-btn" onclick="closeEpSummaryModal()" aria-label="Zatvori">✕</button>
       </div>
-      <div style="font-size:0.78rem; color:var(--accent); font-weight:700; margin-bottom:10px;" id="epModalDate"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;">
+        <div style="font-size:12.5px; color:var(--mint-bright); font-weight:700;" id="epModalDate"></div>
+        <button class="copy-pill-btn" id="epModalCopyBtn" onclick="copyFromBtn(this, event)">Copy</button>
+      </div>
       <div class="modal-body" id="epModalSummary"></div>
     </div>
   </div>
@@ -925,18 +1241,18 @@
   <div class="center-overlay" id="backupOverlay" onclick="closeBackupModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3>💾 Sigurnosna kopija baze</h3>
-        <button class="icon-btn" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
+        <h3>Sigurnosna kopija baze</h3>
+        <button class="hud-icon-btn" onclick="closeBackupModal()" aria-label="Zatvori">✕</button>
       </div>
       <div class="modal-body">
-        <p id="backupStatsText" style="font-size:0.82rem; color:var(--text-muted);"></p>
+        <p id="backupStatsText" style="font-size:12.5px; color:var(--muted);"></p>
 
         <div class="backup-box">
           <h4>Izvoz baze (prije deinstalacije)</h4>
           <p>Spremite <code>.json</code> datoteku na uređaj, pošaljite je na Google Drive / e-poštu ili kopirajte tekst baze.</p>
           <div class="backup-btn-stack">
-            <button class="action-btn" onclick="exportDatabaseFile()">⬇️ Spremi / podijeli .json datoteku</button>
-            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">📋 Kopiraj tekst baze u međuspremnik</button>
+            <button class="action-btn" onclick="exportDatabaseFile()">Spremi / podijeli .json datoteku</button>
+            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">Kopiraj tekst baze u međuspremnik</button>
           </div>
         </div>
 
@@ -945,10 +1261,10 @@
           <p>Odaberite spremljenu <code>.json</code> datoteku ili zalijepite kopirani tekst baze.</p>
           <input type="file" id="importFileInput" accept="*/*" hidden onchange="importDatabaseFile(event)" />
           <div class="backup-btn-stack">
-            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">📂 Učitaj .json datoteku s uređaja</button>
+            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">Učitaj .json datoteku s uređaja</button>
           </div>
           <textarea id="pasteBackupInput" class="paste-area" placeholder="Ovdje možete zalijepiti kopirani JSON tekst ako ne koristite datoteku..."></textarea>
-          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">📥 Vrati iz zalijepljenog teksta</button>
+          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">Vrati iz zalijepljenog teksta</button>
         </div>
       </div>
     </div>
@@ -957,15 +1273,11 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%231e293b'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3EBez postera%3C/text%3E%3C/svg%3E";
-    const TAB_LABELS = {
-      schedules: 'Raspored',
-      my: 'Moje serije',
-      explore: 'Istraži'
-    };
+    const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='295'%3E%3Crect width='210' height='295' fill='%230c161b'/%3E%3Ctext x='50%25' y='50%25' fill='%2394a3b8' font-family='sans-serif' font-size='16' text-anchor='middle'%3EBez postera%3C/text%3E%3C/svg%3E";
 
     let myShows = JSON.parse(localStorage.getItem('myShows') || '[]');
     let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
+    let showActivity = JSON.parse(localStorage.getItem('showActivity') || '{}');
     let currentDrawerShow = null;
     let activeMyFilter = 'sve';
     let exploreLoaded = false;
@@ -974,6 +1286,85 @@
     function toHttps(url) {
       if (!url) return PLACEHOLDER_IMG;
       return url.replace(/^http:\/\//i, 'https://');
+    }
+
+    function escapeAttr(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function formatEpCode(season, number) {
+      const s = String(Number(season) || 0).padStart(2, '0');
+      const e = String(Number(number) || 0).padStart(2, '0');
+      return `S${s}E${e}`;
+    }
+
+    function buildEpisodeCopyText(showName, season, number) {
+      return `${String(showName || '').trim()} ${formatEpCode(season, number)}`;
+    }
+
+    function buildSeasonCopyText(showName, season) {
+      const s = String(Number(season) || 0).padStart(2, '0');
+      return `${String(showName || '').trim()} S${s}`;
+    }
+
+    function touchShowActivity(showId) {
+      if (!showId) return;
+      showActivity[showId] = Date.now();
+      localStorage.setItem('showActivity', JSON.stringify(showActivity));
+    }
+
+    async function copyText(text, event) {
+      if (event) event.stopPropagation();
+      if (!text) return;
+
+      try {
+        const plugins = window.Capacitor && window.Capacitor.Plugins;
+        if (plugins && plugins.Clipboard && typeof plugins.Clipboard.write === 'function') {
+          await plugins.Clipboard.write({ string: text });
+          showToast(`Kopirano: ${text}`);
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-9999px';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        const copied = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (copied) {
+          showToast(`Kopirano: ${text}`);
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          showToast(`Kopirano: ${text}`);
+          return;
+        }
+      } catch (e) {}
+
+      showToast('Kopiranje nije uspjelo.');
+    }
+
+    function copyFromBtn(btn, event) {
+      if (event) event.stopPropagation();
+      const text = btn ? btn.getAttribute('data-copy') : '';
+      copyText(text);
     }
 
     function getLocalDateStr(offsetDays = 0) {
@@ -991,11 +1382,12 @@
       return `${d}.${m}.${y}.`;
     }
 
-    // Tema
     function initTheme() {
       const saved = localStorage.getItem('tracker_theme') || 'dark';
       document.documentElement.setAttribute('data-theme', saved);
       document.getElementById('themeBtn').textContent = saved === 'dark' ? '☀️' : '🌙';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', saved === 'dark' ? '#05070a' : '#eef3f7');
     }
 
     function toggleTheme() {
@@ -1004,6 +1396,8 @@
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('tracker_theme', next);
       document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#05070a' : '#eef3f7');
     }
     initTheme();
 
@@ -1011,23 +1405,67 @@
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // Navigacija karticama i Back tipka
+    /* Ažuriranje gornjeg HUD kružnog mjerača (Mint = pogledano, Cyan = nove emitirane) */
+    function updateHudTopDial() {
+      const todayStr = getLocalDateStr(0);
+      let totalAired = 0;
+      let totalWatched = 0;
+      let totalNewUnwatched = 0;
+
+      myShows.forEach(show => {
+        (show.episodes || []).forEach(ep => {
+          if (ep.airdate && ep.airdate <= todayStr) {
+            totalAired++;
+            if (watchedEpisodes[ep.id]) totalWatched++;
+            else totalNewUnwatched++;
+          }
+        });
+      });
+
+      const pct = totalAired > 0 ? Math.round((totalWatched / totalAired) * 100) : 0;
+      document.getElementById('hudPercentText').textContent = `${pct}%`;
+      document.getElementById('hudShowsStat').textContent = `${myShows.length} ${myShows.length === 1 ? 'serija' : (myShows.length >= 2 && myShows.length <= 4 ? 'serije' : 'serija')}`;
+      document.getElementById('hudNewStat').textContent = `+${totalNewUnwatched} novih`;
+
+      const C = 2 * Math.PI * 36; // 226.19
+      const gap = 6;
+      const usable = C - gap * 2;
+      const watchedRatio = totalAired > 0 ? totalWatched / totalAired : 0;
+      const pendingRatio = totalAired > 0 ? totalNewUnwatched / totalAired : 0;
+
+      const wLen = totalAired > 0 ? Math.max(8, watchedRatio * usable) : usable * 0.5;
+      const pLen = totalAired > 0 ? Math.max(8, pendingRatio * usable) : usable * 0.5;
+
+      const wArc = document.getElementById('hudWatchedArc');
+      const pArc = document.getElementById('hudPendingArc');
+      wArc.setAttribute('stroke-dasharray', `${wLen.toFixed(1)} ${C.toFixed(1)}`);
+      wArc.setAttribute('stroke-dashoffset', '0');
+      pArc.setAttribute('stroke-dasharray', `${pLen.toFixed(1)} ${C.toFixed(1)}`);
+      pArc.setAttribute('stroke-dashoffset', `${-(wLen + gap).toFixed(1)}`);
+    }
+
+    function updateBackButtonVisibility() {
+      const currentTab = navHistory[navHistory.length - 1];
+      const backBtn = document.getElementById('headerBackBtn');
+      backBtn.style.display = (navHistory.length > 1 || currentTab !== 'schedules') ? 'inline-flex' : 'none';
+    }
+
     function switchTab(tab, recordHistory = true) {
       const currentTab = navHistory[navHistory.length - 1];
       if (recordHistory && currentTab !== tab) {
         navHistory.push(tab);
       }
 
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-pill-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById('nav-' + tab);
       if (activeBtn) activeBtn.classList.add('active');
 
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
       document.getElementById('view-' + tab).classList.add('active');
-      document.getElementById('screenSubtitle').textContent = TAB_LABELS[tab] || 'Raspored';
+      updateBackButtonVisibility();
 
       if (tab === 'schedules') renderSchedule();
       if (tab === 'my') renderMyShows();
@@ -1074,7 +1512,6 @@
       }
     }
 
-    // Povezivanje nativne Android sistemske tipke Natrag (@capacitor/app)
     function registerAndroidBackHandler() {
       if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
         window.Capacitor.Plugins.App.addListener('backButton', () => {
@@ -1084,7 +1521,7 @@
     }
     registerAndroidBackHandler();
 
-    // Izvoz i uvoz baze podataka (nativni Android Filesystem + Share + Clipboard)
+    // Izvoz i uvoz baze podataka
     function buildBackupPayload() {
       return {
         app: 'My TV Tracker',
@@ -1111,10 +1548,8 @@
       const payload = buildBackupPayload();
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
-
       const plugins = window.Capacitor && window.Capacitor.Plugins;
 
-      // 1. Nativni Android put putem @capacitor/filesystem i @capacitor/share
       if (plugins && plugins.Filesystem) {
         try {
           const cacheRes = await plugins.Filesystem.writeFile({
@@ -1134,13 +1569,11 @@
             return;
           }
         } catch (err) {
-          // Ako korisnik zatvori dijalog dijeljenja, ne prikazuj grešku
           if (err && String(err.message || err).toLowerCase().includes('cancel')) {
             return;
           }
         }
 
-        // Pokušaj izravnog zapisa u mapu Documents / External ako Share nije dostupan
         try {
           await plugins.Filesystem.writeFile({
             path: fileName,
@@ -1167,7 +1600,6 @@
         }
       }
 
-      // 2. Fallback za desktop web preglednik
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1180,23 +1612,8 @@
       showToast("Datoteka sigurnosne kopije je preuzeta.");
     }
 
-    async function copyDatabaseClipboard() {
-      const jsonStr = JSON.stringify(buildBackupPayload());
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(jsonStr);
-          showToast("Baza je kopirana u međuspremnik!");
-          return;
-        }
-      } catch (e) {}
-
-      const ta = document.createElement('textarea');
-      ta.value = jsonStr;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showToast("Baza je kopirana u međuspremnik!");
+    function copyDatabaseClipboard() {
+      copyText(JSON.stringify(buildBackupPayload()));
     }
 
     function applyImportedData(rawText) {
@@ -1211,6 +1628,7 @@
       localStorage.setItem('myShows', JSON.stringify(myShows));
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
 
+      updateHudTopDial();
       renderSchedule();
       renderMyShows();
       closeBackupModal();
@@ -1247,7 +1665,6 @@
       }
     }
 
-    // Sinkronizacija praćenih serija s TVmaze API-jem
     async function syncAllShows() {
       if (myShows.length === 0) {
         showToast("Dodajte serije u kartici Istraži.");
@@ -1263,6 +1680,7 @@
           myShows[i] = mapRawShow(rawShow);
         }
         localStorage.setItem('myShows', JSON.stringify(myShows));
+        updateHudTopDial();
         renderSchedule();
         renderMyShows();
         showToast("Raspored i epizode su osvježeni!");
@@ -1293,7 +1711,6 @@
       };
     }
 
-    // Popularne / današnje serije za početni prikaz u Istraži
     async function loadTrendingShows() {
       const grid = document.getElementById('searchGrid');
       grid.innerHTML = '<p class="empty-msg" style="grid-column:1/-1; text-align:center;">Učitavanje prijedloga...</p>';
@@ -1313,7 +1730,6 @@
       }
     }
 
-    // Pretraga s TVmaze API-ja
     async function searchShows() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) {
@@ -1351,7 +1767,7 @@
         card.className = 'show-card';
         card.onclick = () => openShowDetails(show.id);
         card.innerHTML = `
-          <img src="${img}" alt="${show.name}" loading="lazy" />
+          <img src="${img}" alt="${escapeAttr(show.name)}" loading="lazy" />
           ${isTracked ? '<div class="show-badge">Praćeno</div>' : ''}
           <div class="show-info">
             <div class="show-name">${show.name}</div>
@@ -1362,7 +1778,6 @@
       });
     }
 
-    // Detalji serije
     async function openShowDetails(id) {
       currentDrawerShow = null;
       document.getElementById('drawerEpList').innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">Učitavanje epizoda...</p>';
@@ -1446,9 +1861,11 @@
       });
 
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+      touchShowActivity(currentDrawerShow.id);
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateHudTopDial();
       renderMyShows();
       renderSchedule();
       showToast(allPrevWatched
@@ -1457,7 +1874,20 @@
       );
     }
 
-    // Listanje sezona od najnovije prema prvoj + klik na već objavljenu epizodu otvara kratak sadržaj
+    function getAirBadgeHtml(airdate, todayStr) {
+      if (!airdate) {
+        return '<span class="ep-status-pill tba">Nije najavljeno</span>';
+      }
+      if (airdate <= todayStr) {
+        return '<span class="ep-status-pill aired">Emitirano</span>';
+      }
+      const todayMs = new Date(todayStr + 'T00:00:00').getTime();
+      const epMs = new Date(airdate + 'T00:00:00').getTime();
+      const days = Math.round((epMs - todayMs) / (1000 * 60 * 60 * 24));
+      const label = days === 1 ? 'Sutra' : `Za ${days} dana`;
+      return `<span class="ep-status-pill soon">${label}</span>`;
+    }
+
     function renderEpList(episodes) {
       const list = document.getElementById('drawerEpList');
       list.innerHTML = '';
@@ -1467,6 +1897,7 @@
       }
 
       const todayStr = getLocalDateStr(0);
+      const showName = currentDrawerShow ? currentDrawerShow.name : '';
       const seasons = {};
       episodes.forEach(ep => {
         const sNum = Number(ep.season);
@@ -1477,17 +1908,25 @@
       const sortedSeasonNumbers = Object.keys(seasons).map(Number).sort((a, b) => b - a);
 
       sortedSeasonNumbers.forEach(seasonNum => {
+        const seasonCopy = escapeAttr(buildSeasonCopyText(showName, seasonNum));
+        const sShort = `S${String(seasonNum).padStart(2, '0')}`;
+
         const sRow = document.createElement('div');
         sRow.className = 'season-header-row';
         sRow.innerHTML = `
           <div class="season-header">Sezona ${seasonNum}</div>
-          <button class="season-mark-btn" onclick="toggleSeasonWatched(${seasonNum})">✓ Označi cijelu sezonu</button>
+          <div class="season-btn-group">
+            <button class="season-copy-btn" data-copy="${seasonCopy}" onclick="copyFromBtn(this, event)" title="Kopiraj ${seasonCopy}">Copy ${sShort}</button>
+            <button class="season-mark-btn" onclick="toggleSeasonWatched(${seasonNum})">✓ Cijela sezona</button>
+          </div>
         `;
         list.appendChild(sRow);
 
         seasons[seasonNum].forEach(ep => {
           const isEpWatched = !!watchedEpisodes[ep.id];
           const isAired = Boolean(ep.airdate && ep.airdate <= todayStr);
+          const copyTextVal = escapeAttr(buildEpisodeCopyText(showName, ep.season, ep.number));
+          const codeLabel = formatEpCode(ep.season, ep.number);
 
           const item = document.createElement('div');
           item.className = `ep-item ${isAired ? 'aired' : ''}`;
@@ -1499,13 +1938,16 @@
             }
           };
 
-          const badgeHtml = isAired ? '<span class="ep-info-pill">Sadržaj</span>' : '';
+          const badgeHtml = getAirBadgeHtml(ep.airdate, todayStr);
           item.innerHTML = `
             <div class="ep-item-meta">
               <div class="ep-item-title">${ep.number}. ${ep.name} ${badgeHtml}</div>
-              <div class="ep-item-date">Emitiranje: ${formatDateHr(ep.airdate)}</div>
+              <div class="ep-item-date">${codeLabel} • ${formatDateHr(ep.airdate)}</div>
             </div>
-            <div class="watch-checkbox ${isEpWatched ? 'checked' : ''}" onclick="toggleWatch(${ep.id}, this, event)">✓</div>
+            <div class="ep-item-controls">
+              <button type="button" class="ep-copy-btn" data-copy="${copyTextVal}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyTextVal}">Copy</button>
+              <div class="watch-checkbox ${isEpWatched ? 'checked' : ''}" onclick="toggleWatch(${ep.id}, this, event)">✓</div>
+            </div>
           `;
           list.appendChild(item);
         });
@@ -1513,10 +1955,18 @@
     }
 
     async function openEpisodeSummary(ep) {
+      const showName = currentDrawerShow ? currentDrawerShow.name : '';
+      const fullCopy = buildEpisodeCopyText(showName, ep.season, ep.number);
       const code = `Sezona ${ep.season} • Epizoda ${ep.number}`;
+
       document.getElementById('epModalCode').textContent = code;
       document.getElementById('epModalTitle').textContent = ep.name;
       document.getElementById('epModalDate').textContent = `Emitirano: ${formatDateHr(ep.airdate)}`;
+
+      const modalCopyBtn = document.getElementById('epModalCopyBtn');
+      modalCopyBtn.setAttribute('data-copy', fullCopy);
+      modalCopyBtn.textContent = `Copy ${formatEpCode(ep.season, ep.number)}`;
+
       document.getElementById('epSummaryOverlay').classList.add('open');
 
       if (ep.summary && ep.summary.trim() !== '') {
@@ -1524,7 +1974,7 @@
         return;
       }
 
-      document.getElementById('epModalSummary').innerHTML = '<p style="color:var(--text-muted);">Učitavanje kratkog sadržaja...</p>';
+      document.getElementById('epModalSummary').innerHTML = '<p style="color:var(--muted);">Učitavanje kratkog sadržaja...</p>';
       try {
         const res = await fetch(`https://api.tvmaze.com/episodes/${ep.id}`);
         if (res.ok) {
@@ -1567,9 +2017,11 @@
       });
 
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+      touchShowActivity(currentDrawerShow.id);
       renderEpList(currentDrawerShow.episodes);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
@@ -1583,17 +2035,21 @@
         delete watchedEpisodes[epId];
       }
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+      if (currentDrawerShow) touchShowActivity(currentDrawerShow.id);
       updateProgressLabel();
       updatePrevSeasonsBtnState();
+      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
 
-    function quickMarkWatched(epId, event) {
-      event.stopPropagation();
+    function quickMarkWatched(epId, event, showId) {
+      if (event) event.stopPropagation();
       watchedEpisodes[epId] = true;
       localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+      if (showId) touchShowActivity(showId);
       showToast("Označeno kao pogledano!");
+      updateHudTopDial();
       renderSchedule();
       renderMyShows();
     }
@@ -1613,10 +2069,12 @@
         showToast("Uklonjeno iz kolekcije.");
       } else {
         myShows.push(currentDrawerShow);
+        touchShowActivity(currentDrawerShow.id);
         showToast("Dodano u Moje serije!");
       }
       localStorage.setItem('myShows', JSON.stringify(myShows));
       updateAddBtnState();
+      updateHudTopDial();
       renderMyShows();
       renderSchedule();
     }
@@ -1637,6 +2095,15 @@
       document.getElementById('overlay').classList.remove('open');
     }
 
+    function getNextEpisode(show) {
+      if (!show.episodes || show.episodes.length === 0) return null;
+      const sorted = [...show.episodes].sort((a, b) => {
+        if (Number(a.season) !== Number(b.season)) return Number(a.season) - Number(b.season);
+        return Number(a.number) - Number(b.number);
+      });
+      return sorted.find(ep => !watchedEpisodes[ep.id]) || null;
+    }
+
     // MOJE SERIJE
     function renderMyShows() {
       const grid = document.getElementById('myGrid');
@@ -1644,27 +2111,41 @@
       const todayStr = getLocalDateStr(0);
 
       let countSve = myShows.length;
-      let countAktivne = myShows.filter(s => s.status && s.status.toLowerCase() !== 'ended').length;
-      let countZavrsene = myShows.filter(s => s.status && s.status.toLowerCase() === 'ended').length;
+      let countAktivne = 0;
+      let countZavrsene = 0;
       let countNove = 0;
+      let countCekam = 0;
 
       myShows.forEach(s => {
+        const isEnded = s.status && s.status.toLowerCase() === 'ended';
         const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
+        if (isEnded) countZavrsene++;
+        else countAktivne++;
         if (hasUnwatchedReleased) countNove++;
+        if (!isEnded && !hasUnwatchedReleased) countCekam++;
       });
 
       document.getElementById('count-sve').textContent = countSve;
-      document.getElementById('count-aktivne').textContent = countAktivne;
       document.getElementById('count-nove').textContent = countNove;
+      document.getElementById('count-aktivne').textContent = countAktivne;
+      document.getElementById('count-cekam').textContent = countCekam;
       document.getElementById('count-zavrsene').textContent = countZavrsene;
 
-      const showsToShow = myShows.filter(s => {
-        if (activeMyFilter === 'aktivne') return s.status && s.status.toLowerCase() !== 'ended';
-        if (activeMyFilter === 'zavrsene') return s.status && s.status.toLowerCase() === 'ended';
-        if (activeMyFilter === 'nepregledane') {
-          return s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
-        }
+      const filtered = myShows.filter(s => {
+        const isEnded = s.status && s.status.toLowerCase() === 'ended';
+        const hasUnwatchedReleased = s.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]);
+        if (activeMyFilter === 'aktivne') return !isEnded;
+        if (activeMyFilter === 'zavrsene') return isEnded;
+        if (activeMyFilter === 'nepregledane') return hasUnwatchedReleased;
+        if (activeMyFilter === 'cekam') return !isEnded && !hasUnwatchedReleased;
         return true;
+      });
+
+      const showsToShow = [...filtered].sort((a, b) => {
+        const aUnwatched = a.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
+        const bUnwatched = b.episodes.some(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]) ? 1 : 0;
+        if (aUnwatched !== bUnwatched) return bUnwatched - aUnwatched;
+        return (showActivity[b.id] || 0) - (showActivity[a.id] || 0);
       });
 
       if (showsToShow.length === 0) {
@@ -1677,15 +2158,34 @@
         const watched = show.episodes.filter(ep => watchedEpisodes[ep.id]).length;
         const unwatchedReleased = show.episodes.filter(ep => ep.airdate && ep.airdate <= todayStr && !watchedEpisodes[ep.id]).length;
         const percent = total > 0 ? Math.round((watched / total) * 100) : 0;
+        const nextEp = getNextEpisode(show);
 
         const card = document.createElement('div');
-        card.className = 'show-card';
+        card.className = `show-card ${unwatchedReleased > 0 ? 'has-new' : ''}`;
         card.onclick = () => openShowDetails(show.id);
 
         const badgeHtml = unwatchedReleased > 0 ? `<div class="show-badge">+${unwatchedReleased}</div>` : '';
 
+        let bottomActionHtml = '';
+        if (nextEp) {
+          const epCode = formatEpCode(nextEp.season, nextEp.number);
+          const copyPayload = escapeAttr(buildEpisodeCopyText(show.name, nextEp.season, nextEp.number));
+          const isNextAired = Boolean(nextEp.airdate && nextEp.airdate <= todayStr);
+          const checkBtnHtml = isNextAired
+            ? `<button type="button" class="card-watch-btn" onclick="quickMarkWatched(${nextEp.id}, event, ${show.id})" title="Označi ${epCode} pogledano">✓</button>`
+            : '';
+          bottomActionHtml = `
+            <div class="card-next-box">
+              <button type="button" class="card-copy-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyPayload}">Copy ${epCode}</button>
+              ${checkBtnHtml}
+            </div>
+          `;
+        } else {
+          bottomActionHtml = `<div class="card-done-tag">✓ Sve pogledano</div>`;
+        }
+
         card.innerHTML = `
-          <img src="${show.image}" alt="${show.name}" loading="lazy" />
+          <img src="${show.image}" alt="${escapeAttr(show.name)}" loading="lazy" />
           ${badgeHtml}
           <div class="show-info">
             <div class="show-name">${show.name}</div>
@@ -1695,6 +2195,7 @@
                 <div class="progress-bar-fg" style="width: ${percent}%"></div>
               </div>
             </div>
+            ${bottomActionHtml}
           </div>
         `;
         grid.appendChild(card);
@@ -1754,15 +2255,19 @@
         const epMidnight = new Date(hero.airdate + 'T00:00:00');
         const daysLeft = Math.round((epMidnight - todayMidnight) / (1000 * 60 * 60 * 24));
         const daysStr = daysLeft === 0 ? 'DANAS' : (daysLeft === 1 ? 'SUTRA' : `ZA ${daysLeft} DANA`);
-        const code = `S${String(hero.season).padStart(2, '0')}E${String(hero.number).padStart(2, '0')}`;
+        const code = formatEpCode(hero.season, hero.number);
+        const heroCopy = escapeAttr(buildEpisodeCopyText(hero.showName, hero.season, hero.number));
 
         heroContainer.innerHTML = `
-          <div class="hero-card" style="background-image: linear-gradient(180deg, rgba(11, 15, 25, 0.35) 0%, rgba(11, 15, 25, 0.96) 100%), url('${hero.showImage}');" onclick="openShowDetails(${hero.showId})">
+          <div class="hero-card" style="background-image: linear-gradient(180deg, rgba(5, 7, 10, 0.38) 0%, rgba(5, 7, 10, 0.96) 100%), url('${hero.showImage}');" onclick="openShowDetails(${hero.showId})">
             <div class="hero-tag">Sljedeće emitiranje • ${daysStr}</div>
             <div class="hero-title">${hero.showName}</div>
             <div class="hero-subtitle">${code} • ${hero.epName}</div>
             <div class="hero-ep-info">Datum: ${formatDateHr(hero.airdate)} ${hero.airtime ? 'u ' + hero.airtime : ''}</div>
-            <button class="hero-watch-btn" onclick="quickMarkWatched(${hero.epId}, event)">✓ Označi kao pogledano</button>
+            <div class="hero-btn-row">
+              <button class="hero-watch-btn" onclick="quickMarkWatched(${hero.epId}, event, ${hero.showId})">✓ Pogledano</button>
+              <button class="hero-copy-btn" data-copy="${heroCopy}" onclick="copyFromBtn(this, event)">Copy ${code}</button>
+            </div>
           </div>
         `;
       } else {
@@ -1772,18 +2277,22 @@
       upcomingEpisodes.forEach(ep => {
         if (ep.airdate < todayStr) return;
 
-        const code = `S${String(ep.season).padStart(2, '0')}E${String(ep.number).padStart(2, '0')}`;
+        const code = formatEpCode(ep.season, ep.number);
+        const copyPayload = escapeAttr(buildEpisodeCopyText(ep.showName, ep.season, ep.number));
         const row = document.createElement('div');
         row.className = 'ep-row';
         row.onclick = () => openShowDetails(ep.showId);
         row.innerHTML = `
-          <img src="${ep.showImage}" alt="${ep.showName}" loading="lazy" />
+          <img src="${ep.showImage}" alt="${escapeAttr(ep.showName)}" loading="lazy" />
           <div class="ep-details">
             <div class="ep-show-name">${ep.showName}</div>
             <div class="ep-spec">${code} • ${ep.epName}</div>
             <div class="ep-air">${formatDateHr(ep.airdate)} ${ep.airtime ? 'u ' + ep.airtime : ''}</div>
           </div>
-          <button class="quick-check" onclick="quickMarkWatched(${ep.epId}, event)" title="Označi kao pogledano">✓</button>
+          <div class="row-actions">
+            <button type="button" class="copy-pill-btn" data-copy="${copyPayload}" onclick="copyFromBtn(this, event)" title="Kopiraj ${copyPayload}">Copy</button>
+            <button type="button" class="quick-check" onclick="quickMarkWatched(${ep.epId}, event, ${ep.showId})" title="Označi kao pogledano">✓</button>
+          </div>
         `;
 
         if (ep.airdate === todayStr) {
@@ -1803,6 +2312,7 @@
       if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">Nema daljnjih najava.</p>';
     }
 
+    updateHudTopDial();
     renderSchedule();
   </script>
 </body>

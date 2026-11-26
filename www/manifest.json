@@ -4,6 +4,6 @@
   "description": "Prati omiljene serije i datume izlaska novih epizoda",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b0f19",
-  "theme_color": "#0b0f19"
+  "background_color": "#05070a",
+  "theme_color": "#05070a"
 }

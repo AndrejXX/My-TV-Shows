@@ -1000,7 +1000,6 @@
       const currentTab = navHistory[navHistory.length - 1];
       if (recordHistory && currentTab !== tab) {
         navHistory.push(tab);
-        history.pushState({ tab }, '');
       }
 
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1056,33 +1055,15 @@
       }
     }
 
-    window.addEventListener('popstate', () => {
-      const epModal = document.getElementById('epSummaryOverlay');
-      if (epModal.classList.contains('open')) {
-        epModal.classList.remove('open');
-        return;
+    // Povezivanje nativne Android sistemske tipke Natrag (@capacitor/app)
+    function registerAndroidBackHandler() {
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        window.Capacitor.Plugins.App.addListener('backButton', () => {
+          goBack();
+        });
       }
-      const backupModal = document.getElementById('backupOverlay');
-      if (backupModal.classList.contains('open')) {
-        backupModal.classList.remove('open');
-        return;
-      }
-      const overlay = document.getElementById('overlay');
-      if (overlay.classList.contains('open')) {
-        overlay.classList.remove('open');
-        return;
-      }
-      if (navHistory.length > 1) {
-        navHistory.pop();
-        const prevTab = navHistory[navHistory.length - 1];
-        switchTab(prevTab, false);
-      }
-    });
-
-    document.addEventListener('backbutton', (e) => {
-      e.preventDefault();
-      goBack();
-    });
+    }
+    registerAndroidBackHandler();
 
     // Izvoz i uvoz baze podataka
     function buildBackupPayload() {
@@ -1100,7 +1081,6 @@
       document.getElementById('backupStatsText').textContent =
         `Trenutno u bazi: ${myShows.length} serija i ${totalWatched} označenih epizoda.`;
       document.getElementById('backupOverlay').classList.add('open');
-      history.pushState({ modal: 'backup' }, '');
     }
 
     function closeBackupModal() {
@@ -1295,7 +1275,6 @@
       document.getElementById('drawerEpList').innerHTML = '<p class="empty-msg" style="text-align:center; padding:16px;">Učitavanje epizoda...</p>';
       document.getElementById('markPrevSeasonsBtn').style.display = 'none';
       document.getElementById('overlay').classList.add('open');
-      history.pushState({ drawer: id }, '');
 
       try {
         let show = myShows.find(s => s.id === id);
@@ -1446,7 +1425,6 @@
       document.getElementById('epModalTitle').textContent = ep.name;
       document.getElementById('epModalDate').textContent = `Emitirano: ${formatDateHr(ep.airdate)}`;
       document.getElementById('epSummaryOverlay').classList.add('open');
-      history.pushState({ modal: 'epSummary' }, '');
 
       if (ep.summary && ep.summary.trim() !== '') {
         document.getElementById('epModalSummary').innerHTML = ep.summary;
@@ -1461,7 +1439,6 @@
           const summaryHtml = fullEp.summary || '<p>Kratak sadržaj za ovu epizodu nije dostupan.</p>';
           ep.summary = summaryHtml;
 
-          // Ažuriraj lokalno ako je serija u kolekciji
           if (currentDrawerShow) {
             const trackedIdx = myShows.findIndex(s => s.id === currentDrawerShow.id);
             if (trackedIdx > -1) {

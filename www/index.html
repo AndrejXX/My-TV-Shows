@@ -71,7 +71,6 @@
       padding-bottom: calc(78px + env(safe-area-inset-bottom));
     }
 
-    /* Top Netflix-style Header */
     header {
       position: sticky;
       top: 0;
@@ -96,21 +95,6 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
-    }
-
-    .brand-mark {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      background: var(--red);
-      color: #ffffff;
-      font-weight: 900;
-      font-size: 15px;
-      display: grid;
-      place-items: center;
-      letter-spacing: -0.04em;
-      flex-shrink: 0;
-      box-shadow: 0 2px 10px var(--red-glow);
     }
 
     .brand h1 {
@@ -184,9 +168,7 @@
       display: block;
     }
 
-    /* =========================================================
-       PROPOSAL 1: CINEMATIC HERO BANNER
-       ========================================================= */
+    /* Cinematic Hero Banner */
     .cinematic-hero {
       position: relative;
       width: 100%;
@@ -336,9 +318,7 @@
       transform: scale(0.95);
     }
 
-    /* =========================================================
-       HORIZONTAL EPISODES CAROUSEL (PROPOSAL 1 LOWER ROW)
-       ========================================================= */
+    /* Horizontal Episodes Carousel */
     .section-header {
       display: flex;
       align-items: center;
@@ -475,9 +455,7 @@
       flex-shrink: 0;
     }
 
-    /* =========================================================
-       FILTER PILLS & POSTER GRID
-       ========================================================= */
+    /* Filter Pills & Poster Grid */
     .filter-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -548,7 +526,6 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
     }
 
-    /* Netflix-style red progress bar along bottom edge of poster */
     .poster-progress-bg {
       position: absolute;
       left: 0;
@@ -651,9 +628,7 @@
       justify-content: center;
     }
 
-    /* =========================================================
-       SCHEDULE VIEW
-       ========================================================= */
+    /* Schedule View */
     .sched-group-title {
       font-size: 12px;
       font-weight: 800;
@@ -754,9 +729,7 @@
       flex-shrink: 0;
     }
 
-    /* =========================================================
-       EXPLORE SEARCH
-       ========================================================= */
+    /* Explore Search */
     .search-box {
       display: flex;
       gap: 8px;
@@ -788,9 +761,7 @@
       cursor: pointer;
     }
 
-    /* =========================================================
-       BOTTOM NETFLIX NAVIGATION BAR (MATCHING PROPOSAL 1)
-       ========================================================= */
+    /* Bottom Navigation Bar */
     .nav-bar {
       position: fixed;
       bottom: 0;
@@ -838,9 +809,7 @@
       margin-top: 2px;
     }
 
-    /* =========================================================
-       SHOW DETAILS DRAWER & MODALS
-       ========================================================= */
+    /* Show Details Drawer & Modals */
     .overlay {
       position: fixed;
       inset: 0;
@@ -1227,7 +1196,6 @@
     <div class="header-left">
       <button class="top-btn icon-only" id="headerBackBtn" onclick="goBack()" title="Back" aria-label="Back" style="display:none;">←</button>
       <div class="brand">
-        <div class="brand-mark">N</div>
         <h1>MY TV <span>TRACKER</span></h1>
       </div>
     </div>
@@ -1248,8 +1216,25 @@
   </header>
 
   <main class="container">
-    <!-- TAB 1: MY SHOWS (PROPOSAL 1: CINEMATIC HERO + EPISODES CAROUSEL + GRID) -->
-    <section class="view-section active" id="view-my">
+    <!-- TAB 1: SCHEDULE (OPENS ON STARTUP) -->
+    <section class="view-section active" id="view-schedules">
+      <div id="scheduleHeroContainer"></div>
+
+      <div class="sched-group-title">Today</div>
+      <div id="sched-today" class="schedule-group"></div>
+
+      <div class="sched-group-title">Tomorrow</div>
+      <div id="sched-tomorrow" class="schedule-group"></div>
+
+      <div class="sched-group-title">This Week</div>
+      <div id="sched-week" class="schedule-group"></div>
+
+      <div class="sched-group-title">Upcoming</div>
+      <div id="sched-future" class="schedule-group"></div>
+    </section>
+
+    <!-- TAB 2: MY SHOWS -->
+    <section class="view-section" id="view-my">
       <div id="cinematicHeroContainer"></div>
 
       <div id="episodesCarouselWrap" style="display:none;">
@@ -1275,23 +1260,6 @@
       <div class="grid" id="myGrid"></div>
     </section>
 
-    <!-- TAB 2: SCHEDULE -->
-    <section class="view-section" id="view-schedules">
-      <div id="scheduleHeroContainer"></div>
-
-      <div class="sched-group-title">Today</div>
-      <div id="sched-today" class="schedule-group"></div>
-
-      <div class="sched-group-title">Tomorrow</div>
-      <div id="sched-tomorrow" class="schedule-group"></div>
-
-      <div class="sched-group-title">This Week</div>
-      <div id="sched-week" class="schedule-group"></div>
-
-      <div class="sched-group-title">Upcoming</div>
-      <div id="sched-future" class="schedule-group"></div>
-    </section>
-
     <!-- TAB 3: EXPLORE -->
     <section class="view-section" id="view-explore">
       <div class="search-box">
@@ -1303,16 +1271,9 @@
     </section>
   </main>
 
-  <!-- BOTTOM NETFLIX NAVIGATION BAR -->
+  <!-- BOTTOM NAVIGATION BAR -->
   <nav class="nav-bar">
-    <button type="button" class="nav-btn active" id="nav-my" onclick="switchTab('my')">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-      </svg>
-      <span>My Shows</span>
-    </button>
-    <button type="button" class="nav-btn" id="nav-schedules" onclick="switchTab('schedules')">
+    <button type="button" class="nav-btn active" id="nav-schedules" onclick="switchTab('schedules')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
         <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -1320,6 +1281,13 @@
         <line x1="3" y1="10" x2="21" y2="10"></line>
       </svg>
       <span>Schedule</span>
+    </button>
+    <button type="button" class="nav-btn" id="nav-my" onclick="switchTab('my')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>My Shows</span>
     </button>
     <button type="button" class="nav-btn" id="nav-explore" onclick="switchTab('explore')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1418,7 +1386,7 @@
     let currentDrawerShow = null;
     let activeMyFilter = 'all';
     let exploreLoaded = false;
-    let navHistory = ['my'];
+    let navHistory = ['schedules'];
 
     function toHttps(url) {
       if (!url) return PLACEHOLDER_IMG;
@@ -1550,7 +1518,7 @@
     function updateBackButtonVisibility() {
       const currentTab = navHistory[navHistory.length - 1];
       const backBtn = document.getElementById('headerBackBtn');
-      backBtn.style.display = (navHistory.length > 1 || currentTab !== 'my') ? 'inline-flex' : 'none';
+      backBtn.style.display = (navHistory.length > 1 || currentTab !== 'schedules') ? 'inline-flex' : 'none';
     }
 
     function switchTab(tab, recordHistory = true) {
@@ -1599,9 +1567,9 @@
       }
 
       const currentTab = navHistory[0];
-      if (currentTab !== 'my') {
-        navHistory = ['my'];
-        switchTab('my', false);
+      if (currentTab !== 'schedules') {
+        navHistory = ['schedules'];
+        switchTab('schedules', false);
         return;
       }
 
@@ -2209,7 +2177,6 @@
       return isEnded ? 'ended' : 'waiting';
     }
 
-    /* Proposal 1: Cinematic Hero Banner + Horizontal Up Next Carousel */
     function renderCinematicHeroAndCarousel(sortedShows, todayStr) {
       const heroWrap = document.getElementById('cinematicHeroContainer');
       const carouselWrap = document.getElementById('episodesCarouselWrap');
@@ -2227,7 +2194,6 @@
         }
       });
 
-      // Prioritize aired unwatched episodes first
       upNextItems.sort((a, b) => (b.isAired ? 1 : 0) - (a.isAired ? 1 : 0));
 
       if (upNextItems.length === 0) {
@@ -2266,7 +2232,6 @@
         </div>
       `;
 
-      // Render horizontal carousel for remaining next episodes (or all if >= 2)
       const carouselList = upNextItems.length > 1 ? upNextItems.slice(1) : [];
       if (carouselList.length === 0) {
         carouselWrap.style.display = 'none';
@@ -2533,7 +2498,7 @@
       if (!listFut.children.length) listFut.innerHTML = '<p class="empty-msg">No further upcoming episodes.</p>';
     }
 
-    renderMyShows();
+    renderSchedule();
   </script>
 </body>
 </html>

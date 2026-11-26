@@ -30,6 +30,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Predmemoriranje Gradle paketa
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
       - name: Priprema webDir (www) i provjera koda
         run: |
           mkdir -p www
@@ -184,11 +194,60 @@ jobs:
           printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n    <monochrome android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml"
           cp "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml" "$RES_DIR/mipmap-anydpi-v26/ic_launcher_round.xml"
 
+      - name: Postavljanje Google Maven Central mirrora (zaštita od HTTP 429)
+        run: |
+          mkdir -p ~/.gradle/init.d
+          cat << 'EOF' > ~/.gradle/init.d/maven-central-mirror.gradle
+          def mirrorUrl = "https://maven-central.storage-download.googleapis.com/maven2/"
+          def centralUrl = "https://repo.maven.apache.org/maven2/"
+
+          def patchRepos = { RepositoryHandler repos ->
+              boolean replaced = false
+              new ArrayList(repos).each { ArtifactRepository repo ->
+                  if (repo instanceof MavenArtifactRepository) {
+                      def u = repo.url?.toString()
+                      if (u != null && (u.startsWith("https://repo.maven.apache.org/maven2") || u.startsWith("https://repo1.maven.org/maven2"))) {
+                          repo.setUrl(mirrorUrl)
+                          replaced = true
+                      }
+                  }
+              }
+              if (replaced) {
+                  boolean hasCentral = repos.any {
+                      it instanceof MavenArtifactRepository && it.url?.toString()?.startsWith("https://repo.maven.apache.org/maven2")
+                  }
+                  if (!hasCentral) {
+                      repos.maven { url = centralUrl }
+                  }
+              }
+          }
+
+          gradle.beforeSettings { Settings settings ->
+              patchRepos(settings.pluginManagement.repositories)
+              patchRepos(settings.dependencyResolutionManagement.repositories)
+          }
+
+          gradle.settingsEvaluated { Settings settings ->
+              patchRepos(settings.pluginManagement.repositories)
+              patchRepos(settings.dependencyResolutionManagement.repositories)
+          }
+
+          gradle.beforeProject { Project p ->
+              patchRepos(p.buildscript.repositories)
+              patchRepos(p.repositories)
+          }
+
+          gradle.afterProject { Project p ->
+              patchRepos(p.buildscript.repositories)
+              patchRepos(p.repositories)
+          }
+          EOF
+
       - name: Kompajliranje Android APK datoteke
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
       - name: Objava gotovog APK-a za preuzimanje
         uses: actions/upload-artifact@v4

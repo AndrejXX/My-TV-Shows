@@ -750,6 +750,20 @@
       gap: 8px;
     }
 
+    .paste-area {
+      width: 100%;
+      min-height: 76px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      margin-top: 8px;
+      resize: vertical;
+    }
+
     .empty-msg {
       color: var(--text-muted);
       font-size: 0.84rem;
@@ -772,7 +786,8 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
-      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
     }
 
     .toast.show {
@@ -918,18 +933,22 @@
 
         <div class="backup-box">
           <h4>Izvoz baze (prije deinstalacije)</h4>
-          <p>Spremite datoteku sa svim svojim serijama i označenim epizodama na uređaj ili u oblak.</p>
+          <p>Spremite <code>.json</code> datoteku na uređaj, pošaljite je na Google Drive / e-poštu ili kopirajte tekst baze.</p>
           <div class="backup-btn-stack">
-            <button class="action-btn" onclick="exportDatabaseFile()">⬇️ Preuzmi sigurnosnu kopiju (.json)</button>
-            <button class="action-btn secondary-btn" id="shareBackupBtn" onclick="shareDatabaseFile()">📤 Podijeli / spremi na Drive</button>
+            <button class="action-btn" onclick="exportDatabaseFile()">⬇️ Spremi / podijeli .json datoteku</button>
+            <button class="action-btn secondary-btn" onclick="copyDatabaseClipboard()">📋 Kopiraj tekst baze u međuspremnik</button>
           </div>
         </div>
 
         <div class="backup-box" style="margin-bottom:0;">
           <h4>Uvoz baze (vraćanje podataka)</h4>
-          <p>Odaberite prethodno spremljenu <code>.json</code> datoteku za vraćanje svih serija i epizoda.</p>
-          <input type="file" id="importFileInput" accept=".json,application/json" hidden onchange="importDatabaseFile(event)" />
-          <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">📂 Učitaj .json datoteku</button>
+          <p>Odaberite spremljenu <code>.json</code> datoteku ili zalijepite kopirani tekst baze.</p>
+          <input type="file" id="importFileInput" accept="*/*" hidden onchange="importDatabaseFile(event)" />
+          <div class="backup-btn-stack">
+            <button class="action-btn secondary-btn" onclick="document.getElementById('importFileInput').click()">📂 Učitaj .json datoteku s uređaja</button>
+          </div>
+          <textarea id="pasteBackupInput" class="paste-area" placeholder="Ovdje možete zalijepiti kopirani JSON tekst ako ne koristite datoteku..."></textarea>
+          <button class="action-btn secondary-btn" style="margin-top:8px;" onclick="importDatabaseFromText()">📥 Vrati iz zalijepljenog teksta</button>
         </div>
       </div>
     </div>
@@ -992,7 +1011,7 @@
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2400);
+      setTimeout(() => t.classList.remove('show'), 2800);
     }
 
     // Navigacija karticama i Back tipka
@@ -1065,7 +1084,7 @@
     }
     registerAndroidBackHandler();
 
-    // Izvoz i uvoz baze podataka
+    // Izvoz i uvoz baze podataka (nativni Android Filesystem + Share + Clipboard)
     function buildBackupPayload() {
       return {
         app: 'My TV Tracker',
@@ -1080,6 +1099,7 @@
       const totalWatched = Object.keys(watchedEpisodes).length;
       document.getElementById('backupStatsText').textContent =
         `Trenutno u bazi: ${myShows.length} serija i ${totalWatched} označenih epizoda.`;
+      document.getElementById('pasteBackupInput').value = '';
       document.getElementById('backupOverlay').classList.add('open');
     }
 
@@ -1087,40 +1107,114 @@
       document.getElementById('backupOverlay').classList.remove('open');
     }
 
-    function exportDatabaseFile() {
+    async function exportDatabaseFile() {
       const payload = buildBackupPayload();
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
-      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr);
 
+      const plugins = window.Capacitor && window.Capacitor.Plugins;
+
+      // 1. Nativni Android put putem @capacitor/filesystem i @capacitor/share
+      if (plugins && plugins.Filesystem) {
+        try {
+          const cacheRes = await plugins.Filesystem.writeFile({
+            path: fileName,
+            data: jsonStr,
+            directory: 'CACHE',
+            encoding: 'utf8'
+          });
+
+          if (plugins.Share) {
+            await plugins.Share.share({
+              title: 'My TV Tracker - Sigurnosna kopija',
+              text: 'Sigurnosna kopija baze serija',
+              url: cacheRes.uri,
+              dialogTitle: 'Odaberite gdje spremiti sigurnosnu kopiju'
+            });
+            return;
+          }
+        } catch (err) {
+          // Ako korisnik zatvori dijalog dijeljenja, ne prikazuj grešku
+          if (err && String(err.message || err).toLowerCase().includes('cancel')) {
+            return;
+          }
+        }
+
+        // Pokušaj izravnog zapisa u mapu Documents / External ako Share nije dostupan
+        try {
+          await plugins.Filesystem.writeFile({
+            path: fileName,
+            data: jsonStr,
+            directory: 'DOCUMENTS',
+            encoding: 'utf8'
+          });
+          showToast(`Spremljeno u Dokumenti/${fileName}`);
+          return;
+        } catch (docErr) {
+          try {
+            await plugins.Filesystem.writeFile({
+              path: fileName,
+              data: jsonStr,
+              directory: 'EXTERNAL',
+              encoding: 'utf8'
+            });
+            showToast(`Spremljeno u Android/data/.../${fileName}`);
+            return;
+          } catch (extErr) {
+            showToast("Nije moguće spremiti datoteku — koristite kopiranje u međuspremnik.");
+            return;
+          }
+        }
+      }
+
+      // 2. Fallback za desktop web preglednik
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.setAttribute('href', dataUri);
-      a.setAttribute('download', fileName);
+      a.href = url;
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      showToast("Sigurnosna kopija baze je izvezena!");
+      URL.revokeObjectURL(url);
+      showToast("Datoteka sigurnosne kopije je preuzeta.");
     }
 
-    async function shareDatabaseFile() {
-      const payload = buildBackupPayload();
-      const jsonStr = JSON.stringify(payload, null, 2);
-      const fileName = `my-tv-tracker-baza-${getLocalDateStr(0)}.json`;
-
+    async function copyDatabaseClipboard() {
+      const jsonStr = JSON.stringify(buildBackupPayload());
       try {
-        const file = new File([jsonStr], fileName, { type: 'application/json' });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: 'My TV Tracker - Baza podataka',
-            files: [file]
-          });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(jsonStr);
+          showToast("Baza je kopirana u međuspremnik!");
           return;
         }
-      } catch (e) {
-        if (e && e.name === 'AbortError') return;
+      } catch (e) {}
+
+      const ta = document.createElement('textarea');
+      ta.value = jsonStr;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast("Baza je kopirana u međuspremnik!");
+    }
+
+    function applyImportedData(rawText) {
+      const parsed = JSON.parse(rawText);
+      if (!parsed || !Array.isArray(parsed.myShows) || typeof parsed.watchedEpisodes !== 'object') {
+        showToast("Neispravan format sigurnosne kopije.");
+        return;
       }
 
-      exportDatabaseFile();
+      myShows = parsed.myShows;
+      watchedEpisodes = parsed.watchedEpisodes || {};
+      localStorage.setItem('myShows', JSON.stringify(myShows));
+      localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+
+      renderSchedule();
+      renderMyShows();
+      closeBackupModal();
+      showToast(`Uspješno vraćeno ${myShows.length} serija!`);
     }
 
     function importDatabaseFile(event) {
@@ -1130,28 +1224,27 @@
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const parsed = JSON.parse(e.target.result);
-          if (!parsed || !Array.isArray(parsed.myShows) || typeof parsed.watchedEpisodes !== 'object') {
-            showToast("Neispravna datoteka sigurnosne kopije.");
-            return;
-          }
-
-          myShows = parsed.myShows;
-          watchedEpisodes = parsed.watchedEpisodes || {};
-          localStorage.setItem('myShows', JSON.stringify(myShows));
-          localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
-
-          renderSchedule();
-          renderMyShows();
-          closeBackupModal();
-          showToast(`Uvezeno ${myShows.length} serija!`);
+          applyImportedData(e.target.result);
         } catch (err) {
-          showToast("Greška pri čitanju .json datoteke.");
+          showToast("Greška pri čitanju odabrane datoteke.");
         } finally {
           event.target.value = '';
         }
       };
       reader.readAsText(file);
+    }
+
+    function importDatabaseFromText() {
+      const rawText = document.getElementById('pasteBackupInput').value.trim();
+      if (!rawText) {
+        showToast("Najprije zalijepite tekst baze u polje iznad.");
+        return;
+      }
+      try {
+        applyImportedData(rawText);
+      } catch (err) {
+        showToast("Zalijepljeni tekst nije ispravan JSON.");
+      }
     }
 
     // Sinkronizacija praćenih serija s TVmaze API-jem
